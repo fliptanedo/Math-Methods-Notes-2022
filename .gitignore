@@ -1,8 +1,9 @@
 
 # FLIP:
 !.gitignore
-*.pdf
+# *.pdf
 !/figures/*
+# !P231.pdf
 OLD/
 
 # LATEX
@@ -35,6 +36,9 @@ OLD/
 *.synctex.gz
 *.toc
 *.xdv
+*.xml
+*.bcf
+*.lol
 
 # Sublime
 *.sublime-project
