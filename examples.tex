@@ -1,0 +1,95 @@
+%!TEX root = paper.tex
+%% Update the above with the appropriate root
+
+\section{Macros}
+\label{sec:macros}
+
+\flip{This is a comment. Let's test out the `not shouting' caps:}
+\begin{itemize}
+	\item \acro{AdS} in \acro{5D} at the \acro{LHC}.
+	\item AdS in 5D at the LHC. 
+	\item A third list item to test list spacing.
+\end{itemize}
+
+
+\section{Figures in Equation Environments}
+\label{sec:figs}
+
+\begin{align}
+	\vcenter{
+		\hbox{\includegraphics[width=.1\textwidth]{{example-image-a}}}
+		}
+	&=
+	i g \gamma^\mu \ . 
+	\label{eq:vector}
+	\\
+	\vcenter{
+		\hbox{\includegraphics[width=.1\textwidth]{{example-image-a}}}
+		}
+	&=
+	g \gamma^\mu\gamma^5 \ . 
+	\label{eq:axial}
+	\\
+	\vcenter{
+		\hbox{\includegraphics[width=.1\textwidth]{{example-image-a}}}
+		}
+	&=
+	ig  \ . 
+	\label{eq:scalar}
+	\\
+	\vcenter{
+		\hbox{\includegraphics[width=.1\textwidth]{{example-image-a}}}
+		}
+	&=
+	g \gamma^5 \ . 
+	\label{eq:pseudo}
+\end{align}
+
+\section{Best practices for tables}
+\label{sec:tables}
+
+% \begin{table}
+	% \renewcommand{\arraystretch}{1.3} % spacing between rows
+	% \centering
+	\begin{tabular}{ @{} llll @{} } \toprule % @{} removes space
+		Element & Core MF & Mantle MF & $C_\text{cap}^N (\text{s}^{-1})$ 
+		\\ \hline
+		Iron & 0.855 & 0.0626 & $9.43\times 10^{7}$ 
+		\\
+		Nickel & 0.052 & 0.00196 & $7.10\times 10^{6}$ 
+		\\
+		Silicon & 0.06 & 0.210 & $2.24\times 10^{6}$ 
+		\\
+		Magnesium & 0 & 0.228 & $1.05\times 10^{6}$ 
+		\\ \bottomrule
+	\end{tabular}
+	% \caption{
+		% Mass fractions of the Earth's core and mantle.
+		% \label{table:elements}
+% 	}
+% \end{table}
+
+\section{cleveref}
+\label{sec:cleveref}
+
+\texttt{cleveref} is a handy package when referring to ranges of equations. 
+
+The pseudoscalar rule is:
+\begin{itemize}
+	\item Using \texttt{amsmath.sty}'s \texttt{eqref}: \eqref{eq:pseudo}
+	\item Using \texttt{cleverefs}'s \texttt{cref}: \cref{eq:pseudo}
+\end{itemize}
+
+The equations above are
+\begin{itemize}
+	\item Using \texttt{amsmath.sty}'s \texttt{eqref}: \eqref{eq:vector} -- \eqref{eq:pseudo}
+	\item Using \texttt{cleverefs}'s \texttt{crefrange}: \crefrange{eq:vector}{eq:pseudo}
+\end{itemize}
+
+The equations above are (glomped together)
+\begin{itemize}
+	\item Using \texttt{amsmath.sty}'s \texttt{eqref}: \eqref{eq:vector}, \eqref{eq:axial}, \eqref{eq:scalar}, \eqref{eq:pseudo}
+	\item Using \texttt{cleverefs}'s \texttt{cref}: \cref{eq:vector,eq:pseudo,eq:axial,eq:scalar}
+\end{itemize}
+
+The sections above are \cref{sec:macros,sec:cleveref,sec:figs,sec:tables}.

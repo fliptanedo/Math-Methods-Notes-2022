@@ -1,0 +1,25 @@
+%!TEX root = paper.tex
+%% These are packages that need to be called at the end of the preamble 
+%% or else they may lead to potential package conflicts.
+
+%%%%%%%%%%%%%%%%%%%
+%%%  HYPERREF  %%%%
+%%%%%%%%%%%%%%%%%%%
+
+%% This package has to be at the end; can lead to conflicts
+\usepackage[
+	colorlinks=true,
+	citecolor=green!50!black,
+	linkcolor=NavyBlue!75!black,
+	urlcolor=green!50!black,
+	hypertexnames=false]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  Must be called after HYPERREF  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{orcidlink}			% orcid ID icon; after hyperref
+\usepackage{cleveref}
+\crefformat{equation}{(#2#1#3)}	% strip eq.~ 
+\crefrangeformat{equation}{(#3#1#4\,--\,#5#2#6)} % strip eqs.~

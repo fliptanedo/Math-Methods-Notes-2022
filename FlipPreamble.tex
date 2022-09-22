@@ -1,0 +1,192 @@
+%!TEX root = paper.tex
+%% FLIP’S PREAMBLE; 
+%% Use FlipAdditionalHeader for project-specific packages & macros
+
+% \pdfoutput=1 % for JHEP
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  COMMON PACKAGES  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+% \usepackage[utf8]{inputenc}     % inspire bibs
+\usepackage{aas_macros}				  % ads bibs
+\usepackage{bm}      
+\usepackage{fix-cm}            % \boldsymbol
+\usepackage{amsthm}
+\usepackage{microtype}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  UNUSUAL PACKAGES  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% MATH AND PHYSICS SYMBOLS
+%% ------------------------
+\usepackage{slashed}				% \slashed{k}
+\usepackage{mathrsfs}				% Weinberg-esque letters
+\usepackage{bbm}					  % \mathbbm{1} conflict: XeLaTeX 
+\usepackage{cancel}					
+\usepackage[normalem]{ulem} % for \sout
+\usepackage{youngtab}	    	% Young Tableaux
+% \usepackage{isomath}            % for styling vectors
+
+%% CONTENT FORMAT AND DESIGN
+%% -------------------------
+% \usepackage[dvipsnames]{xcolor} % OPTION CLASH
+% \usepackage[hang,flushmargin]{footmisc} % OPTION CLASH
+
+% \usepackage{fancyhdr}		% preprint number
+\usepackage{lipsum}			% block of text 
+\usepackage{framed}			% boxed remarks / Next time: use mdframed
+                        % https://github.com/marcodaniel/mdframed/blob/master/mdframed.pdf
+% \usepackage{subcaption}	% subfigures
+% \usepackage{cite}			  % group cites
+\usepackage{xspace}			% macro spacing
+
+
+%% TABLES IN LaTeX
+%% ---------------
+\usepackage{booktabs}		% professional tables
+\usepackage{nicefrac}		% fractions in tables,
+\usepackage{multirow}		% multirow elements in a table
+\usepackage{arydshln}		% dashed lines in arrays
+
+%% ARRAY STRETCH: vertical spacing between rows
+% \renewcommand{\arraystretch}{1.5} %% put this in main text
+
+%% Other Packages and Notes
+%% ------------------------
+% \usepackage[font=small]{caption} 	% caption font is small
+% \usepackage{float}         			  % for strict placement e.g. [H]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  DOCUMENT PROPERTIES  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage[margin=2.5cm]{geometry} % margins
+\graphicspath{{figures/}}			      % figure folder
+% \numberwithin{equation}{section}    % set equation numbering
+% \usepackage{marginnote}             % for \marginnote{comment}
+% \usepackage{mparhack}               % fix for \marginnote
+% \usepackage{marginfix}              % fix for \marginnote
+% \usepackage{adjustbox}              % to rescale elements
+
+
+
+%% References in two columns, smaller
+%% http://tex.stackexchange.com/questions/20758/
+% \usepackage{multicol}
+% \usepackage{etoolbox}
+% \usepackage{relsize}
+% \patchcmd{\thebibliography}
+%   {\list}
+%   {\begin{multicols}{2}\smaller\list}
+%   {}
+%   {}
+% \appto{\endthebibliography}{\end{multicols}}
+
+
+% % Change list spacing (instead of package paralist)
+% % from: http://en.wikibooks.org/wiki/LaTeX/List_Structures#Line_spacing
+% % alternative: enumitem package
+% \let\oldenumerate\enumerate
+% \renewcommand{\enumerate}{
+%   \oldenumerate
+%   \setlength{\itemsep}{4pt}
+%   \setlength{\parskip}{0pt}
+%   \setlength{\parsep}{0pt}
+% }
+
+% \let\olditemize\itemize
+% \renewcommand{\itemize}{
+%   \olditemize
+%   \setlength{\itemsep}{4pt}
+%   \setlength{\parskip}{0pt}
+%   \setlength{\parsep}{0pt}
+% }
+
+%% FOR DRAFT EDITING AND DISCUSSION
+\usepackage{lineno}
+% \linenumbers          %% put this in main text
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  (RE)NEW COMMANDS  %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% FOR `NOT SHOUTING' CAPS (e.g. acronyms)
+%% ---------------------------------------
+\usepackage{scalefnt} 
+\newcommand\acro[1]{{\footnotesize #1}}           % acronyms in footnote size
+
+
+%% COMMON PHYSICS MACROS
+%% ---------------------
+% \renewcommand{\tilde}{\widetilde}   % tilde over characters
+%% doesn't seem to work with the default tufte-thesis font
+\renewcommand{\text}{\textnormal}	% text in equations 
+% \renewcommand{\vec}[1]{\mathbf{#1}} % vectors are italic boldface
+\renewcommand{\vec}[1]{\boldsymbol{#1}} % vectors are italic boldface
+% \renewcommand{\vec}[1]{\mathbfit{#1}} % using isomath; buggy
+
+%% For ISO tensor guidelines
+\DeclareMathAlphabet{\mathsfit}{T1}{\sfdefault}{\mddefault}{\sldefault}
+\SetMathAlphabet{\mathsfit}{bold}{T1}{\sfdefault}{\bfdefault}{\sldefault}
+\newcommand{\tensor}[1]{\mathsfit{#1}} % vectors are boldface
+
+% \newcommand{\dbar}{d\mkern-6mu\mathchar'26}    % for d/2pi
+\newcommand{\dbar}{d\mkern-6mu\mathchar'26\hspace{-.1em}}    % fixed spacing
+\renewcommand{\ket}[1]{\left|#1\right\rangle}    % <#1|
+\renewcommand{\bra}[1]{\left\langle#1\,\right|}    % |#1>
+
+%% COMMANDS FOR TEMPORARY COMMENTS
+%% -------------------------------
+\newcommand{\comment}[2]{\textcolor{red}{[\textbf{#1} #2]}}
+\newcommand{\flip}[1]{{
+	\color{green!50!black}
+  \footnotesize
+  [\textbf{\textsf{Flip}}: \textsf{#1}]
+	}}
+
+
+%% COMMANDS FOR TOP-MATTER
+%% -----------------------
+\newcommand{\email}[1]{\href{mailto:#1}{#1}}
+\newenvironment{institutions}[1][2em]{\begin{list}{}{\setlength\leftmargin{#1}\setlength\rightmargin{#1}}\item[]}{\end{list}}
+
+
+%% COMMANDS FOR LATEXDIFF
+%% ----------------------
+%% see http://bit.ly/1M74uwc
+\providecommand{\DIFadd}[1]{{\protect\color{blue}#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\protect\scriptsize{#1}}}
+
+%% REMARK: use latexdiff option --allow-spaces
+%% for \frac, ref: http://bit.ly/1iFlujR
+%% Errors with environments? https://tex.stackexchange.com/q/73224
+
+%% USAGE: latexdiff draft.tex revision.tex > diff.tex
+
+% %%%%%%%%%%%%%%%%%%%%%
+% %%%  TITLE DATA  %%%%
+% %%%%%%%%%%%%%%%%%%%%%
+
+% %% PREPRINT NUMBER USING fancyhdr
+% %% Don't forget to set \thispagestyle{firststyle}
+% %% ----------------------------------------------
+% \renewcommand{\headrulewidth}{0pt} 	% no separator
+% \setlength{\headheight}{15pt} 		% min to avoid fancyhdr warning
+% \fancypagestyle{firststyle}{
+% 	\rhead{\footnotesize%
+% 	\texttt{\FlipTR}%
+% 	}}
+
+% %% TOC overwrites fancyhdr, here's a fix
+% %% http://tex.stackexchange.com/questions/167828/
+% \usepackage{etoc}
+% \renewcommand{\etocaftertitlehook}{\pagestyle{plain}}
+% \renewcommand{\etocaftertochook}{\thispagestyle{firststyle}}
