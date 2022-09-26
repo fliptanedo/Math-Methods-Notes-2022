@@ -11,6 +11,9 @@
 \newtheorem{exercise}{Exercise}[section]
 \newtheorem{example}{Example}[section]
 
+% For matrices
+\newcommand{\aij}[2]{^{#1}_{\phantom{#1}#2}}
+
 %% for under tilde, using accents package
 % \newcommand{\covec}[1]{ \underaccent{\tilde}{\vec{#1}} }
 
@@ -334,6 +337,24 @@ This does not make sense. You cannot sum terms with different dimensions. Simila
 \end{align}
 Since each term comes with a different power of $x$, the argument of the exponential must be dimensionless. 
 
+\begin{example}
+As pointed out by Matta et al.\footnote{\emph{J.~Chem.~Educ.} 2011, 88, 1, 67–70. \url{https://doi.org/10.1021/ed1000476}}, this argument is not quite correct. Each term in the Taylor expansion of a function $f(x)$ maintains the dimensions of $f(x)$, as is obvious when written out carefully:
+\begin{align}
+  f(x_0+\Delta x) = f(x_0) + \left.\frac{df}{dx}\right|_{x_0}\Delta x + \frac{1}{2}\left.\frac{d^2f}{dx^2}\right|_{x_0}\Delta x^2 + \cdots \ .
+\end{align}
+The units of every $dx^2$ in the `denominator' of $d^{(n)}f/dx^n$ is canceled by the units in $\Delta x^n$, no matter what the dimensions of $\Delta x$ are.
+%
+The real issue is that for many functions, $f(x_0)$ is simply not defined for dimensionful arguments. This is certainly true for trigonometric functions. For the exponential, one may fall back to the limit definition:
+\begin{align}
+  e^x = \lim_{n\to\infty} \left(1+ \frac{x}{n}\right)^n \ ,
+\end{align}
+where it is now an issue of different terms having different dimensions. Note that the right-hand side is not a Taylor expansion. The exponential definition above is handy because it makes sense even when $x$ is a matrix or operator.
+\end{example}
+
+\begin{exercise}
+Sometimes you may think it is useful to keep track of radians (or degrees) as a dimensionful quantity. This, by the way, is a slippery slope because then you may want to think of $\pi$ as some unit of circles... whatever that means. Following the exercise above, show that (1) each term in the Taylor expansion of $f(x) = \sin(x)$ has the same dimensions, and (2) that there is no issue with trigonometric functions being defined as having `dimensionful' arguments in this way.
+\end{exercise}
+
 \begin{exercise}
 Consider the energy spectrum of light emitted from some constant source---a distant star, the ongoing annihilation of dark matter in the galactic center, or a high-intensity laser. The spectrum encodes how many photons are emitted per unit time. We can plot this spectrum as a curve on a graph. We can even normalize the curve so that it integrates to one photon. This means we only care about the distribution of energy, not the absolute amount. The horizontal axis of such a plot is the photon energy. What are the units of the vertical axis?
 \end{exercise}
@@ -355,7 +376,7 @@ If we want to be fancy, we can make this an equal sign by writing a function of 
   \tau = f(\theta_0) \sqrt{\frac{\ell}{g}} \ .
 \end{align}
 
-\flip{To do: include problems from Robinett AJP article on dimensional analysis, doi: 10.1119/1.4902882.}
+\flip{To do: include problems from R.W.~Robinett \emph{American Journal of Physics} \textbf{8}3, 353 (2015); \url{https://doi.org/10.1119/1.4902882}.}
 
 
 \subsection{Scaling}
@@ -1354,8 +1375,8 @@ The word \emph{dual} shows up often in theoretical physics and in different cont
 
 
 
-\section{Metric and Indices}
-\label{sec:indices}
+\section{Metric and Indices, Part I}
+\label{sec:indices:I}
 
 Formally, the metric is an object that `has on indices' in the same way a vector `has no indices' because $\vec{v} = v^i\ket{i}$ in bra-ket notation. Of course, physicists love to write $v^i$ to mean ``the vector $\vec{v}$'' because the indices are convenient so long as the meaning of the basis vectors $\ket{i}$ is unambiguous to everyone. The analog for an object like the metric is $\tens{g} = g_{ij}\bra{i}\otimes\bra{j}$. Here we meet the \textbf{tensor product}\index{tensor product}, $\otimes$. What $\bra{i}\otimes\bra{j}$ means is that $\bra{i}$ and $\bra{j}$ are \emph{not} acting on one another. They are both waiting for separate kets to come along to spit out numbers. This simply returns us to the observation that the metric can be thought of a machine that either:
 \begin{enumerate}
@@ -1372,6 +1393,296 @@ Let us see how this works in each case to demonstrate how to `read' the tensor p
 \end{align}
 We have defined $\tilde v_i \equiv v^j g_{ij}$ to be excessively pedantic. We are free to drop the tilde and write $v_i \equiv v^j g_{ij}$ because there are no other objects that are named $v$ with one lower index.
 Here it is implicit that the second bra in $\tens{g}$, $\bra{j}$, acts on the ket in $\vec{v}$, $\ket{k}$. In fact, because $g_{ij} = g_{ji}$ by assumption for the metric, it does not matter whether it is the first bra or the second bra in the tensor product $\tens{g} = g_{ij}\bra{i}\otimes\bra{j}$ that acts on the ket $\ket{k}$. 
+
+At this point, you would be justified in feeling that we have really made a big deal out of converting vectors into covectors and vice versa. Is this not just some glorified transpose? Why introduce all this mathematical structure? We return to this thread in Section~\ref{sec:indices:II}. First, let us broaden our set of objects that can exist and act on our (co-)vector spaces.
+
+\section{Linear Transformations}
+\label{sec:linear:transformations}
+
+We have come far enough that you may be wondering, \emph{if this is linear algebra, where are all the matrices?} From here on out, we downplay the idea of a `matrix' because it can lead to some ambiguities: not every mathematical object that can be expressed as a two-dimensional array behaves in the same way. 
+\begin{example}
+The metric $\tens{g}$ is an object with two indices, $g_{ij}$. In an $N$-dimensional vector space, it is often written as an $N\times N$ array,
+\begin{align}
+ \tens{g} = 
+ \begin{pmatrix}
+   g_{11} & g_{12} & \cdots\\
+   g_{21} & \ddots & \cdots\\
+   \vdots & \vdots & g_{NN}
+ \end{pmatrix} \ .
+\end{align}
+If we accept some sloppiness, we could even call this a matrix. However, this is not the same kind of object that you normally think about as a matrix. 
+\end{example}
+When you first learned linear algebra\footnote{When I was a student this was in a subject called Algebra II.}, you learned that matrices act on vectors using the usual matrix multiplication rule. That rule looked something like this:
+\begin{align}
+\vcenter{
+    \hbox{\includegraphics[width=.6\textwidth]{figures/matrixmultiplication.pdf}}
+    }
+\end{align}
+The mechanical picture for this rule is best shown in real time. A rough summary is as follows. If matrix $A$ acts on vector $\vec{v}$, the value of the $i^\text{th}$ component of $A\vec{v}$ is calculated by:
+\begin{enumerate}
+  \item Take the $i^\text{th}$ \emph{row} of $A$.
+  \item Rotate it clockwise by one quarter of a turn. Now it is aligned with the vector $\vec{v}$. Mentally place them right next to each other.
+  \item Multiply the components that are horizontally next to each other.
+  \item Sum together each product. This is $(A\vec{v})^i$.
+\end{enumerate}
+\begin{exercise}
+Write this procedure in index notation. {Answer}: $(A\vec{v})^i = A\aij{i}{j}v^j$. Please take time to make sure that this is obvious. If it is not: work out the implied sum explicitly. You can even use the explicit case above, where $i=2$ and the indices run from $i,j \in \{1,2,3\}$. 
+\end{exercise}
+
+What is critical to emphasize at this stage is not yet the mechanical definition of the matrix multiplication procedure, but the following facts:
+\begin{enumerate}
+  \item When a matrix acts on a vector, the result is a vector. This is in contrast to a number or a covector or anything else. 
+  \item When a matrix acts on twice a vector, the result is twice the previous result. That is: $A(2\vec{v}) = 2A\vec{v}$. The same is true for any rescaling by a number.
+  \item When a matrix acts on the sum of two vectors, the result is the sum of the matrix acting on each vector independently: $A(\vec{v}+\vec{w}) = A\vec{v}+A\vec{w}$.
+\end{enumerate}
+What this tells us is that the object that we were calling a `matrix' colloquially---and that we may have been [erroneously] equating with a \acro{2D} array of numbers---is really a linear map from $V\to V$. Since this linear map takes objects (vectors) in $V$ and turns them into other objects in $V$, we call this a \textbf{linear transformation}\index{linear transformation}. 
+%
+So from now on we will be deliberate and talk about linear transformations from $V$ to $V$.
+
+A quick remark: perhaps in ``Algebra II'' you worked with non-square matrices. A $n\times m$ matrix is a linear transformation that maps an $m$-dimensional vector into an $n$-dimensional vector. Clearly these are different vector spaces. In this course we are not interested in non-square matrices---there is an \emph{reason} we want to stick to the same vector space. And anyway, they will be infinite dimensional.
+\begin{exercise}
+The ``Algebra II'' notion of a matrix is a square array of numbers that turns vectors into other vectors. From the definition of this multiplication, it should be clear that the transformation is linear. Show that \emph{any} linear transformation on a vector $\vec{v}$ can be represented as matrix multiplication. As a hint, you can start with the case of a one-dimensional vector where $\vec{v}$ is just a number. Remember that our definition of linear is slightly different from the $y=mx+b$ notion in basic algebra.
+\end{exercise}
+The above exercise makes it clear that the Algebra II idea of a matrix is exactly the same as a linear transformation from $V\to V$. The latter phase is one that we can generalize to tensors.
+
+Let us add mathematical structure to our picture. Earlier we met the tensor product of two covectors, $\bra{i}\otimes\bra{j}$. This is an object that linearly `eats' a vector using $\bra{j}$ and then spits out a covector with basis $\bra{i}$. Another way of thinking about this is that the $\bra{j}$ acts on the vector and spits out a number. That number contributes to the coefficient of $\bra{i}$. This tensor structure is a map from $V\to V^*$. What does the tensor structure of a linear transformation $V\to V$ look like?
+
+Following the same line of thought, it should be no surprise that a linear transformation from $V\to V$ can be expanded in terms of a basis of ``ket--bras'' $\ket{i}\otimes\bra{j}$. Because these linear transformations are so common, we typically drop the tensor product symbol and write
+\begin{align}
+  \ket{i}\otimes\bra{j} \to \ket{i}\bra{j} \ .
+\end{align}
+Thus the object that we used to call a `matrix' $A$ is expanded in components $A\aij{i}{j}$ as
+\begin{align}
+  A = A\aij{i}{j}\ket{i}\bra{j} \ .
+\end{align}
+Note the index structure carefully. The basis coefficient (or component) $A\aij{i}{j}$ has one upper index and one lower index. The upper index is first---it appears to the left---and indicates that the first object in the basis tensor product is a basis vector $\ket{i}$. The second index is lowered and indicates that the second object in the basis tensor is a basis covector, $\bra{j}$. 
+
+The index structure of the coefficients now tells us everything there is to know about the basis. As a physicist, we may write\footnote{Or if we have self respect, we will only think this privately but never say it out loud lest any mathematicians hear us.} ``$A = A\aij{i}{j}$.'' By this we mean that we can \emph{fill in} the basis $\ket{i}\bra{j}$ just by looking at the indices. If we take this very glib shorthand, then we can imagine a linear transformation $A$ acting on a vector $\vec{v}$ by simply looking at their indices:
+\begin{align}
+ (Av)^i = A\aij{i}{j} v^j  \ .
+\end{align}
+We can tell ourselves the story that the ``lower index'' of $A\aij{i}{j}$ acts on the ``upper index'' of $v^j$ by contraction so that the $i^\text{th}$ component of $A\vec{v}$ is the sum $A\aij{i}{j} v^j$. Of course, what is actually going on is that the basis objects are doing all of the work ``under the hood'' of enforcing the linear transformation:
+\begin{align}
+  \left(A\aij{i}{j}\ket{i}\bra{j}\right) \left(v^k\ket{k}\right)
+  &= A\aij{i}{j} v^k \ket{i} \langle j | k \rangle
+  &= A\aij{i}{j} v^k \delta^j_k \ket{i}
+  &= \left(A\aij{i}{j} v^j\right) \ket{i} \ .
+\end{align}
+
+\begin{exercise}
+Okay, one last chance. If it is not completely obvious to you that $\left(A\aij{i}{j} v^j\right)$ is indeed the $i^\text{th}$ component of $A\vec{v}$, then work this out explicitly for the simple case of a $2\times 2$ matrix.
+\end{exercise}
+
+\begin{exercise}\label{ex:matrices:as:vectors}
+Show that the space of linear transformations from $V\to V$ (the space of ``matrices'') is a vector space. The set of ket--bras (nobody really calls them that) $\ket{i}\bra{j}$ are a basis for this space. When $V=\mathbbm{R}^n$, we call the space $\text{GL}(N, \mathbbm{R})$, the \emph{general linear group}.
+\end{exercise}
+
+\begin{exercise}
+Show that the a valid definition for a metric on the vector space $\text{GL}(N,\mathbbm{R})$ is 
+\begin{align}
+\langle A , B \rangle = \text{Tr}\left(A^\text{T} B\right) \equiv \left(A^\text{T}\right)\aij{i}{j}B\aij{j}{i} \ , 
+\end{align}
+the trace of $A^\text{T} B$ where $A^\text{T}$ is the transpose of $A$: $\left(A^\text{T}\right)\aij{i}{j} \equiv g_{ik}A\aij{k}{\ell}g^{\ell j}$. We motivate this definition below. 
+\end{exercise} 
+
+
+
+\begin{exercise}
+Consider $\text{GL}(2,\mathbbm{R})$. A standard basis is $\ket{I}$ with $I\in\{1,2,3,4\}$ and defined with respect to the $\ket{i}\bra{j}$ as:
+\begin{align}
+  \ket{1} &= \ket{1}\bra{1}
+  &
+  \ket{2} &= \ket{1}\bra{2}
+  &
+  \ket{3} &= \ket{2}\bra{1}
+  &
+  \ket{4} &= \ket{2}\bra{2} \ .
+\end{align}
+Suppose $\ket{A}$ is an element of $\text{GL}(2,\mathbbm{R})$ with components $A^I$ in this standard basis. Now suppose we have a different basis written with respect to diagonal, symmetric, and antisymmetric matrices:
+\begin{align}
+  \ket{1'} &= \ket{1}\bra{1}
+  &
+  \ket{2'} &= \frac{1}{2}\left(\ket{1}\bra{2}+\ket{2}\bra{1}\right)
+  \\
+  \ket{3'} &= \frac{1}{2}\left(\ket{1}\bra{2}-\ket{2}\bra{1}\right)
+  &
+  \ket{4'} &= \ket{2}\bra{2} \ .
+\end{align}
+What are the components of $\ket{A}$ in the primed basis, $(A')^I$?
+\end{exercise}
+
+What else can we do with a linear transformation $A$ from $V\to V$? We already know that if we feed $A$ a vector, we get another vector. We could also `pre-load' $A$ with a covector in the same way that we `pre-loaded' the metric. Suppose $\tilde{\vec{w}}$ is such a covector. Then
+\begin{align}
+  \tilde{\vec{w}}A = 
+  \left(\tilde{w}_i\bra{i}\right)
+  \left(A\aij{j}{k}\ket{j}\bra{k}\right)
+  =
+  \tilde{w}_iA\aij{i}{k} \bra{k}
+  \label{eq:row:acting:on:tensor}
+\end{align}
+is also a covector. This is obvious because it takes the form $(\text{coefficient})^i\bra{i}$ where the $\bra{i}$ are the basis covectors. 
+% Note that we chose to write $\tilde{\vec{w}}=\tilde{w}_i\bra{i}$ to the left of $A$ because we knew that the covector basis vector $\bra{i}$ would act on the first argument of the $A$ basis tensor product, $\ket{j}$. However, once we have resolved the action $\langle i|j\rangle$, the coefficient $\tilde{w}_iA\aij{i}{k}$ of $\bra{k}$ is simply a number. Each of $\tilde{w}_i$ and $A\aij{i}{k}$ are simply \emph{numbers} that are multiplied. That means the order does not matter
+%% This is a totally irrelevant aside.
+This means that we can think of the linear transformations from $V\to V$ as, equivalently, linear transformations from $V^* \to V^*$. Alternatively, if we feed $A$ a covector and a vector, then we can form a \emph{bilinear} function from $V\times V^* \to \mathbbm{R}$ through
+\begin{align}
+  A(\tilde{\vec{w}}, \vec{v}) = \tilde{\vec{w}} A \vec{v} \ .
+\end{align}
+Here `bilinear' means that $A(\tilde{\vec{w}}, \vec{v})$ is linear in each of its two arguments. 
+
+Thus we can interpret the linear transformation $A$ in three ways:
+\begin{enumerate}
+  \item A linear map from $V\to V$
+  \item A linear map from $V^*\to V^*$
+  \item A bilinear map from $V\times V^* \to \mathbbm{R}$.
+\end{enumerate}
+Each of these interpretations can be understood from the index structure of the components $A\aij{i}{j}$.
+\begin{enumerate}
+  \item We can contract the lower $j$ index with the upper index of a vector's components, $A\aij{i}{j}v^j$. After the contraction, there is only an upper index left so we know that the object is a vector. 
+  \item We can contract the upper $i$ index with the lower index of a covector's components, $A\aij{i}{j}\tilde w_i= \tilde w_iA\aij{i}{j}$. After the contraction, there is only a lower index left so we know that the object is a covector. 
+  \item We can contract each of the indices with the corresponding indices of a vector a covector. After the contraction, there are no indices left over and the object is simply a number.
+\end{enumerate}
+
+
+\section{Adjoint}
+
+Recall the definition of the transpose/Hermitian conjugate in \eqref{eq:transpose:as:inner:product:preloaded}. The `dagger' operation $\dag$ converts a vector into a covector using the inner product. For real vector spaces this is simply the transpose, for complex vector spaces it is the transpose and complex conjugation. We now define an operation on linear transformations $A$ that borrows the same notation: the adjoint. The adjoint of a linear transformation $A$ is denoted $A^\dag$ and is defined by the inner product relation:
+\begin{align}
+  \langle A^\dag \vec{w}, \vec{v} \rangle = \langle \vec{w}, A\vec{v}\rangle \ .
+  \label{eq:def:adjoint}
+\end{align}
+This should look familiar from the bra-ket notation in quantum mechanics where we have $\langle w|A v\rangle = \langle A^\dag w|v\rangle$. The bra $\bra{w}$ is the Hermitian conjugate (dual) of some ket $\bra{w} = \ket{w}^\dag$, which is in turn defined with respect to the inner product. Following these definitions, one sees that this is equivalent to the adjoint definition \eqref{eq:def:adjoint}. This justifies the `overloading' of the $\dag$ operator: if $\vec{u} = A\vec{w}$, then
+\begin{align}
+  \bra{u} = \left(A \ket{w}\right)^\dag = \left(\ket{w}\right)^\dag A^\dag = \bra{w} A^\dag \ .
+\end{align}
+When $A$ is a matrix, then we can think about $\dag$ as literally meaning ``transpose and complex conjugate.'' When $V$ is a real vector space---so that linear transformations from $V\to V$ are also real---then $\dag$ is equivalent to transpose. 
+\begin{example}
+Show that 
+\begin{align}
+  \left(AB\right)^\dag = B^\dag A^\dag \ .
+\end{align}
+With foresight about naming variables, start with
+\begin{align}
+  \langle B^\dag \vec{w}, \vec{v}\rangle = \langle \vec{w}, B \vec{v} \rangle \ .
+\end{align}
+Now assume that $\vec{w} \equiv A^\dag \vec{u}$. Plugging this in and using the definition of the adjoint gives:
+\begin{align}
+  \langle B^\dag A^\dag \vec{u}, \vec{v}\rangle 
+  = \langle A^\dag \vec{u}, B \vec{v} \rangle 
+  = \langle \vec{u},  (AB) \vec{v} \rangle 
+  = \langle (AB)^\dag \vec{u},   \vec{v} \rangle 
+  \ .
+\end{align}
+This proves the proposed relation. You should recognize this from the real case where $(AB)^\text{T} = B^\text{T}A^\text{T}$ \ .
+\end{example}
+
+What does the adjoint of a matrix look like in terms of indices? In fact, one could ask the following question. What is the index structure of $A^\dag$? We could even restrict for simplicity to real spaces so that we really want to know: what are the positions of the indices of $A^\text{T}$? We know that $A^\text{T}$ is still a linear map from $V\to V$. This means it has one upper and one lower index. We can then ask how these indices are oriented: 
+\begin{align}
+  A\aij{i}{j} &= \left(A^\text{T}\right)\aij{j}{i}
+  &
+  \text{or}
+  &
+  &
+  A\aij{i}{j} &= \left(A^\text{T}\right)_j^{\phantom{j}i} \ .
+\end{align}
+Which one is it? The fact that we write $A^\text{T}\vec{w}$ in the defining relation for the adjoint means that $A^\text{T}$ is a linear transformation from $V\to V$, which tells us that it is the same class of object as $A$ and should thus have the same index structure. Write this index structure out explicitly in the definition of the adjoint, \eqref{eq:def:adjoint}, written with the inner product notation replaced by the metric:
+\begin{align}
+  \left(A^\text{T}\right)\aij{i}{k}w^k v^j g_{ij}
+  &= 
+  w^i A\aij{j}{k}v^k g_{ij} \ .
+\end{align}
+We are about to do something slick, but first we re-label the indices for future convenience. Relabeling dummy indices does not change anything.
+\begin{align}
+  \left(A^\text{T}\right)\aij{i}{k}w^k v^j g_{ij}
+  &= 
+  w^k A\aij{i}{j}v^j g_{ki} \ .
+  \label{eq:transpose:components:1}
+\end{align}
+On the right-hand side we chose indices so that we have $A\aij{i}{j}$ as a factor. Conveniently, on left-hand side the dummy indices of the $w$ and $v$ coefficients match. Because the above equality is true for \emph{any} kets $\vec{v}$ and $\vec{w}$, then we can simply cancel $w^kv^j$ on both sides:
+\begin{align}
+  \left(A^\text{T}\right)\aij{i}{k} g_{ij}
+  &= 
+  A\aij{i}{j} g_{ki} \ .
+  \label{eq:transpose:components:2}
+\end{align}
+\begin{exercise}
+Explain why step from \eqref{eq:transpose:components:1} to \eqref{eq:transpose:components:2} is valid.
+\end{exercise}
+  Now we may contract both sides with $g^{j\ell}$. Using the fact that this is the inverse metric so that $g^{j\ell}g_{ij} = \delta^\ell_i$, we have
+\begin{align}
+  \left(A^\text{T}\right)\aij{\ell}{k}
+  = 
+  g_{ki}
+  A\aij{i}{j} 
+  g^{j\ell}
+. 
+\end{align}
+This gives an index definition of $A^\text{T}$. 
+\begin{exercise}
+Using similar manipulations, show that
+\begin{align}
+  A\aij{
+  i}{j} = g_{j\ell} \left(A^\text{T}\right)\aij{\ell}{k} g^{ki} 
+  = \left(A^\text{T}\right)_i^{\phantom{i}j} 
+  \ .
+\end{align}
+We see that we end up with an unusual index structure on the right-hand side. At first glance we may be worried that this is not the index structure of a linear transformation from $V\to V$ like we are used to. However, we also now have the rule that indices are raised and lowered uniquely by the metric. Thus the expression $\left(A^\text{T}\right)_i^{\phantom{i}j}$ is completely determined from $\left(A^\text{T}\right)\aij{i}{j}$ through the implicit action of the metric.
+\end{exercise}
+
+
+\begin{exercise}
+Show that $\left(A^\dag\right)^\dag = A$ \ .
+\end{exercise}
+
+
+
+You may recall from linear algebra that there was something \emph{nice} about symmetric matrices. It is the same thing that is \emph{nice} about Hermitian operators in quantum mechanics. Both are \textbf{self-adjoint}\index{self-adjoint}, meaning $A^\dag = A$. Self-adjoint operators are nice because they have real eigenvalues, even if the vector spaces they act on are not necessarily real.\footnote{You may care about this if $A$ is supposed to correspond to a physical observable.}
+
+
+\section{Multilinear Transformations} % Tensors
+
+Linear algebra should feel very familiar because most of us have played with matrices in various forms throughout our mathematical education. If you are like me, then at some point in your education you hear the word `\textbf{tensor}' and you feel like it is some exotic new class of object with a slew of unknown mathematical structure. This is not the case. We now make a point to understand what a tensor is and to realize that it is simply an extension of linear maps between vector spaces. Because these maps can take many vectors/covectors as arguments, we say that they are \emph{multilinear}. Maybe the reason why this is `scary' the first time we see it is that the components of tensors, in general, have many indices.\footnote{There are various phobias about insects with many legs. Perhaps for similar reasons.}
+
+From the previous section we know that given a vector space $V$, perhaps $\mathbbm{R}^n$, we can consider the space of linear transformations from $V\to V$.\footnote{If you did Exercise~\ref{ex:matrices:as:vectors}, then you know that these transformations are themselves a vector space. Then you could consider  linear transformations on the space of linear transformations...} 
+\flip{Flip is here}
+
+\begin{example}
+Consider a multilinear map that takes two vectors and spits out a third vector. This is a tensor. As stated, we can think of this as a function $\vec{f}(\vec{v},\vec{w})$ where we understand that $\vec{f}$ itself is a vector. We are assuming that we all agree on some basis and there's no need to explicitly write $\vec{v}=v^i\hat{\vec{e}}_{(i)}$. Multilinearity means
+\begin{align}
+  \vec{f}(\alpha\vec{v}+\beta\vec{u},\vec{w}) &= 
+  \alpha\vec{f}(\vec{v},\vec{w}) +
+  \beta \vec{f}(\vec{u},\vec{w})
+  \\
+  \vec{f}(\vec{v},\alpha\vec{w}+\beta\vec{x}) &= 
+  \alpha\vec{f}(\vec{v},\vec{w}) +
+  \beta \vec{f}(\vec{v},\vec{x}) \ ,
+\end{align}
+where $\alpha$ and $\beta$ are numbers. The function $\vec{f}$ is simply linear in each of its two arguments: it is \emph{multi}linear. (There's really nothing deep here, eh?) Then we recognize that $\vec{f}$ itself has an index. So the above multilinearity conditions may be written in component form:
+\begin{align}
+  f^i(\alpha\vec{v}+\beta\vec{u},\vec{w}) &= 
+  \alpha\vec{f}(\vec{v},\vec{w}) +
+  \beta \vec{f}(\vec{u},\vec{w})
+  \\
+  f^i(\vec{v},\alpha\vec{w}+\beta\vec{x}) &= 
+  \alpha\vec{f}(\vec{v},\vec{w}) +
+  \beta \vec{f}(\vec{v},\vec{x}) \ ,
+\end{align}
+where the relations are separately true for each index $i$.
+\end{example}
+
+
+
+
+
+
+
+
+
+\section{Metric and Indices, Part II}
+\label{sec:indices:II}
+
+In Section~\ref{sec:indices:I} we presented the metric as some kind of re-writing of the ``transpose'' operation. We very deliberately explained this as raising or lowering the index. At the time it may have seemed like an overkill of mathematical structure.
+
+% ***** NOW: we're generalizing the types of things we can imagine acting on. Linear transformations, for exampl.e 
 
 In general when you act with a tensor product on some object, one must specify how the bras and kets in the product are supposed to `hit' the object. For example, consider the following tensor product:
 \begin{align}
@@ -1398,16 +1709,11 @@ We have used $\langle m|p\rangle = \delta^m_p$. Now we notice one of the benefit
   \otimes\bra{\ell}\otimes\bra{n}$ simply because they must contract the indices of the components.
   \item We know \emph{which} index in $\tens{T}$ contracts with the index in $\vec{v}$ because that is the dummy index contraction. We can see from $T^{ijk}_{\phantom{ijk}\ell m n}v^m$ that the fifth index of $\tens{T}$ contracts with the upper index of $\vec{v}=v^m |m\rangle$.
 \end{enumerate}
+In Section~\ref{sec:indices:symmetries} we present one more powerful feature of index notation: our ability to read off how a given tensor changes when we either (a) transform our coordinates or (b) transform the physical object that the tensor describes.
 
 
 
 
-\section{Linear Transformations}
-\label{sec:linear:transformations}
-% we implied something about sensible contractions
-% what makes them sensible?
-
-\flip{I am here}
 
 \begin{example}
 Transformation of fields. Mixture of active and passive.
@@ -1417,37 +1723,14 @@ Insert: idea that linearity of a transformation means a matrix representation.
 
 
 \section{Indices and Symmetries}
+\label{sec:indices:symmetries}
 
 Earlier we made the point that writing objects in terms of indices makes quite a lot of sense when those objects are linear maps between vector spaces. There is a second reasons why physicists love indices: they are a natural language for capitalizing on the symmetries of a system.\footnote{The mathematical study of symmetries is called group theory. Sometimes people distinguish this from representation theory, which is loosely the study of how objects transform with respect to symmetries---in contrast to the underlying structure of a class of symmetries. This lies outside the scope of our course, but you are likely to have had some training in representation theory when you invoked Clebsch--Gordan coefficients in quantum mechanics.}
 
-\section{Multilinear Notation} % Tensors
 
-Linear algebra should feel very familiar because most of us have played with matrices in various forms throughout our mathematical education. If you are like me, then at some point in your education you hear the word `tensor' and you feel like it is some exotic new class of object with a slew of unknown mathematical structure. This is not the case. We now make a point to understand what a tensor is and to realize that it is simply an extension of linear maps between vector spaces. Because these maps can take many vectors/covectors as arguments, we say that they are \emph{multilinear}. Maybe the reason why this is `scary' the first time we see it is that the components of tensors, in general, have many indices.\footnote{There are various phobias about insects with many legs. Perhaps for similar reasons.}
+\section{Eigenvalues and Eigenvectors}
 
-\begin{example}
-Consider a multilinear map that takes two vectors and spits out a third vector. This is a tensor. As stated, we can think of this as a function $\vec{f}(\vec{v},\vec{w})$ where we understand that $\vec{f}$ itself is a vector. We are assuming that we all agree on some basis and there's no need to explicitly write $\vec{v}=v^i\hat{\vec{e}}_{(i)}$. Multilinearity means
-\begin{align}
-  \vec{f}(\alpha\vec{v}+\beta\vec{u},\vec{w}) &= 
-  \alpha\vec{f}(\vec{v},\vec{w}) +
-  \beta \vec{f}(\vec{u},\vec{w})
-  \\
-  \vec{f}(\vec{v},\alpha\vec{w}+\beta\vec{x}) &= 
-  \alpha\vec{f}(\vec{v},\vec{w}) +
-  \beta \vec{f}(\vec{v},\vec{x}) \ ,
-\end{align}
-where $\alpha$ and $\beta$ are numbers. The function $\vec{f}$ is simply linear in each of its two arguments: it is \emph{multi}linear. (There's really nothing deep here, eh?) Then we recognize that $\vec{f}$ itself has an index. So the above multilinearity conditions may be written in component form:
-\begin{align}
-  f^i(\alpha\vec{v}+\beta\vec{u},\vec{w}) &= 
-  \alpha\vec{f}(\vec{v},\vec{w}) +
-  \beta \vec{f}(\vec{u},\vec{w})
-  \\
-  f^i(\vec{v},\alpha\vec{w}+\beta\vec{x}) &= 
-  \alpha\vec{f}(\vec{v},\vec{w}) +
-  \beta \vec{f}(\vec{v},\vec{x}) \ ,
-\end{align}
-where the relations are separately true for each index $i$.
-\end{example}
-
+\section{What about traces and determinants?}
 \section{Examples of Finite-Dimensional Vector Spaces}
 
 % fibbonacci sequences as an example
