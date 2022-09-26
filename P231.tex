@@ -7,6 +7,15 @@
   % raggedbottom,
 ]{tufte-style-thesis-flip}
 
+\usepackage[
+  autocite  = superscript,
+  backend   = biber,
+  citestyle   = numeric-comp,
+  style     = numeric,
+  sorting   = none,
+  bibencoding = utf8,
+]{biblatex}
+
 \input{FlipPreamble}
 \newtheorem{exercise}{Exercise}[section]
 \newtheorem{example}{Example}[section]
@@ -14,30 +23,22 @@
 % For matrices
 \newcommand{\aij}[2]{^{#1}_{\phantom{#1}#2}}
 
-%% for under tilde, using accents package
-% \newcommand{\covec}[1]{ \underaccent{\tilde}{\vec{#1}} }
-
-% https://tex.stackexchange.com/questions/77640/bold-italic-and-sans-serif-math-symbols
+% Bold italic math: https://tex.stackexchange.com/a/82747/8094
 \DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
 \newcommand{\tens}[1]{\mathbfsf{#1}}
 
-
-% % From https://tex.stackexchange.com/questions/65889/change-the-size-of-the-footnote-counter-in-the-footnote
-% % Following Bringhurt's advice: full size marker
-% \makeatletter 
-%   \long\def\@makefntext#1{\parindent 1em\noindent \footnotelayout \scriptsize \hb@xt@0.8em{% 
-%     \hss\@textsuperscript{\small\@thefnmark}}#1}% 
-%     \makeatother
 
 %	package inclusions for this specific documentation file. the .cls does not neet them.
 \usepackage{lipsum}		% the chad package
 \usepackage{textgreek}	% for greek
 \usepackage{imakeidx}	% for index
 \usepackage{multicol}
-\usepackage{bibentry}
+% \usepackage{bibentry}
 \makeindex[columns=3]
 
 \addbibresource{refs.bib} % for biblatex
+% NOTE: sometimes biber has problems
+% https://tex.stackexchange.com/a/135496/8094 clearing cache helps
 
 % INFO : used in the titlepage, copyright and stuff.
 \author{Flip Tanedo}
@@ -45,15 +46,8 @@
 \subtitle{A mathematical methods course for first-year graduate students in physics \& astronomy}
 \university{University of California, Riverside}
 \lab{Physics 231, Fall 2022}
-% \person{Supervisor}{their name}{their job}
-% \person{Cosupervisor}{also their name}{also their job}
-% \person{Jury members}{jury 1}{jobs}
-% \person{}{jury 2}{\dots}
 \logo{figures/FlipAmbigram.png}
-% \logo{figures/UCRPnA_banner.png}
-% \logo{example-image-c}
 \type{Lecture Notes}
-% \shoutouts{For my homies}
 
 \begin{document}
 
@@ -122,7 +116,7 @@ We weave together ideas that are not often connected explicitly in undergraduate
 Do not be surprised if we only mention Bessel functions in passing. Do not think less of our efforts if we do not calculate Wronksians or go beyond a single Riemann sheet. As graduate students, it is \emph{your} responsibility to be able to grab your favorite reference to apply mathematics as needed to \emph{your} research. \emph{This} course is about the larger narrative that is not often shared explicitly in those books. It is about that which makes physicists employable in Silicon Valley while simultaneously terrible at splitting the bill at a restaurant. 
 
 \begin{example}
-Our cavalier attitude towards mathematical rigor should not make you think that mathematical rigor is not necessary. For a nice, visual example, see ``How to lie using visual proofs'' by 3Blue1Brown.\sidecite{3Blue1Brown_2022}
+Our cavalier attitude towards mathematical rigor should not make you think that mathematical rigor is not necessary. For a nice, visual example, see ``How to lie using visual proofs'' by 3Blue1Brown.\cite{3Blue1Brown_2022}
 % https://youtu.be/VYQVlVoWoPY
 \end{example}
  
@@ -626,7 +620,7 @@ Formally there are other rules, but you probably already assumed them.\footnote{
 The existence of a meaningful zero vector is one example why `position space' or coordinate space is not a vector space. The zero vector $\vec 0$ is the one that leaves other vectors unchanged upon addition: $\vec 0 + \vec x = \vec x$. Clearly this depends on the coordinate system and violates our intuition that physics should be independent of the choice of coordinates. Further, the notion of `adding positions' is physically nonsensical. On the contrary, differences of positions $\Delta{x} = \vec{x}_1-\vec{x}_2$ \emph{are} meaningful. For example, the force between two non-relativistic point particles depends the vector that is the difference between the particle positions.
 \end{example}
 
-\begin{exercise} \textbf{Color Space}. Colors for digital media have many representations. One popular representation is \acro{RGB} where the intensity of red, green, and blue components are specified. For example, $(25,174,40)$ is a pleasant shade of green. This triplet of numbers certainly looks like a vector: it is an ordered collection of numbers. Is the space of \acro{RGB} colors a vector space? \emph{Answer: no. Make a list of reasons why.} Like all meaningful questions, this rabbit hole runs deep; for example, see articles on the geometry of colors~\sidecite{weinberg1976geometry} or the overlapping sciences of physics and neurological perception of color~\sidecite{Logvinenko:2022}.
+\begin{exercise}\label{ex:color:space} \textbf{Color Space}. Colors for digital media have many representations. One popular representation is \acro{RGB} where the intensity of red, green, and blue components are specified. For example, $(25,174,40)$ is a pleasant shade of green. This triplet of numbers certainly looks like a vector: it is an ordered collection of numbers. Is the space of \acro{RGB} colors a vector space? \emph{Answer: no. Make a list of reasons why.} Like all meaningful questions, this rabbit hole runs deep; for example, see articles on the geometry of colors~\sidecite{weinberg1976geometry} or the overlapping sciences of physics and neurological perception of color~\sidecite{Logvinenko:2022}.
 \end{exercise}
 
 \section{Notation for Vectors}
@@ -769,6 +763,130 @@ These vectors are obviously linearly independent. Assuming the usual Euclidean i
 Let $\vec{v}$ be the vector that is pointing in the $\hat{\vec{x}}$ direction of $\mathbbm{R}^2$.  What are the components of $\vec{v}$ with respect to the basis in \eqref{eq:nice:basis:eg:e1e2}? Similarly, let $\vec{w}$ be the vector that is pointing in the $\hat{\vec{y}}$ direction of $\mathbbm{R}^2$. What are the components of $\vec{w}$ with respect to the basis in \eqref{eq:nice:basis:eg:e1e2}?
 \end{exercise}
 Unlike linear independence, orthonormality is not a strictly necessary condition for having a basis---though it is hard to imagine a scenario where one would \emph{not} use an orthonormal basis. However, the notions of orthogonality and normalization depend on \emph{additional} mathematical structure that we have to impose/assume/invent for our vector space. Formally, we say that we promote the vector space to a \textbf{metric space}\index{metric space}. The additional structure that we define is a machine that takes two vectors and tells us something about the `distance' between them. We call this machine the \textbf{metric}\index{metric}, \textbf{inner product}\index{inner product}, or \textbf{dot product}\index{dot product}; each phrase refers to the same thing. Once we have a metric, the Gram--Schmidt procedure assures us that we can construct an orthonormal basis from a linearly independent basis, see Exercise~\ref{ex:gram:schmidt}. 
+
+\section{Examples of Finite-Dimensional Vector Spaces}
+
+\subsection{Space and spacetime vectors}
+There are some obvious examples of vector spaces. The one you are most used to is $\mathbbm{R}^3$, the `ordinary' (Cartesian) three-dimensional space. The components of $\vec{v}\in \mathbbm{R}^3$ are simply three real numbers $v^i$ multiplying the `obvious' basis vectors:
+\begin{align}
+   v^i \hat{\vec{e}}_{(i)} 
+   = 
+   v^1 
+   \begin{pmatrix}
+     1 \\ 0 \\ 0
+   \end{pmatrix}
+   +
+   v^2 
+   \begin{pmatrix}
+     0 \\ 1 \\ 0
+   \end{pmatrix}
+   +v^3 
+   \begin{pmatrix}
+     0 \\ 0 \\ 1
+   \end{pmatrix} \ .
+ \end{align}
+ We can generalized to $\mathbbm{R}^n$ with $n$ basis vectors. From special relativity you may be familiar with four-vectors with components $(p^0, p^1, p^2, p^3)$. We index starting with a zero for historical conventions, but it serves to indicate that the \emph{timelike} component $p^0$ is special. At this level, it looks like spacetime is $\mathbbm{R}^4$. An indeed, at this level that would be accurate. We will see in the next section that when we extend from a vector space to a \emph{metric space}, there is an important distinction and spacetime is in fact $\mathbbm{R}^{1,3}$.
+
+This is a good place to remind ourselves that there is no such thing as a `position vector.' What people really mean by a position vector is the vector between some arbitrarily chosen origin and a given point on space.
+
+
+There are more abstract versions of vector spaces.
+
+\subsection{Matrices}
+  The space of $2\times 2$ Hermitian\footnote{A complex matrix $A$ is Hermitian if $A^\dag = (A^\text{T})^* = A$.} matrices is a vector space with basis elements
+ \begin{align}
+   \mathbbm{1} &= 
+   \begin{pmatrix}
+     1 & 0 \\
+     0 & 1 
+   \end{pmatrix}
+   &
+   \sigma^1 &= 
+   \begin{pmatrix}
+     0 & 1 \\
+     1 & 0 
+   \end{pmatrix}
+   &
+   \sigma^2 &= 
+   \begin{pmatrix}
+     0 & -i \\
+     i &  0
+   \end{pmatrix}
+   &
+   \sigma^3 &= 
+   \begin{pmatrix}
+     1 & 0 \\
+     0 & -1 
+   \end{pmatrix} \ .
+ \end{align}
+ Convince yourself that you can form any Hermitian $2\time 2$ matrix out of these four basis matrices. You may recognize the familiar Pauli matrices $\sigma^i$ from quantum mechanics. 
+
+\subsection{Quantum states}
+
+While we have mentioned quantum mechanics, the space of quantum mechanical states is a kind of vector space. This is why the bra-ket notation that we usually learn in quantum mechanics is equally applicable to linear algebra. In fact, the big \emph{aha!} moment of the first time you learned quantum mechanics should have been when you realized that quantum mechanics is simply physicists doing linear algebra. As a bonus, quantum mechanics has primed us to already be comfortable with \emph{complex} vector spaces.
+
+There are a few caveats. In quantum mechanics two states that differ by a phase are equivalent. This means that a state is not just a given vector $\ket\psi$ in the complex vector space, but a \emph{ray} where $\ket\psi$ is identified\footnote{We use the symbol $\cong$ to mean `identified with.'} with all rephasings, $\ket\psi \cong e^{i\theta}\ket\psi$. This identification simply means that two vectors that only differ by a phase correspond to the same quantum state: for example, they correspond to the same observable (if the states are directly observable).
+
+\subsection{Functions}
+
+This is a powerful idea hidden behind a trivial idea. Functions are vectors in a vector space that we call \emph{function space}\index{function space}. I am pretty sure that mathematicians do not call it that, but we use this terminology anyway.  This should be \emph{obviously} true. Consider two functions $f$ and $g$. Maybe $f(x) = x^3$ and $g(x) = x + 2$, it does not matter. Clearly you can take a linear combination of the two and the result is a function:
+\begin{align}
+  \alpha f(x) + \beta g(x) = \alpha x^3 + \beta x + 2\beta \ .
+\end{align}
+This is a totally valid function that we could call $(\alpha f + \beta g)(x)$. 
+
+\begin{exercise}
+What are some possible bases for function space?
+\end{exercise}
+
+A judicious choice of basis for function space can make our lives much easier. This is a central theme of this course and justifies the beastiary of special functions that you meet in graduate school. Let us ignore the subtleties of defining a function space for now---we get to this soon enough. The following example gives a taste of what it means to work with functions as vectors.
+
+
+\begin{exercise}
+%https://math.stackexchange.com/questions/942263/really-advanced-techniques-of-integration-definite-or-indefinite/943212
+
+Here is a cute two-dimensional function space that gives us a shortcut to calculate a particular \emph{indefinite} integral.  Consider a two dimensional vector space spanned by the functions
+\begin{align}
+  \left|f_1\right\rangle
+  &= f_1(x) = 
+  e^{ax} \cos bx
+  &
+  \left|f_2\right\rangle
+  &=
+  f_2(x) = 
+  e^{ax} \sin bx \ ,
+\end{align}
+where $a$ and $b$ are constants. Forget orthonormality or boundary conditions for this problem. The derivative $d/dx$ is a linear operator that acts on this space. Write down the derivative as a $2\times 2$ matrix in the above basis, $D$.
+
+Invert $D$ in the usual way that you learned to invert $2\times 2$ matrices during your childhood\footnote{Stuck? Here's a life pro tip: \url{http://bfy.tw/KG2Z}}. Call this matrix $D^{-1}$. 
+
+Now stop and think: the inverse of a derivative is an indefinite integral\footnote{Ignore the constant term.}. Thus acting with $D^{-1}$ on the vector $|f_1\rangle$ should be understood as an integral of $f_1(x)$. Show that, indeed,
+\begin{align}
+  D^{-1} |f_1\rangle = \int dx\, e^{ax} \cos bx \ .
+\end{align}
+Feel free to use \emph{Mathematica} to do the indefinite integral on the right-hand side. Pat yourself on the back if you can do it without a computer.
+\end{exercise}
+
+\subsection{More exotic examples}
+ 
+We saw in Example~\ref{ex:color:space} that color space is almost---but not quite---a vector space. There are, however, plenty of unusual vector spaces. 
+
+One fun example is the space of Fibbonacci sequences. These are sequences of numbers $\{x_1, x_2, x_3, \cdots \}$ such that $x_n = x_{n-1} + x_{n-2}$. You generate a Fibbonacci sequence by picking some $x_1$ and $x_2$ and determining all subsequent values using the defining rule. 
+\begin{exercise}
+Show that the Fibbonacci sequences form a vector space. What is the dimension of this vector space? Hint: the dimension is \emph{not infinite}.
+\end{exercise}
+
+Another example that shows up in mathematical physics is something called a \textbf{root space}. This is a space spanned by a finite number of lattice basis vectors. The space is defined so that vectors are \emph{integer} multiples of the basis vectors. Surprisingly, root space has an intimate connection to the study of continuous symmetries---the representation theory of Lie groups. 
+
+Along these lines, you could consider the vector space of $n$-bits, $(\mathbbm{Z}_2)^n$. The bits are either zero or one and you impose modular arithmetic. 
+%
+You can find several other great examples by judicious Googling.\footnote{For example, I grabbed some of these examples from \url{https://math.stackexchange.com/q/5233/1032899}.}
+% fibbonacci sequences as an example
+% https://math.stackexchange.com/questions/2738065/fibonacci-sequences-as-a-vector-space
+
+%% Other great examples
+% https://math.stackexchange.com/questions/5233/vivid-examples-of-vector-spaces
+% simplices
 
 
 \section{The metric, inner product, or dot product}
@@ -985,6 +1103,9 @@ Because the metric is symmetric, it turns out\footnote{This phrase is code for `
 You may suspect that all this implies that there is always a \emph{correct} basis---or a class of correct bases---where the metric is always nice and diagonal. For many cases this is true and this is the origin of funny prefactors that show up in some of the standard mathematical expressions we use. However, there are exceptions to this. In general relativity, the statement that one can always diagonalize the metric is a \emph{local} statement. Physically this is equivalent to saying that at every point in spacetime one can chose a local inertial frame that is `free falling.' That is to say that even in a curved spacetime, at a given point you can choose coordinates where everything is Minkowski. However, the coordinates in which everything is `flat' at point $p$ do not generally match the coordinates in which everything is `flat' at point $q\neq p$. The mismatch between these coordinate systems is at the root of the mathematical structure of general relativity: it is the physical origin of the notions of connection (covariant derivative), parallel transport, and moving frames.\footnote{An excellent introduction that is grounded in physical intuition is Carroll's \emph{Spacetime and Geometry}. The appendices are a crash course in a graduate differential geometry course.}
 
 
+\begin{example}
+We saw that Fibbonacci sequences form a vector space. Give an example of a reasonable metric on this vector space?. Answer: a good choice is the two-dimensional Euclidean metric applied to the first two elements. When the first two elements of two Fibbonacci sequences match, then the entire sequences are identical. In fact, with this definition, the space of Fibbonacci sequences is identical (isomorphic) to $\mathbbm{R}^2$.  
+\end{example}
 
 \section{Linear functions of vectors}
 
@@ -1440,7 +1561,7 @@ What this tells us is that the object that we were calling a `matrix' colloquial
 So from now on we will be deliberate and talk about linear transformations from $V$ to $V$.
 
 A quick remark: perhaps in ``Algebra II'' you worked with non-square matrices. A $n\times m$ matrix is a linear transformation that maps an $m$-dimensional vector into an $n$-dimensional vector. Clearly these are different vector spaces. In this course we are not interested in non-square matrices---there is an \emph{reason} we want to stick to the same vector space. And anyway, they will be infinite dimensional.
-\begin{exercise}
+\begin{exercise}\label{ex:linear:transformation:are:matrices}
 The ``Algebra II'' notion of a matrix is a square array of numbers that turns vectors into other vectors. From the definition of this multiplication, it should be clear that the transformation is linear. Show that \emph{any} linear transformation on a vector $\vec{v}$ can be represented as matrix multiplication. As a hint, you can start with the case of a one-dimensional vector where $\vec{v}$ is just a number. Remember that our definition of linear is slightly different from the $y=mx+b$ notion in basic algebra.
 \end{exercise}
 The above exercise makes it clear that the Algebra II idea of a matrix is exactly the same as a linear transformation from $V\to V$. The latter phase is one that we can generalize to tensors.
@@ -1640,13 +1761,20 @@ You may recall from linear algebra that there was something \emph{nice} about sy
 
 \section{Multilinear Transformations} % Tensors
 
-Linear algebra should feel very familiar because most of us have played with matrices in various forms throughout our mathematical education. If you are like me, then at some point in your education you hear the word `\textbf{tensor}' and you feel like it is some exotic new class of object with a slew of unknown mathematical structure. This is not the case. We now make a point to understand what a tensor is and to realize that it is simply an extension of linear maps between vector spaces. Because these maps can take many vectors/covectors as arguments, we say that they are \emph{multilinear}. Maybe the reason why this is `scary' the first time we see it is that the components of tensors, in general, have many indices.\footnote{There are various phobias about insects with many legs. Perhaps for similar reasons.}
+Linear algebra should feel very familiar because most of us have played with matrices in various forms throughout our mathematical education. If you are like me, then at some point in your education you hear the word `\textbf{tensor}' and you feel like it is some exotic new class of object with a slew of unknown mathematical structure. This is not the case. We now make a point to understand what a tensor is and to realize that it is simply an extension of linear maps between vector spaces. 
 
-From the previous section we know that given a vector space $V$, perhaps $\mathbbm{R}^n$, we can consider the space of linear transformations from $V\to V$.\footnote{If you did Exercise~\ref{ex:matrices:as:vectors}, then you know that these transformations are themselves a vector space. Then you could consider  linear transformations on the space of linear transformations...} 
-\flip{Flip is here}
+From the previous section we know that given a vector space $V$, perhaps $\mathbbm{R}^n$, we can consider the space of linear transformations from $V\to V$.\footnote{If you did Exercise~\ref{ex:matrices:as:vectors}, then you know that these transformations are themselves a vector space. Then you could consider  linear transformations on the space of linear transformations...} This space formalizes what we called \emph{matrices}. It gave us three maps: $V\to V$, $V^* \to V^*$, and $V\times V^*\to \mathbbm{R}$. In the latter case, we called the transformation \emph{bilinear} because it is linear in each argument. 
 
-\begin{example}
-Consider a multilinear map that takes two vectors and spits out a third vector. This is a tensor. As stated, we can think of this as a function $\vec{f}(\vec{v},\vec{w})$ where we understand that $\vec{f}$ itself is a vector. We are assuming that we all agree on some basis and there's no need to explicitly write $\vec{v}=v^i\hat{\vec{e}}_{(i)}$. Multilinearity means
+The generalization that we now make is a linear transformation of the form:\footnote{And eventually we also include complex functions, where we replace $\mathbbm{R}\to \mathbbm{C}$. }
+\begin{align}
+  V\times \cdots \times V \times V^* \times\cdots\times V^* \to V\mathbbm{R}
+\end{align}
+That is: a linear map that takes some number of vectors and some number of covectors and returns a number. Because the map is linear in each argument, we say that they are \emph{multilinear}. Maybe the reason why this is `scary' the first time we see it is that the components of tensors, in general, have many indices.\footnote{There are various phobias about insects with many legs. Perhaps for similar reasons.} From our experience with ``matrices,'' we know that the multilinear map above can be interpreted in many ways. The same object may, for example, map some number of vectors and covectors into some other number of vectors and covectors.
+
+
+
+\begin{example} \label{eg:multilinear:2vec:to:1vec}
+Consider a multilinear map that takes two vectors and spits out a third vector. This is a tensor. As stated, we can think of this as a function $\vec{f}(\vec{v},\vec{w})$ where we understand that $\vec{f}$ itself is a vector.\footnote{As I squint at my screen I realize that it may not be clear that $\vec{f}$ is boldfaced. You can mentally put a $\overrightarrow{\vec{f}}$ everywhere.} We are assuming that we all agree on some basis and there's no need to explicitly write $\vec{v}=v^i\hat{\vec{e}}_{(i)}$. Multilinearity means
 \begin{align}
   \vec{f}(\alpha\vec{v}+\beta\vec{u},\vec{w}) &= 
   \alpha\vec{f}(\vec{v},\vec{w}) +
@@ -1666,13 +1794,17 @@ where $\alpha$ and $\beta$ are numbers. The function $\vec{f}$ is simply linear 
   \alpha\vec{f}(\vec{v},\vec{w}) +
   \beta \vec{f}(\vec{v},\vec{x}) \ ,
 \end{align}
-where the relations are separately true for each index $i$.
+where the relations are separately true for each index $i$. 
 \end{example}
 
+Because you did Exercise~\eqref{ex:linear:transformation:are:matrices}---\emph{you did do this exercise, right?}---you now should intuit that you can represent the information in a multilinear transformation as some array of numbers. This is the same as saying that you can represent a linear transformation as a $N\times N$ array that we call a matrix.\footnote{Even though I keep saying we need to stop calling it that.} 
+
+\begin{exercise}
+Consider the multilinear map $\vec{f}$ in Example~\ref{eg:multilinear:2vec:to:1vec}. Suppose the vector space is 2-dimensional, for simplicity. Write out the $2^3$ components of the tensor corresponding to $\vec{f}$. As extra credit\footnote{Whenever I mention `extra credit' please know that I am imagining the skit ``That's Numberwang!'' from the British comedy show \emph{That Mitchell And Webb Look}.}, convince yourself that you can write this as a $2\times 2\times 2$ cube of numbers.
+\end{exercise}
 
 
-
-
+\flip{I am here}
 
 
 
@@ -1731,14 +1863,6 @@ Earlier we made the point that writing objects in terms of indices makes quite a
 \section{Eigenvalues and Eigenvectors}
 
 \section{What about traces and determinants?}
-\section{Examples of Finite-Dimensional Vector Spaces}
-
-% fibbonacci sequences as an example
-% https://math.stackexchange.com/questions/2738065/fibonacci-sequences-as-a-vector-space
-
-%% Other great examples
-% https://math.stackexchange.com/questions/5233/vivid-examples-of-vector-spaces
-% simplices
 
 
 
@@ -1753,14 +1877,15 @@ Earlier we made the point that writing objects in terms of indices makes quite a
 \chapter{Function Space}
 
 
-% In what way are polar coordinates an orthonormal basis? 
+In what way are polar coordinates an orthonormal basis? 
 
 \part*{Appendix}
 \appendix
 
 \chapter{Conventions}
 
-\lipsum \cite{BringhurstEoTS}
+% \lipsum 
+\cite{BringhurstEoTS} \cite{segrave2009tipping}
 
 
 
