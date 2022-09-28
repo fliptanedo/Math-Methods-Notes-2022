@@ -764,6 +764,27 @@ Let $\vec{v}$ be the vector that is pointing in the $\hat{\vec{x}}$ direction of
 \end{exercise}
 Unlike linear independence, orthonormality is not a strictly necessary condition for having a basis---though it is hard to imagine a scenario where one would \emph{not} use an orthonormal basis. However, the notions of orthogonality and normalization depend on \emph{additional} mathematical structure that we have to impose/assume/invent for our vector space. Formally, we say that we promote the vector space to a \textbf{metric space}\index{metric space}. The additional structure that we define is a machine that takes two vectors and tells us something about the `distance' between them. We call this machine the \textbf{metric}\index{metric}, \textbf{inner product}\index{inner product}, or \textbf{dot product}\index{dot product}; each phrase refers to the same thing. Once we have a metric, the Gram--Schmidt procedure assures us that we can construct an orthonormal basis from a linearly independent basis, see Exercise~\ref{ex:gram:schmidt}. 
 
+
+At this point we should take a deep breath and state explicitly that we’ve been assuming an orthonormal basis. In this course we will continue to use an orthonormal basis. You may object to this and say that you used to believe in orthonormal bases until you were forced to write down the gradient (or worse, the Laplacian) in spherical coordinates.
+
+\begin{exercise}
+Are polar coordinates an orthonormal basis? You can generalize this to spherical or cylindrical coordinates. Take a moment to think about this. Do vectors in polar coordinates even make sense as vectors? Do we have a sensible addition rule? These questions are unfair because they make the assumption that the vector space described by these coordinates is ``the same'' as the coordinate space. This seems perfectly innocuous until you have learned ab it differential geometry or general relativity. If this piques your interest, I encourage you to read more about this.\footnote{A good reference that presents both the physical intuition and mathematical formalism is Sean Carroll's \emph{Spacetime and Geometry}; Carroll's appendices are an excellent crash course in differential geometry.}
+\end{exercise}
+
+
+There are many things to be said about non-Cartesian (``curvilinear'') coordinate systems and orthonormality. None of them are particularly edifying without a full discussion. With no apologies, I make the following [perhaps perplexing] remarks, illustrated in a figure below:
+\begin{enumerate}
+\item There is no such thing as a `position vector.' Positions refer to some base space, whereas vectors (like differential operators) act on the tangent space at a point of that base space. 
+\item A given tangent space is `nice’ and has a nice orthonormal basis. 
+\item That basis may not be the same for neighboring tangent spaces (perhaps due to coordinates, perhaps due to intrinsic curvature). 
+\end{enumerate}
+In this course these nuances will not come up. In the rest of your life you will still have to deal with curvilinear coordinates.\footnote{There is an excellent discussion of non-coordinate bases and curvilinear coordinates in Bernard Schutz's \emph{A First Course in General Relativity}. See Chapter 5.6 (in the first edition), ``Noncoordinate bases.''} Suffice it to say that our study of function space will be nice an orthonormal. %We haven’t yet given an adequate definition of `orthonormality,’ so let's take \eqref{eq:basis:dual:vec:act:on:vec} as a working definition.
+
+\begin{center}
+\includegraphics[width=.7\textwidth]{figures/Lec_2021_tangentS2.pdf}
+\end{center}
+
+
 \section{Examples of Finite-Dimensional Vector Spaces}
 
 \subsection{Space and spacetime vectors}
@@ -1175,11 +1196,23 @@ Given an orthonormal basis $\left\{\hat{\vec{e}}_{(i)}\right\}$ for the vector s
   \end{cases}
   \label{eq:canonical:dual:basis}
 \end{align}
-We read this as a basis dual vector $\tilde{\vec e}^{(i)}$ acting\footnote{I always thought about this as Pac-Man eating the ghosts.} on a basis vector $\hat{\vec{e}}_{(j)}$.
+We read this as a basis dual vector $\tilde{\vec e}^{(i)}$ acting\footnote{I always thought about this as Pac-Man eating the ghosts. \emph{Pac-Man} is a video game invented by Toru Iwatani for Bandai Namco in 1980. The game development started nearly the same time that---in a different part of the world---Michael Green and John Schwartz began a fruitful collaboration that would lead to the first string revolution four years later. When Green and Schwartz discovered the remarkable cancellation of anomalies in their theory, \emph{Pac-Man} had just been released on the Nintendo Entertainment System.} on a basis vector $\hat{\vec{e}}_{(j)}$.
 This canonical choice of basis realizes the rule \eqref{eq:dual:vec:act:on:vec} with the coefficients $w_i$ identified as the components of $\tilde{\vec w}$.
 
 $\delta^i_j$ is the Kronecker $\delta$\index{Kronecker delta} with one upper and one lower index. When summing over the Kronecker $\delta$ with respect to either index, it enforces that the term only contributes when the two indices match. It replaces the sum over $i$ with a fixed value $i=j$, and vice versa.
 
+It is perhaps useful to use a slightly different notation based on Pac-Man. Rather than writing $\tilde{\vec{e}}^{(i)}$, lets write the basis dual vectors as
+\begin{center}
+\includegraphics[width=.4\textwidth]{figures/lec05_pacman.png}
+\end{center}
+In this notation, the action of a basis dual vector on a basis vector is simply Pac-Man eating the basis vectors:
+\begin{center}
+\includegraphics[width=.4\textwidth]{figures/lec05_paceats.png}
+\end{center}
+So we can write \eqref{eq:dual:vec:act:on:vec} as
+\begin{center}
+\includegraphics[width=.7\textwidth]{figures/lec05_paccontract.png}
+\end{center}
 
 \subsection{Creating dual vectors with a metric}
 
@@ -1496,7 +1529,7 @@ The word \emph{dual} shows up often in theoretical physics and in different cont
 
 
 
-\section{Metric and Indices, Part I}
+\section{Metric and Indices}
 \label{sec:indices:I}
 
 Formally, the metric is an object that `has on indices' in the same way a vector `has no indices' because $\vec{v} = v^i\ket{i}$ in bra-ket notation. Of course, physicists love to write $v^i$ to mean ``the vector $\vec{v}$'' because the indices are convenient so long as the meaning of the basis vectors $\ket{i}$ is unambiguous to everyone. The analog for an object like the metric is $\tens{g} = g_{ij}\bra{i}\otimes\bra{j}$. Here we meet the \textbf{tensor product}\index{tensor product}, $\otimes$. What $\bra{i}\otimes\bra{j}$ means is that $\bra{i}$ and $\bra{j}$ are \emph{not} acting on one another. They are both waiting for separate kets to come along to spit out numbers. This simply returns us to the observation that the metric can be thought of a machine that either:
@@ -1663,6 +1696,107 @@ Each of these interpretations can be understood from the index structure of the 
   \item We can contract each of the indices with the corresponding indices of a vector a covector. After the contraction, there are no indices left over and the object is simply a number.
 \end{enumerate}
 
+We see that the array of numbers (``matrix'') $A$ and its index structure tell us everything about the linear transformation, no matter \emph{which} linear transformation we are using. From now on, we shall refer to linear transformations by their coordinates, e.g.\ $A\aij{i}{j}$ rather than as a function $\vec{f}(\vec{v})$.
+
+
+
+
+
+
+\subsection{Transformation = action on all basis vectors}
+\flip{Need to revise this}
+
+If you know the action of a linear transformation on all basis vectors, then you know the transformation. When written as a matrix, a linear transformation is simply stating what that linear trasformation does to your basis vectors. If a matrix $B$ has elments
+\begin{align}
+  B = 
+  \begin{pmatrix}
+    a & b\\
+    c & d
+  \end{pmatrix}
+  = 
+  B^{i}_{\phantom{i}j} |i\rangle\langle j| \ , 
+\end{align}
+then this simply means that acting on basis vectors $\vec{e}_{(1)} = |1\rangle$ and $\vec{e}_{(2)} = |2\rangle$ gives
+\begin{align}
+  B|1\rangle &= a |1 \rangle + c|2\rangle 
+  \\
+  B|2\rangle &= b |1 \rangle + d|2\rangle  \ .
+  \label{eq:B:basis:action}
+\end{align}
+In column vector notation:
+\begin{align}
+  B
+  \begin{pmatrix}
+  1 \\ 0
+  \end{pmatrix}
+  &= 
+  \begin{pmatrix}
+  a \\ c
+  \end{pmatrix}
+  &
+  B
+  \begin{pmatrix}
+  0 \\ 1
+  \end{pmatrix}
+  &=
+  \begin{pmatrix}
+  b \\ d
+  \end{pmatrix}\ .
+\end{align}
+So knowing the action on basis vectors is the same as knowing the transformation itself. 
+
+
+Given a linear operator $A$, the inverse operator $A^{-1}$ is defined by
+\begin{align}
+  A^{-1} A = \mathbbm{1}_{N\times N} \ .
+\end{align}
+For an $N$-dimensional vector space, this represents $N^2$ different equations: one for each element. The inverse operator, by the way, is also linear. 
+% Let's remind ourselves of what this means. 
+%
+Suppose I told you the action of the inverse transformation $A^{-1}$ on your basis vectors, vis-a-vis \eqref{eq:B:basis:action}:
+\begin{align}
+  A^{-1}|1\rangle &= x |1 \rangle + y|2\rangle 
+  \\
+  A^{-1}|2\rangle &= z |1 \rangle + w|2\rangle  \ .
+  \label{eq:Ainv:basis:action}
+\end{align}
+Then you know exactly how $A^{-1}$ acts on a general vector $|s\rangle = s^1|1\rangle + s^2 |2\rangle$:
+\begin{align}
+  A^{-1} |s\rangle &=
+  A^{-1} \left( s^1|1\rangle + s^2 |2\rangle \right)
+  \\ 
+  &=
+  s^1 A^{-1} |1\rangle + s^2 A^{-1} |2\rangle
+  \label{eq:Ainv:basis:action:on:gen:step2}
+  \\
+  &=
+  (s^1x + s^2z)|1\rangle + (s^1y + s^2 w)|2\rangle \ .
+  \label{eq:Ainv:basis:action:on:gen}
+\end{align}
+You can now keep this in mind when we say we want to solve $A|\psi\rangle = |s\rangle$. If we knew the action of $A^{-1}$ on some basis of the space, then the problem is simple:
+\begin{align}
+  |\psi\rangle = \psi^i |i\rangle 
+  &= \left( A^{-1} \right)^i_{\phantom{i}j} |i\rangle\langle j|
+  \, s^k|k\rangle 
+  \\
+  &= \left(A^{-1}\right)^i_{\phantom{i}j} s^k \, |i\rangle\langle j|
+  |k\rangle 
+  \\
+  &=\left(A^{-1}\right)^i_{\phantom{i}j} s^j \, |i\rangle \ .
+\end{align}
+We can write this as an equation for each component:
+\begin{align}
+  \psi^i &= \sum_j \left(A^{-1}\right)^i_{\phantom{i}j} s^j
+  \label{eq:Ainv:acting:on:source} \ .
+\end{align}
+We've restored the explicit sum over $j$ as a convenient reminder. The quantity $\left(A^{-1}\right)^i_{\phantom{i}j}$ is what we would like to identify with a Green's function; see Section~\ref{sec:lin:alg:greens} for a hint of that. From what we've learned in this subsection: knowing the components $\left(A^{-1}\right)^i_{\phantom{i}j}$ is exactly the same as \emph{knowing the action of the inverse operator on basis vectors}. 
+
+
+
+
+
+
+
 
 \section{Adjoint}
 
@@ -1800,29 +1934,40 @@ where the relations are separately true for each index $i$.
 Because you did Exercise~\eqref{ex:linear:transformation:are:matrices}---\emph{you did do this exercise, right?}---you now should intuit that you can represent the information in a multilinear transformation as some array of numbers. This is the same as saying that you can represent a linear transformation as a $N\times N$ array that we call a matrix.\footnote{Even though I keep saying we need to stop calling it that.} 
 
 \begin{exercise}
-Consider the multilinear map $\vec{f}$ in Example~\ref{eg:multilinear:2vec:to:1vec}. Suppose the vector space is 2-dimensional, for simplicity. Write out the $2^3$ components of the tensor corresponding to $\vec{f}$. As extra credit\footnote{Whenever I mention `extra credit' please know that I am imagining the skit ``That's Numberwang!'' from the British comedy show \emph{That Mitchell And Webb Look}.}, convince yourself that you can write this as a $2\times 2\times 2$ cube of numbers.
+Consider the multilinear map $\vec{f}$ in Example~\ref{eg:multilinear:2vec:to:1vec}. Suppose the vector space is 2-dimensional, for simplicity. Write out the $2^3$ components of the tensor corresponding to $\vec{f}$. As extra credit\footnote{Whenever I mention `extra credit' please know that I am imagining the skit ``That's Numberwang!'' from the British comedy show \emph{That Mitchell And Webb Look}.}, convince yourself that you can write this as a $2\times 2\times 2$ cube of numbers. 
 \end{exercise}
 
+\begin{exercise}
+Convince yourself\footnote{This is my way of saying: you do not have to do a full mathematical proof, but think about this until it is absolutely clear that it is true.} that the function $\vec{f}$ in Example~\ref{eg:multilinear:2vec:to:1vec} is \emph{equivalently} all of the following:
+\begin{itemize}
+  \item A linear map from $V\times V \to V$ .
+  \item A linear map from $V \to  V^*\times V$. Note that the output of this map is a linear transformation from $V\to V$. 
+  \item A linear map from $V^*\to V^* \times V^*$ .
+  \item A linear map from $V^*\times V \to V^*$ .
+  \item A linear map from $V \times V \times V^* \to \mathbbm{R}$ \ .
+\end{itemize}
+Are there other linear maps one can construct from this? 
+\end{exercise}
+Tensors are precisely these multilinear maps. This is in exactly the same that vectors and covectors are linear maps on each other. It is also in exactly the same way that linear transformations from $V\to V$ are also linear transformations from $V^*\to V^*$ and bilinear maps from $V\times V^* \to \mathbbm{R}$. We could read all of this off of the index structure of the linear transformation. In the same way, the index structure of the multilinear transformations tell us all of these things.
 
-\flip{I am here}
 
 
-
-
-\section{Metric and Indices, Part II}
+\section{Tensor Indices}
 \label{sec:indices:II}
 
-In Section~\ref{sec:indices:I} we presented the metric as some kind of re-writing of the ``transpose'' operation. We very deliberately explained this as raising or lowering the index. At the time it may have seemed like an overkill of mathematical structure.
+% In Section~\ref{sec:indices:I} we presented the metric/inverse metric as some kind of re-writing of the ``transpose'' operation. We very deliberately explained this as raising or lowering an index. At the time it may have seemed like an overkill of mathematical structure.
 
-% ***** NOW: we're generalizing the types of things we can imagine acting on. Linear transformations, for exampl.e 
+% NOW: we're generalizing the types of things we can imagine acting on. Linear transformations, for exampl.e 
 
-In general when you act with a tensor product on some object, one must specify how the bras and kets in the product are supposed to `hit' the object. For example, consider the following tensor product:
+Multilinear maps (tensors) are linear combinations of a tensor product of basis vectors and covectors. For every vector argument that a multilinear map takes in, there is a basis covector (a basis linear map from $V\to \mathbbm{R}$). For every covector argument that a multilinear map takes in, there is a basis vector (a basis linear map from $V^*\to \mathbbm{R}$). Alternatively, you do not have to think of the basis covector as taking in a vector as an argument, but rather outputting a covector as an output. All of this is clear from the index notation: a lower index can either contract with an upper index (eating a vector) or it can be a leftover index after other contracts (pooping a covector). 
+
+When you act with a tensor product on some object, one must specify how the bras and kets in the product are supposed to `hit' the object. For example, consider the following tensor product:
 \begin{align}
 \tens{T} \equiv
   T^{ijk}_{\phantom{ijk}\ell m n}\ket{i}\otimes\ket{j}\otimes\ket{k}
   \otimes\bra{\ell}\otimes\bra{m}\otimes\bra{n} \ .
 \end{align}
-I can act with $\tens{T}$ on a vector $\vec{v} = v^i\ket{i}$. To do this, one of the basis bras in $\tens{T}$ needs to act on the ket in $\vec{v}$. We need to specify which one. I could tell you in words that $\tens{T}$ acts on $\vec{v}$ through its fourth argument---the one corresponding to the $\bra{k}$ basis bra. That is cumbersome, but gives the following:
+I can act with $\tens{T}$ on a vector $\vec{v} = v^i\ket{i}$. To do this, one of the basis bras in $\tens{T}$ needs to act on the ket in $\vec{v}$. We need to specify which one.\footnote{In practice we rarely actually have to to this. This is because we usually symmetrize and antisymmetrize the upper and lower indices so that it does not matter which index is acting on the object. In my life I am fortunate to rarely have to work with objects with large numbers of indices with mixed symmetrizations and antisymmetrizations. Then there are the folks who work on tensor networks...} I could tell you in words that $\tens{T}$ acts on $\vec{v}$ through its fourth argument---the one corresponding to the $\bra{k}$ basis bra. That is cumbersome, but gives the following:
 \begin{align}
   \tens{T}\vec{v} &= T^{ijk}_{\phantom{ijk}\ell m n}
   v^p
@@ -1843,15 +1988,15 @@ We have used $\langle m|p\rangle = \delta^m_p$. Now we notice one of the benefit
 \end{enumerate}
 In Section~\ref{sec:indices:symmetries} we present one more powerful feature of index notation: our ability to read off how a given tensor changes when we either (a) transform our coordinates or (b) transform the physical object that the tensor describes.
 
+\begin{exercise}
+This is the tensor version of Exercise~\ref{ex:linear:transformation:are:matrices}. Convince yourself that any multilinear map that takes arguments from a vector space $V$ and its dual $V^*$ may be represented as a tensor. It helps to reduce this problem to multiple instances of linear maps as in Exercise~\ref{ex:linear:transformation:are:matrices}.
+\end{exercise}
 
 
 
-
-\begin{example}
-Transformation of fields. Mixture of active and passive.
-\end{example}
-
-Insert: idea that linearity of a transformation means a matrix representation. 
+% \begin{example}
+% Transformation of fields. Mixture of active and passive.
+% \end{example}
 
 
 \section{Indices and Symmetries}
@@ -1861,6 +2006,37 @@ Earlier we made the point that writing objects in terms of indices makes quite a
 
 
 \section{Eigenvalues and Eigenvectors}
+
+\label{sec:eigenvectors}
+
+Given a sufficiently \emph{nice} linear transformation, $A\aij{i}{j}$, there is a particularly convenient basis: the \textbf{eigenvectors} of $A$. These are vectors $|\lambda\rangle$ such that
+\begin{align}
+  A |\lambda\rangle = \lambda |\lambda\rangle \ .
+\end{align}
+In other words, $A$ acts on the eigenvector by rescaling. The rescaling coefficient is the eigenvalues. For \emph{nice} transformations (see Section~\ref{sec:niceness}), there is a complete set of such vectors to span the vector space. 
+\begin{exercise}
+If you are particularly keen, figure out (or look up) the mathematical conditions for a transformation $A$ to have a set of eigenvectors that form a basis of the vector space. As an added bonus, check that these eigenvectors are orthogonal.
+\end{exercise}
+
+If you write a general vector $|v\rangle$ in terms of this eigenbasis,
+\begin{align}
+  |v\rangle = v^i |\lambda_{(i)} \rangle \ ,
+\end{align}
+Then the action of $A$ on this vector is easy:
+\begin{align}
+  A |v\rangle = \sum_i \lambda_{(i)} v^i |\lambda_{(i)} \rangle \ .
+\end{align}
+In fact, assuming that all of the eigenvalues are non-zero, even the matrix inverse is easy:
+\begin{align}
+  A^{-1}|v\rangle = \sum_i \lambda_{(i)}^{-1} v^i |\lambda_{(i)} \rangle \ .
+  \label{eq:linear:aglebra:inverse:eigenvectors}
+\end{align}
+Hey, that is kind of a big deal. Taking the inverse of a matrix is a much harder problem than acting with the matrix on a vector.\footnote{This is a general truth that ``inverse problems'' are very difficult. This is well known in applied mathematics, but the era of `big science' has made it clear that many of the frontiers in physics and astronomy are inverse problems.}
+The first time you see this should have brought a deep joy to your life: if you can decompose a matrix (linear transformation) into its eigenvectors and eigenvalues, then taking the inverse transformation is simple.
+
+
+
+
 
 \section{What about traces and determinants?}
 
@@ -1876,8 +2052,212 @@ Earlier we made the point that writing objects in terms of indices makes quite a
 
 \chapter{Function Space}
 
+\section{Histogram Space}
+
+\flip{All of this is in progress... cut and pasted from previous year's notes}
+
+{A funny vector space: histogram space}
+\label{sec:histogramspace}
+
+Here’s a funny vector space that we’re going to use as a pedagogical crutch. Imagine histogram-space. The basis vectors are:
+
+\begin{center}
+\includegraphics[width=.45\textwidth]{figures/lec02_e1.pdf}
+\includegraphics[width=.45\textwidth]{figures/lec02_e2.pdf}\\
+\includegraphics[width=.45\textwidth]{figures/lec02_e3.pdf}
+\includegraphics[width=.45\textwidth]{figures/lec02_e4.pdf}
+\end{center}
+
+\noindent This is a basis for a histogram over unit bins from $x=0$ to $x=4$. A vector in this space is, for example:
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{figures/lec02_hist.pdf}
+\end{center}
+
+\noindent We can perform a linear transformation $A$ on $\vec{v}$ which outputs another vector. Let’s say it’s this:
+
+
+\begin{center}
+\includegraphics[width=.8\textwidth]{figures/lec02_hist2.pdf}
+\end{center}
+
+\begin{exercise}
+From the image above, can you derive what $A$ is? 
+\end{exercise}
+
+\noindent The answer to the above exercise is \emph{no}. Please make sure you convince yourself why: there are many different transformations that convert to old histogram into the new histogram. If you're not convinced: the matrix $A$ is $4\times 4$ and thus has 16 entries that we need to define. The matrix equation $A\vec{v} = \vec{w}$ for known vectors $\vec{v}$ and $\vec{w}$ encodes only four equations.
+
+The power of this admittedly strange formalism is that we can think of these histograms as approximations of continuous functions:
+
+\begin{center}
+\includegraphics[width=.4\textwidth]{figures/lec02_histfun.pdf}
+\end{center}
+
+Thus a vector in this approximate (discretized) \emph{function} space is 
+\begin{align}
+  \vec{f} = 
+  \begin{pmatrix}
+    f^1 \\
+    f^2 \\
+    \vdots\\
+    f^N
+  \end{pmatrix} \ .
+\end{align}
+
+%% TO INCLUDE: why the historgram basis is dumb
+%% I had some good reference for this from P17
+%% ... perhaps Linear Algebra done right, or Appel or Cahill...
+%% ... the point was convergence.
+
 
 In what way are polar coordinates an orthonormal basis? 
+
+\subsection{Derivative Operators}
+
+Our discretized function space allows us to define a [forward] derivative\footnote{One could have also defined a backward derivative where $(f')^i \sim f^{i}-f^{i-1}$ \ . Note that you \emph{cannot} try to make this symmetric by defining a `centered' derivative like $(f')^i \sim f^{i+1/2}-f^{i-1/2}$ because there's no such thing as a fractional index. If you tried to write $(f')^i\sim f^{i+1}-f^{i-1}$ you're making a worse approximation. If you're like me, the fact that there's some asymmetry in how we define the first derivative is deeply unsettling. There's something to this intuition!}:
+\begin{align}
+  \vec{f'} =
+  \frac{1}{\Delta x}
+  \begin{pmatrix}
+    f^2 - f^1 \\
+    f^3 - f^2 \\
+    \vdots
+    \\
+    f^{i+1}-f^i
+    \\
+    \vdots
+  \end{pmatrix} \ .
+\end{align}
+This is familiar if you’ve ever had to manually program a derivative into a computer program. Note that the right-hand side looks like a linear transformation of $\vec{f}$. In other words, we expect to be able to write a matrix $D$ so that
+\begin{align}
+  \vec{f'} = D\vec{f} \ .
+\end{align}
+One problem is apparent: what happens at the `bottom’ of the vector? What is the last component of the derivative, $\vec{f'}^N$? Formally, this is
+\begin{align}
+  {(f')}^N = \frac{1}{\Delta x}(f^{N+1} - f^N) \,
+\end{align}
+but now we have no idea what $f^{N+1}$ is. That was never a component in our vector space. There is no $\vec{e}_{(N+1)}$ basis vector. 
+%
+This demonstrates and important lesson that we’ll need when we move more formally to function spaces:
+\begin{quote}
+\textbf{Boundary conditions are part of the definition of the function space}.   
+\end{quote}
+That was so important that I put the whole damn sentence in boldface and set it in the middle of the line. The significance of boundary conditions may be a bit surprising---but think of this as part of the definition of which functions we allow into our function space. 
+%
+\begin{example}
+When one first learns about Fourier series with Dirichlet boundary conditions, one finds that the Fourier expansion \emph{only} contains sines. The solution to the wave equation in such a system is some function that is zero at each endpoint. So the function space relevant to the system is composed only of functions that are zero at each endpoint.
+\end{example}
+%
+For now let’s assume \textbf{Dirichlet boundary conditions}. A convenient way to impose this is to define what happens to all functions outside the domain of the function space:
+\begin{align}
+  f^{i > N} = f^{i < 1} = 0 \ .
+\end{align}
+This solves the problem of the derivative on the last component:
+\begin{align}
+  {(f')}^N = \frac{1}{\Delta x}(f^{N+1} - f^N) 
+  = 
+  \frac{- f^N}{\Delta x}  \ .
+\end{align}
+Alternatively, we could have also imposed \textbf{periodic boundary conditions}:
+\begin{align}
+  f^{i} &= f^{i+ kN}
+  & k\in \mathbb{Z} \ .
+\end{align}
+This would then give
+\begin{align}
+  {(f')}^N = \frac{1}{\Delta x}(f^{N+1} - f^N) 
+  = 
+  \frac{1}{\Delta x}(f^{1} - f^N) 
+  \ .
+\end{align}
+Periodic boundary conditions amount to wrapping the $x$-axis into a circle. Older folks sometimes call this \emph{Asteroids} boundary conditions. I'd also accept \emph{Star Control} boundary conditions. Periodic boundary conditions show up \emph{all} the time in physics. Sometimes they show up in obvious places, like the Brillouin zone of a crystal lattice. Other times they show up in not-so-obvious places like the boundary conditions of the known universe. In addition to being crucial for a well-defined function space, the boundary conditions of a system establish its topology\footnote{I cannot over-emphasize the importance of topology in contemporary physics. Most of the physics you will learn in your first year graduate courses are intrinsically \emph{local} because the laws of physics are causal. Topological quantities are \emph{global}, they are integrals over an entire space. Because winding numbers (and their higher-dimensional cousins) are quantized, they are robust against perturbations. The number of holes in a donut is one, whether or not it's been slightly squished in the box. By the way, the best donuts in Southern California are from \emph{Sidecar Doughnuts} in Costa Mesa. Get the Basil Eggs Benedict donut before 11am; you can thank me later.}.
+
+\begin{exercise}
+We don't know anything about the universe outside the Hubble radius. Why do you think it would be reasonable in a physical model to \emph{assume} that it has periodic boundary conditions? Hint: what would happen to the $x$-momentum of an asteroid in the classic arcade game \emph{Asteroids} if the game did not have periodic boundary conditions? 
+\end{exercise}
+
+The second derivative may be defined symmetrically:
+\begin{align}
+  (f'')^i = \frac{(f^{i+1} - f^i) - (f^i - f^{i-1})}{\Delta x^2} \ .
+\end{align}
+You may pontificate about the reason why the first derivative does have a symmetric discretization while the second derivative does. 
+
+
+\subsection{Optional: why histogram space is dumb}
+\label{sec:histogram:space:is:dumb}
+
+The notion of building up continuous functions $f(x)$ from the histogram basis above turns out to be problematic from the point of view of mathematical rigor. You can read more about the problems in Appel, \emph{Mathematics for Physicists} Chapter 9.1 (Insufficiency of Vector Spaces), or Hassani, \emph{Mathematical Physics}, Chapter 7 (Hilbert Spaces). The problem in an infinite dimensional vector space is that one can take a convergent sequence of vectors whose limiting vector is not part of the vector space. This has to do with the definition of a norm of a vector with an infinite number of terms. An infinite dimensional vector space that \emph{does} contain all of its limits (it is complete) is called a \textbf{Hilbert space}.
+
+
+\subsection{Derivatives in other function space bases}
+\label{sec:derivatives}
+
+There are other ways to write a discrete basis of functions. Here is a natural one for functions that are up to second-order polynomials:
+\begin{align}
+  \vec{e}_{(0)} &= 1
+  &
+  \vec{e}_{(1)} &= x
+  &
+  \vec{e}_{(2)} &= x^2 \ .
+\end{align}
+Let’s sidestep questions about orthonormality for the moment. Clearly linear combinations of these basis functions can produce any quadratic function:
+\begin{align}
+  f(x) &= a x^2 + bx + c
+  & \Rightarrow&&
+  \vec{f} &=
+  \begin{pmatrix}
+     c \\ b \\ a
+   \end{pmatrix} \ . 
+\end{align}
+The derivative operator has an easy representation in this space:
+\begin{align}
+  D = 
+  \begin{pmatrix}
+    0 & 1 & 0   \\
+    0 & 0 & 2   \\
+    0 & 0 & 0   
+  \end{pmatrix} \ .
+\end{align}
+We can see that
+\begin{align}
+  D \vec{f}  &= 
+  \begin{pmatrix}
+     b \\
+     2 a \\
+     0
+  \end{pmatrix} 
+  &
+  D^2 \vec{f}  &= 
+  \begin{pmatrix}
+     2a \\
+     0 \\
+     0
+  \end{pmatrix} 
+  &
+  D^3 \vec{f}  &= 
+  0 \ .
+\end{align}
+The last line is, of course, the realization that the third-derivative of a quadratic function vanishes. Feel free to attach mathy words to this like \emph{kernel}.
+
+There are other bases that we may use for function space. A particularly nice one that we will use over and over is the Fourier basis, which we usually refer to as \emph{momentum space}. The basis vectors are things like sines, cosines, or oscillating exponentials. These do not vanish for any power of $D$.
+
+
+\subsection{Locality}
+
+Notice that in the histogram basis, the derivative matrix $D$ is sparse: it is zero everywhere away from the diagonal. The only non-zero elements on the $i^\text{th}$ row are around the $(i\pm 1)^\text{th}$ column.  Higher powers of $D$ sample further away, but the non-zero elements are always clustered near the diagonal.
+
+This is simply a notion of \textbf{locality}. Remember the Taylor expansion:
+\begin{align}
+  f(x) = f(0) + f'(0) x + \frac{1}{2} f''(0)x^2 + \cdots \ .
+\end{align}
+If we think about the histogram as a discretization of a continuous function, then it is clear what the higher derivatives are doing. Given a function $f(x) = \vec{f}$, one might like to know about the function around some point $x_0$ corresponding to some index $i$. That is: $f^i = f(x_0)$. If you’d like to learn more about the function around that point, one can express the derivative at $x_0$. Thus $D\vec{f}$ says something about the slope, $D^2\vec{f}$ says something about the curvature, and so on. Because each successive power of $D$ samples terms further away from $f^i$, you can tell that these higher order terms are learning about the function further and further away from $x_0$. 
+
+Now think about the types of differential equations that you’ve encountered in physics. They often include one or two derivatives. You hardly ever see three, four, or more derivatives\footnote{With some thought, it may also be clear why spatial derivatives typically appear squared.}. There’s a reason for this: at the scales that we can access experimentally, nature appears to be local. Our mathematical models of nature typically have locality built in\footnote{A recent counterexample: \url{https://www.quantamagazine.org/physicists-discover-geometry-underlying-particle-physics-20130917/}}. Physics at one spacetime point should not depend on spacetime points that are far away. 
+
+This may be familiar from the idea of causality---the idea that $A$ \emph{causes} $B$ therefore $A$ must have happened \emph{before} $B$. One of the key results in special relativity is that causality can be tricky if two events do not occur at the same spacetime point. More carefully, $A$ can only cause $B$ if there is a timelike separation of the appropriate sign.  If we want to build causal theories of nature, then the dynamics at $x_0$ should not rely on what is happening at $x_1$, a finite distance away.\footnote{This is different from saying that information cannot propagate from $x_0$ to $x_1$; such propagation could come from some causal excitation of the electromagnetic field traveling every infinitesimal distance between the two positions. This is reminiscent of the classical Zeno's paradox.}
+
+
+
 
 \part*{Appendix}
 \appendix
