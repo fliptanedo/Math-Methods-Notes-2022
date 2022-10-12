@@ -22,6 +22,7 @@
 
 % For matrices
 \newcommand{\aij}[2]{^{#1}_{\phantom{#1}#2}}
+\newcommand{\mat}[3]{#1\aij{#2}{#3}}
 
 % Bold italic math: https://tex.stackexchange.com/a/82747/8094
 \DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
@@ -1703,24 +1704,22 @@ We see that the array of numbers (``matrix'') $A$ and its index structure tell u
 
 
 
-\subsection{Transformation = action on all basis vectors}
-\flip{Need to revise this}
-
-If you know the action of a linear transformation on all basis vectors, then you know the transformation. When written as a matrix, a linear transformation is simply stating what that linear trasformation does to your basis vectors. If a matrix $B$ has elments
+\subsection{Transformation = action on basis vectors}
+The following should be a tautology\footnote{Or, as Tony Zee says: this is ``more obvious than obvious.''} if you know the action of a linear transformation on each of your basis vectors, then you know everything there is to know about the linear transformation. What we mean by this is that the components of a linear transformation simply tell you what that linear transformation does to your basis vectors. If a matrix $B$ has elments
 \begin{align}
   B = 
   \begin{pmatrix}
-    a & b\\
-    c & d
+    B\aij{1}{1} & B\aij{1}{2}\\
+    B\aij{2}{1} & B\aij{2}{2}
   \end{pmatrix}
   = 
   B^{i}_{\phantom{i}j} |i\rangle\langle j| \ , 
 \end{align}
-then this simply means that acting on basis vectors $\vec{e}_{(1)} = |1\rangle$ and $\vec{e}_{(2)} = |2\rangle$ gives
+then this means that acting with $B$ on basis vectors $\vec{e}_{(1)} = |1\rangle$ and $\vec{e}_{(2)} = |2\rangle$ gives
 \begin{align}
-  B|1\rangle &= a |1 \rangle + c|2\rangle 
+  B|1\rangle &= B\aij{1}{1} |1 \rangle + B\aij{2}{1}|1\rangle 
   \\
-  B|2\rangle &= b |1 \rangle + d|2\rangle  \ .
+  B|2\rangle &= B\aij{1}{2} |1 \rangle + B\aij{2}{2}|2\rangle  \ .
   \label{eq:B:basis:action}
 \end{align}
 In column vector notation:
@@ -1731,7 +1730,7 @@ In column vector notation:
   \end{pmatrix}
   &= 
   \begin{pmatrix}
-  a \\ c
+  B\aij{1}{1} \\ B\aij{2}{1}
   \end{pmatrix}
   &
   B
@@ -1740,56 +1739,71 @@ In column vector notation:
   \end{pmatrix}
   &=
   \begin{pmatrix}
-  b \\ d
+  B\aij{1}{2} \\ B\aij{2}{2}
   \end{pmatrix}\ .
 \end{align}
 So knowing the action on basis vectors is the same as knowing the transformation itself. 
 
 
+\section{Inverse}
+
 Given a linear operator $A$, the inverse operator $A^{-1}$ is defined by
 \begin{align}
-  A^{-1} A = \mathbbm{1}_{N\times N} \ .
+  A^{-1} A= A A^{-1} = \mathbbm{1}_{N\times N} \ .
+  \label{eq:matrix:inverse}
 \end{align}
-For an $N$-dimensional vector space, this represents $N^2$ different equations: one for each element. The inverse operator, by the way, is also linear. 
-% Let's remind ourselves of what this means. 
-%
-Suppose I told you the action of the inverse transformation $A^{-1}$ on your basis vectors, vis-a-vis \eqref{eq:B:basis:action}:
+What is the index structure of the $A^{-1}$ assuming that $A$ is a linear transformation from $V\to V$? We can remind ourselves by starting with $A^{-1}A\vec{v} = \vec{v}$. Then we recall that $A\vec{v}$ is some other vector in $V$. This means that $A^{-1}$ maps some vector, $A\vec{v}$, to another vector, $\vec{v}$. This means that $A^{-1}$ is also a map from $V\to V$. We expect the index structure to be the same: $A^{-1}$ is just another element in the space of linear transformations from $V\to V$. This means we can write the components of \eqref{eq:matrix:inverse} as
 \begin{align}
-  A^{-1}|1\rangle &= x |1 \rangle + y|2\rangle 
-  \\
-  A^{-1}|2\rangle &= z |1 \rangle + w|2\rangle  \ .
-  \label{eq:Ainv:basis:action}
+  (A^{-1})\aij{1}{k} \, A\aij{k}{j} = \delta^i_j \ ,
+  \label{eq:matrix:inverse:indices}
 \end{align}
-Then you know exactly how $A^{-1}$ acts on a general vector $|s\rangle = s^1|1\rangle + s^2 |2\rangle$:
-\begin{align}
-  A^{-1} |s\rangle &=
-  A^{-1} \left( s^1|1\rangle + s^2 |2\rangle \right)
-  \\ 
-  &=
-  s^1 A^{-1} |1\rangle + s^2 A^{-1} |2\rangle
-  \label{eq:Ainv:basis:action:on:gen:step2}
-  \\
-  &=
-  (s^1x + s^2z)|1\rangle + (s^1y + s^2 w)|2\rangle \ .
-  \label{eq:Ainv:basis:action:on:gen}
-\end{align}
-You can now keep this in mind when we say we want to solve $A|\psi\rangle = |s\rangle$. If we knew the action of $A^{-1}$ on some basis of the space, then the problem is simple:
-\begin{align}
-  |\psi\rangle = \psi^i |i\rangle 
-  &= \left( A^{-1} \right)^i_{\phantom{i}j} |i\rangle\langle j|
-  \, s^k|k\rangle 
-  \\
-  &= \left(A^{-1}\right)^i_{\phantom{i}j} s^k \, |i\rangle\langle j|
-  |k\rangle 
-  \\
-  &=\left(A^{-1}\right)^i_{\phantom{i}j} s^j \, |i\rangle \ .
-\end{align}
-We can write this as an equation for each component:
-\begin{align}
-  \psi^i &= \sum_j \left(A^{-1}\right)^i_{\phantom{i}j} s^j
-  \label{eq:Ainv:acting:on:source} \ .
-\end{align}
-We've restored the explicit sum over $j$ as a convenient reminder. The quantity $\left(A^{-1}\right)^i_{\phantom{i}j}$ is what we would like to identify with a Green's function; see Section~\ref{sec:lin:alg:greens} for a hint of that. From what we've learned in this subsection: knowing the components $\left(A^{-1}\right)^i_{\phantom{i}j}$ is exactly the same as \emph{knowing the action of the inverse operator on basis vectors}. 
+where we remind ourselves that the Kronecker $\delta$ can be written with the indices at the same horizontal position because $\delta\aij{i}{j} = \delta_j^{\phantom{j}i}$. 
+
+
+For an $N$-dimensional vector space, \eqref{eq:matrix:inverse:indices} represents $N^2$ different equations: one for each combination of indices $i$ and $j$. These $N^2$ equations are, in principle, enough to determine the $N^2$ components $(A^{-1})\aij{i}{j}$ as a function of the components $A\aij{i}{j}$. Even though these are simply algebraic equations, they clearly become a huge pain in the ass to solve as $N$ becomes large. 
+
+
+
+% The inverse operator, by the way, is also linear. 
+% % Let's remind ourselves of what this means. 
+% %
+% Suppose I told you the action of the inverse transformation $A^{-1}$ on your basis vectors, vis-a-vis \eqref{eq:B:basis:action}:
+% \begin{align}
+%   A^{-1}|1\rangle &= x |1 \rangle + y|2\rangle 
+%   \\
+%   A^{-1}|2\rangle &= z |1 \rangle + w|2\rangle  \ .
+%   \label{eq:Ainv:basis:action}
+% \end{align}
+% Then you know exactly how $A^{-1}$ acts on a general vector $|s\rangle = s^1|1\rangle + s^2 |2\rangle$:
+% \begin{align}
+%   A^{-1} |s\rangle &=
+%   A^{-1} \left( s^1|1\rangle + s^2 |2\rangle \right)
+%   \\ 
+%   &=
+%   s^1 A^{-1} |1\rangle + s^2 A^{-1} |2\rangle
+%   \label{eq:Ainv:basis:action:on:gen:step2}
+%   \\
+%   &=
+%   (s^1x + s^2z)|1\rangle + (s^1y + s^2 w)|2\rangle \ .
+%   \label{eq:Ainv:basis:action:on:gen}
+% \end{align}
+% You can now keep this in mind when we say we want to solve $A|\psi\rangle = |s\rangle$. If we knew the action of $A^{-1}$ on some basis of the space, then the problem is simple:
+% \begin{align}
+%   |\psi\rangle = \psi^i |i\rangle 
+%   &= \left( A^{-1} \right)^i_{\phantom{i}j} |i\rangle\langle j|
+%   \, s^k|k\rangle 
+%   \\
+%   &= \left(A^{-1}\right)^i_{\phantom{i}j} s^k \, |i\rangle\langle j|
+%   |k\rangle 
+%   \\
+%   &=\left(A^{-1}\right)^i_{\phantom{i}j} s^j \, |i\rangle \ .
+% \end{align}
+% We can write this as an equation for each component:
+% \begin{align}
+%   \psi^i &= \sum_j \left(A^{-1}\right)^i_{\phantom{i}j} s^j
+%   \label{eq:Ainv:acting:on:source} \ .
+% \end{align}
+% We've restored the explicit sum over $j$ as a convenient reminder. The quantity $\left(A^{-1}\right)^i_{\phantom{i}j}$ is what we would like to identify with a Green's function; see Section~\ref{sec:lin:alg:greens} for a hint of that. From what we've learned in this subsection: knowing the components $\left(A^{-1}\right)^i_{\phantom{i}j}$ is exactly the same as \emph{knowing the action of the inverse operator on basis vectors}. 
 
 
 
@@ -1901,7 +1915,7 @@ From the previous section we know that given a vector space $V$, perhaps $\mathb
 
 The generalization that we now make is a linear transformation of the form:\footnote{And eventually we also include complex functions, where we replace $\mathbbm{R}\to \mathbbm{C}$. }
 \begin{align}
-  V\times \cdots \times V \times V^* \times\cdots\times V^* \to V\mathbbm{R}
+  V\times \cdots \times V \times V^* \times\cdots\times V^* \to \mathbbm{R}
 \end{align}
 That is: a linear map that takes some number of vectors and some number of covectors and returns a number. Because the map is linear in each argument, we say that they are \emph{multilinear}. Maybe the reason why this is `scary' the first time we see it is that the components of tensors, in general, have many indices.\footnote{There are various phobias about insects with many legs. Perhaps for similar reasons.} From our experience with ``matrices,'' we know that the multilinear map above can be interpreted in many ways. The same object may, for example, map some number of vectors and covectors into some other number of vectors and covectors.
 
@@ -1992,6 +2006,14 @@ In Section~\ref{sec:indices:symmetries} we present one more powerful feature of 
 This is the tensor version of Exercise~\ref{ex:linear:transformation:are:matrices}. Convince yourself that any multilinear map that takes arguments from a vector space $V$ and its dual $V^*$ may be represented as a tensor. It helps to reduce this problem to multiple instances of linear maps as in Exercise~\ref{ex:linear:transformation:are:matrices}.
 \end{exercise}
 
+\begin{example}
+Is $T^{ijk}_{\phantom{ijk}\ell m n}v^m = v^m T^{ijk}_{\phantom{ijk}\ell m n}$? The answer is yes. There may be a part of you that instinctively reacts poorly to this because you are used to matrices not commuting: in general, $AB \neq BA$ for matrices $A$ and $B$.\footnote{In fact, if $A$ is an $n\times m$ matrix and $B$ is an $m\times n$ matrix with $n\neq m$, $AB$ is an $n\times n$ matrix and $BA$ does not even mathematically make sense. Though I did promise that all of our matrices would be square in this course. In the jargon of beatniks, that would mean that our matrices are ``boring,'' but in our class that means that they are ``nice.''} Surely tensors do not commute in general. We are in luck: neither $T^{ijk}_{\phantom{ijk}\ell m n}$ nor $v^m$ are formally tensors. They are \emph{components} of tensors: they are simply numbers, and so they commute. For example, the action of a covector on a vectors is
+\begin{align}
+\tilde{\vec{w}}\vec{v}  = w_iv^i
+= w_1v^1 + w_2v^2 + \cdots = v^1 w_1 + v^2w_2 + \cdots = v^i w_i \ .
+\end{align}
+Each term is a product of numbers. When we defined a vector space we needed some abstract mathematical structure (the ``vectorness'' carried by a basis vector), and a definition of numbers that we can use to define linear combinations of vectors. The class numbers are formally called \emph{fields}.\footnote{I have no idea what the formal definition of a field is. I am on a plane as I write this and frankly I do not care enough to pay \$8 for in-flight wifi to look it up.} One of the properties of a field is that the multiplication of two elements is commutative. This is one of the reasons why that is a nice property to have.
+\end{example}
 
 
 % \begin{example}
@@ -2039,27 +2061,22 @@ The first time you see this should have brought a deep joy to your life: if you 
 
 
 \section{What about traces and determinants?}
+\flip{To Be Filled In}
 
 
-
-\section{Determinants}
 
 \chapter{Vector fields}
 \label{chap:vector:fields}
 % motivating transformation
 % https://www.youtube.com/watch?v=2MC4xMhscjQ
-
+\flip{To Be Filled In}
 
 \chapter{Function Space}
 
 \section{Histogram Space}
-
-\flip{All of this is in progress... cut and pasted from previous year's notes}
-
-{A funny vector space: histogram space}
 \label{sec:histogramspace}
 
-Here’s a funny vector space that we’re going to use as a pedagogical crutch. Imagine histogram-space. The basis vectors are:
+Here is a funny vector space that we call histogram-space. The basis vectors are:
 
 \begin{center}
 \includegraphics[width=.45\textwidth]{figures/lec02_e1.pdf}
@@ -2111,6 +2128,9 @@ Thus a vector in this approximate (discretized) \emph{function} space is
 
 
 In what way are polar coordinates an orthonormal basis? 
+
+
+\section{Linear Transformations}
 
 \subsection{Derivative Operators}
 
@@ -2183,13 +2203,13 @@ The second derivative may be defined symmetrically:
 You may pontificate about the reason why the first derivative does have a symmetric discretization while the second derivative does. 
 
 
-\subsection{Optional: why histogram space is dumb}
+\section{Why histogram space is dumb}
 \label{sec:histogram:space:is:dumb}
 
 The notion of building up continuous functions $f(x)$ from the histogram basis above turns out to be problematic from the point of view of mathematical rigor. You can read more about the problems in Appel, \emph{Mathematics for Physicists} Chapter 9.1 (Insufficiency of Vector Spaces), or Hassani, \emph{Mathematical Physics}, Chapter 7 (Hilbert Spaces). The problem in an infinite dimensional vector space is that one can take a convergent sequence of vectors whose limiting vector is not part of the vector space. This has to do with the definition of a norm of a vector with an infinite number of terms. An infinite dimensional vector space that \emph{does} contain all of its limits (it is complete) is called a \textbf{Hilbert space}.
 
 
-\subsection{Derivatives in other function space bases}
+\section{Derivatives in other function space bases}
 \label{sec:derivatives}
 
 There are other ways to write a discrete basis of functions. Here is a natural one for functions that are up to second-order polynomials:
@@ -2242,7 +2262,7 @@ The last line is, of course, the realization that the third-derivative of a quad
 There are other bases that we may use for function space. A particularly nice one that we will use over and over is the Fourier basis, which we usually refer to as \emph{momentum space}. The basis vectors are things like sines, cosines, or oscillating exponentials. These do not vanish for any power of $D$.
 
 
-\subsection{Locality}
+\section{Locality}
 
 Notice that in the histogram basis, the derivative matrix $D$ is sparse: it is zero everywhere away from the diagonal. The only non-zero elements on the $i^\text{th}$ row are around the $(i\pm 1)^\text{th}$ column.  Higher powers of $D$ sample further away, but the non-zero elements are always clustered near the diagonal.
 
@@ -2252,11 +2272,670 @@ This is simply a notion of \textbf{locality}. Remember the Taylor expansion:
 \end{align}
 If we think about the histogram as a discretization of a continuous function, then it is clear what the higher derivatives are doing. Given a function $f(x) = \vec{f}$, one might like to know about the function around some point $x_0$ corresponding to some index $i$. That is: $f^i = f(x_0)$. If you’d like to learn more about the function around that point, one can express the derivative at $x_0$. Thus $D\vec{f}$ says something about the slope, $D^2\vec{f}$ says something about the curvature, and so on. Because each successive power of $D$ samples terms further away from $f^i$, you can tell that these higher order terms are learning about the function further and further away from $x_0$. 
 
-Now think about the types of differential equations that you’ve encountered in physics. They often include one or two derivatives. You hardly ever see three, four, or more derivatives\footnote{With some thought, it may also be clear why spatial derivatives typically appear squared.}. There’s a reason for this: at the scales that we can access experimentally, nature appears to be local. Our mathematical models of nature typically have locality built in\footnote{A recent counterexample: \url{https://www.quantamagazine.org/physicists-discover-geometry-underlying-particle-physics-20130917/}}. Physics at one spacetime point should not depend on spacetime points that are far away. 
+Now think about the types of differential equations that you’ve encountered in physics. They often include one or two derivatives. You hardly ever see three, four, or more derivatives\footnote{With some thought, it may also be clear why spatial derivatives typically appear squared.}. There’s a reason for this: at the scales that we can access experimentally, nature appears to be local. Our mathematical models of nature typically have locality built in\footnote{A recent counterexample ``A Jewel at the Heart of Quantum Physics,'' by Natalie Wolchover in \emph{Quanta Magazine} (2013).
+% https://www.quantamagazine.org/physicists-discover-geometry-underlying-particle-physics-20130917/
+}. Physics at one spacetime point should not depend on spacetime points that are far away. 
 
 This may be familiar from the idea of causality---the idea that $A$ \emph{causes} $B$ therefore $A$ must have happened \emph{before} $B$. One of the key results in special relativity is that causality can be tricky if two events do not occur at the same spacetime point. More carefully, $A$ can only cause $B$ if there is a timelike separation of the appropriate sign.  If we want to build causal theories of nature, then the dynamics at $x_0$ should not rely on what is happening at $x_1$, a finite distance away.\footnote{This is different from saying that information cannot propagate from $x_0$ to $x_1$; such propagation could come from some causal excitation of the electromagnetic field traveling every infinitesimal distance between the two positions. This is reminiscent of the classical Zeno's paradox.}
 
+\section{The Green's Function Problem in Function Space}
 
+The Green's function can be defined by analogy to the finite-dimensional inverse transformation. The finite-dimensional linear system $A\vec v = \vec w$ can be solved by applying the inverse transformation $A^{-1}$ in the same way that the continuum (infinite-dimensional) system $\mathcal O \psi(x) = s(x)$ can be solved with the Green's function $G(x,y)$ of the operator $\mathcal O$:
+\begin{align}
+  v^i &= \sum_i 
+  \mat{\left(A^{-1}\right)}{i}{j} w^j
+  &\Rrightarrow
+  &
+  &
+  \psi(x) &= \int  dy\, G(x,y) s(y) \ .
+  \label{eq:def:of:function:space:Greens:function}
+\end{align}
+We've explicitly written out the sum over the dummy index $i$ to emphasize the analogy to the integration over the dummy variable $y$. The arguments of the functions play the role of `continuum indices.'
+
+\section{Differential Operators}
+
+Linear transformations on function space are differential operators. In principle you can imagine linear transformations that are not differential operators, for example a finite translation. However, because our models of nature are typically \emph{local} and \emph{causal}, the linear transformations that we obtain from physical models are differential operators\footnote{This is not to say that finite transformations are somehow not permitted. The dynamics that govern our models of nature, however, only dictate how information is transmitted infinitesimally in space and time. Propagation forward in time by some finite interval is described by the exponentiation of infinitesimal forward time translations. This is, of course, why the time-translation operator in quantum mechanics is $e^{i\hat H t}$, where the Hamiltonian $H$ is described as a local function with perhaps one or two derivative operators.}. 
+
+Let's write a general differential operator as:
+\begin{align}
+  \mathcal O = 
+  p_0(x) 
+  + p_1(x) \frac{d}{dx}
+  + p_2(x) \left(\frac{d}{dx}\right)^2
+  + \cdots
+  \label{eq:differential:operator}
+\end{align}
+where the $p_i(x)$ are polynomials. Sometimes we will write this as $\mathcal O_x$ to make it clear that the argument of the polynomials is $x$ and the variable with which we are differentiating is $x$.  
+\begin{exercise}
+Explain why \eqref{eq:differential:operator} is a linear operator acting on function spaces.
+\end{exercise}
+\begin{exercise}
+A confused colleague argues to you that \eqref{eq:differential:operator} cannot possibly be `linear.' Just look at it, your colleague says: the functions $p_i(x)$ are polynomials---those aren't \emph{linear}! There are also powers of derivatives---how is that possibly linear? Explain to your colleague why the $p_i(x)$ does not have to be linear nor is one restricted to finite powers of derivatives for the operator $\mathcal O$ to be a linear operator acting on function space.
+\end{exercise}
+Technically \eqref{eq:differential:operator} is called a \textbf{formal operator} because we haven't specified the boundary conditions of the function space. Recall in our discretized `histogram space' in Section~\ref{sec:histogramspace} that we had to be careful about how to define the derivative acting on the boundaries of the space. A differential operator along with boundary conditions is called a \textbf{concrete operator}.
+
+\section{Inner Product}
+
+There's a convenient inner product that you may be familiar with from quantum mechanics. For two functions $f(x)$ and $g(x)$ in your function space, define the inner product to be
+\begin{align}
+  \langle f,g\rangle 
+  =
+  \int dx\, f^*(x)g(x) \ .
+  \label{eq:L2:inner:product}
+\end{align}
+\begin{example}
+Wave functions in 1D quantum mechanics obey this norm. For an infinite domain, we typically restrict to square-integrable functions meaning that $|f|^2$ goes to zero fast enough at $\pm \infty$ so that the integral $\langle f, f\rangle$ is finite. 
+\end{example}
+Sometimes the inner product is defined with respect to a \textbf{weight} function $w(x)$:
+\begin{align}
+  \langle f,g\rangle_w 
+  =
+  \int dx\, w(x)\, f^*(x)g(x) \ .
+  \label{eq:weighted:inner:product}
+\end{align}
+There's nothing mysterious about inner products with weights. They typically boil down to the fact that one is not using Cartesian coordinates. 
+\begin{example}
+Have you met the Bessel functions? If not, you're in for a treat in your electrodynamics course. The Bessel functions satisfy a funny orthogonality relation with weight $w(x)\sim x$ because they show up as the radial part of a solution when using polar coordinates. When you separate variables, $d^2x = rdr\,d\theta$, we see that the measure over the radial coordinate $r$ carries a \emph{weight} $r$.
+\end{example}
+We will assume unit weight until we go to higher spatial dimensions\footnote{My dissertation focused on theories of extra dimensions. I also noticed that my weight increased in my final year of graduate school as I spent most of my time writing about extra dimensions and eating cafe pastries.}.
+
+
+\section{Dual Vectors}
+
+What are the `dual functions' (dual vectors, bras) in function space? These are linear functions on act on functions and spit out numbers. These are integrals that are pre-loaded with some factors. Assuming unit weight:
+\begin{align}
+  \langle f | = \langle f, \qquad \rangle
+  = 
+  \int dx \, f^*(x) \left[\text{ insert ket here }\right] \ .
+\end{align}
+
+
+\section{Adjoint operators}
+
+What is the adjoint of a differential operator? The definition of the adjoint \eqref{eq:adjoint:definition} and the function space inner product \eqref{eq:L2:inner:product} give us a hint. We define $\mathcal O^\dag$ by the property
+\begin{align}
+  % \int dx \, \left[\mathcal O f(x)\right]^* g(x)
+  % = 
+  % \int dx \, f^*(x) \left[\mathcal O^\dag g(x)\right] \ .
+  \int dx \, f(x)^* \left[\mathcal O g(x)\right]
+  \equiv
+  \int dx \, \left[\mathcal O^\dag f(x)\right]^*  g(x) \ .
+\end{align}
+The strategy is: given an inner product (integral) over $f^*$ and $g$ where there is some stuff ($\mathcal O$) acting on $g$, can we re-write this as an integral with no stuff acting on $g$ and some \emph{other} stuff acting on $f^*$? If so, then the `other stuff' is the adjoint $\mathcal O^\dag$.
+\begin{example}
+What is the adjoint of the derivative operator, $\mathcal O = d/dx$? Assume an interval $x\in[a,b]$ and Dirichlet boundary conditions, $f(a)=f(b)=0$. There's a simple way to do this: integrate by parts.
+% \begin{align}
+%   \int dx \, \left[\frac{d}{dx} f(x)\right]^* g(x)
+%   =
+%   - \int dx \, f^*(x) \left[\frac{d}{dx}g(x)\right]
+%   +
+%   \left[f^*(x)g(x)\right]^b_a \ 
+%   =
+%   - \int dx \, f^*(x) \left[\frac{d}{dx}g(x)\right] \ . 
+% \end{align}
+\begin{align}
+  \int dx \,  f(x) \left[\frac{d}{dx} g(x)\right]
+  =
+  - \int dx \, \left[\frac{d}{dx}f(x)\right]^* g(x)
+  +
+  \left[f^*(x)g(x)\right]^b_a \ 
+  =
+  \int dx \, \left[-\frac{d}{dx}f(x)\right]^* g(x)
+  \ . 
+\end{align}
+From this we deduce that
+\begin{align}
+  \left(\frac{d}{dx}\right)^\dag = -\frac{d}{dx} \ .
+\end{align}
+\end{example}
+
+We will be especially interested in \textbf{self-adjoint} (Hermitian) operators for which
+\begin{align}
+  \mathcal O^\dag = \mathcal O \ .
+\end{align}
+This is, as we mentioned for the finite-dimensional case, because self-adjoint operators are \emph{nice}: they have real eigenvalues and orthogonal eigenvectors. Since most physical values are real eigenvalues of some operator, one may expect that the differential operators that show up in physics are typically self-adjoint.
+\begin{exercise}
+We saw above that the derivative operator is not self-adjoint. What is an appropriate self-adjoint version of the derivative operator? \emph{Hint: what is the momentum operator in quantum mechanics?}\footnote{\url{https://aapt.scitation.org/doi/abs/10.1119/1.9932}} 
+\end{exercise}
+\begin{example}
+Consider $\mathcal O = -\partial_x^2$ defined on the domain $x\in [0,1]$ with the boundary conditions $f(0)=f(1)=0$. Is this operator self-adjoint? We want to check of $\langle f,\mathcal O g\rangle = \langle O f, g \rangle$. We have one trick: integration by parts. Let's see how this works.
+\begin{align}
+  \langle f, \mathcal O g\rangle &= - \int dx\, f^*(x)\partial^2 g(x) \ .
+\end{align}
+This is compared to
+\begin{align}
+  \langle \mathcal O f, g\rangle 
+  &= -\int^1_0 dx\, \left[\partial^2 f(x)\right]*g(x) 
+  \\
+  &= 
+  -\left.\left(\partial f(x)\right)^*g(x)\right|^1_0
+  + \int^1_0 dx \, \left[\partial f(x)\right]^* \partial g(x) 
+  \\
+  &= \left.f^*(x)\partial^2 g(x)\right|^1_0
+  - \int^1_0 dx \, f^*(x) \partial^2 g(x)  
+  \\
+  &=
+  - \int^1_0 dx \, f^*(x) \partial^2 g(x)  
+  \ .
+\end{align}
+And so we see that indeed $(-\partial^2)^\dag = -\partial^2$.
+\end{example}
+\begin{exercise}
+In the previous example, what is the significance of the overall sign of the operator? \emph{Hint: the sign doesn't matter, it's because we typically think of $-\partial^2$ and its higher-dimensional derivatives as the square of the momentum operator.}
+\end{exercise}
+\begin{example}\label{ex:eigenfunction:fourier}
+The \textbf{eigenfunctions} $f_n$ of $-\partial^2$ defined on $x\in [0,1]$ with Dirichlet boundary conditions are simply 
+\begin{align}
+  f_n(x) &= A_n \sin(n\pi x) 
+  &
+  \lambda_n = - n^2\pi^2 \ ,
+  \label{eq:fourier:basis:unit:interval}
+\end{align}
+where $\lambda_n$ is the associated eigenvalue and $A_n$ is some normalization that. These eigenfunctions are orthonormal in the following sense:
+\begin{align}
+  \langle f_n, f_m\rangle = \int_0^1 dx\, \sin(n\pi x)\sin(m\pi x) = \frac{A_nA_m}{2} \delta_{nm} \ ,
+\end{align}
+from which we deduce that the normalization is $A_n = \sqrt{2}$. That's basically all there is to know about Fourier series.
+\end{example}
+\begin{exercise}
+What would change if we had instead assumed Neumann boundary conditions? What if we had assumed periodic boundary conditions? What about anti-periodic boundary conditions?
+\end{exercise}
+\begin{exercise}\label{exe:eigenfunction:fourier}
+A function $g(x)$ defined on an interval $x\in [0,1]$ with Dirichlet boundary conditions can be written with respect to the Fourier basis \eqref{eq:fourier:basis:unit:interval}. In ket notation, the $n^\text{th}$ component of $g$ with respect to this basis is
+\begin{align}
+  g^n = \langle f_n| g\rangle \ .
+\end{align}
+Confirm that this is precisely what you know from Fourier series. In other words, we can decompose $g(x)$ as
+\begin{align}
+  g(x) &= \sum_n \langle f_n| g\rangle f_n(x)  \ .
+\end{align}
+\end{exercise}
+
+\section{Completeness in Function Space}
+
+We rarely have much to say about the unit matrix in linear algebra. However, much like when we discussed units, we can squeeze a lot out of inserting the identity in our mathematical machinations. In order to help with translate this to function space, let's review how it works in finite dimensional vector spaces. The unit matrix is $\mathbbm{1}$ and may be written:
+\begin{align}
+  \mathbbm{1} = \sum_i |i\rangle\langle i| \ ,
+  \label{eq:unit:matrix}
+\end{align}
+where $|i\rangle$ and $\langle j|$ are basis (dual-)vectors. 
+\begin{exercise}
+Take a moment and convince yourself that \eqref{eq:unit:matrix} is true and obvious. It may be helpful to explicitly write out $|i\rangle \langle j|$ as a matrix. 
+\end{exercise}
+\begin{exercise}\label{ex:completeness:for:non:cartesian:basis}
+Suppose you have a two-dimensional Euclidean vector space. Show that \eqref{eq:unit:matrix} is true for the basis
+\begin{align}
+  |1 \rangle &= 
+  \frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+  1 \\ 1
+  \end{pmatrix}
+  &
+  |2 \rangle &= 
+  \frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+  1 \\ -1
+  \end{pmatrix}
+  \\
+  \langle 1 | &= 
+  \frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+  1 & 1
+  \end{pmatrix}
+  &
+  \langle 2 | &= 
+  \frac{1}{\sqrt{2}}
+  \begin{pmatrix}
+  1 & -1
+  \end{pmatrix} \ .
+\end{align}
+\end{exercise}
+In fact, \eqref{eq:unit:matrix} defines what it means that a set of basis vectors is \textbf{complete}. You can write any vector $|v\rangle$ with respect to the basis $|i\rangle$---the components are simply
+\begin{align}
+  v^i = \langle i | v \rangle
+\end{align}
+so that 
+\begin{align}
+  |v\rangle = \sum_i |i\rangle \langle i | v \rangle \ ,
+  \label{eq:completeness:by:inserting:1}
+\end{align}
+which we recognize as nothing more than `multiplying by the identity.' 
+%
+
+What does completeness look like in function space?
+\begin{framed}\noindent
+Let $e_{(n)}(x)$ be a set of basis functions. The basis is \textbf{complete} if
+\begin{align}
+  \sum_n \left[e_{(n)}(x)\right]^* e_{(n)}(y) = \delta(x-y) \ .
+  \label{eq:function:space:completeness}
+\end{align}
+\end{framed}
+Compare this \emph{very carefully} with the completeness relation \eqref{eq:unit:matrix}. The sum over $i$ in the finite-dimensional case has been relabeled into a sum over $n$ in the function space---this is just my preference\footnote{I think this is because we will deal with complex functions and I want to avoid using $i$ as an index. But if we're being honest, it's just become a habit.}. The $\mathbbm{1}$ has been replaced by a Dirac $\delta$-function, $\delta(x-y)$. Let's confirm that this makes sense. The \emph{multiply by one} completeness relation \eqref{eq:completeness:by:inserting:1} in function space is
+\begin{align}
+  |g\rangle 
+  &= 
+  \sum_n |e_{(n)}\rangle\langle e_{(n)}| g\rangle
+  &
+  \langle e_{(n)}| g\rangle &=
+  \int dy \, [e_{(n)}(y)]^* g(y) \ .
+\end{align}
+We have deliberately changed the name of the integration variable to $y$ to avoid confusion; since this variable is integrated over it's simply a \emph{dummy variable} and it doesn't matter what we name it---the quantity $\langle e_{(n)}|g\rangle$ is independent of $y$ because $y$ is integrated over\footnote{By the way, this should ring a bell from our summation convention. When an upper and lower tensor index are contracted, the resulting object behaves as if it didn't have those indices: $\mat{A}{i}{j}v^j$ behaves as a vector with one upper index.}. Writing this out explicitly as functions:
+\begin{align}
+  g(x) &= \sum_n\left[\int dy\, e_{(n)}^*(y)g(y)\right] e_{(n)}(x) \ .
+  \label{eq:complenesss:function:space:in:action }
+\end{align}
+The factor in the square brackets is simply $\langle e_{(n)}| g\rangle$, which is just a \emph{number}---it has no functional dependence on $x$.
+If this seems unusual, please refer back to Example~\ref{ex:eigenfunction:fourier} and Exercise~\ref{exe:eigenfunction:fourier}. 
+
+By the way, you'll often hear people (perhaps even me) say that the Dirac $\delta$ function is not strictly an \emph{function} but rather a \textbf{distribution}---this means that it only makes sense when it is integrated over. As physicists we'll sometimes be sloppy and talk about physical quantities that could be Dirac $\delta$-functions. There is \emph{never} an appropriate, measurable physical quantity that is described by a $\delta(x)$. Anything with a $\delta(x)$ is an object that was meant to be integrated over. When you imagine that a point charge density is a $\delta$-function, this is only because you will eventually integrate over it to determine the total charge. This is precisely what we saw in the charged cat in Example~\ref{eq:charged:cat}. If you ever calculate a \emph{measurable} quantity to be $\delta(x)$ check your work. If you ever find $\delta(x)^2$, then go home, it's past your bed time.
+
+\begin{example}
+One can vaguely motivate the $\delta$-function as the unit matrix by appealing to the `histogram basis' of discretized function space. In an ordinary finite-dimensional vector space, unit matrix can be written as
+\begin{align}
+  \mathbbm{1} = |1\rangle\langle 1 | + |2\rangle\langle 2 | + \cdots
+  = \sum_{i,j}\delta_{i}^j|i\rangle\langle j| \ .
+\end{align}
+The Dirac $\delta$-function in histogram space is analogous to
+\begin{align}
+  \delta(x-x') &\to \delta_{x}^{x'}|x\rangle\langle x'| \ ,
+\end{align}
+where $x$ and $x'$ are discrete bins on the right-hand side. Thus for a discretized function $f = f(x_1)|x_1\rangle + f(x_2)|x_2\rangle + \cdots$, one has
+\begin{align}
+  \int dy\, \delta(x-y) f(y) = f(x) \longrightarrow \sum_j \delta_{x_j}^{x_i}|x_i\rangle\langle x_j| f\rangle  =  f(x_i) |x_i\rangle\ .
+\end{align}
+\end{example}
+
+\section{Orthonormality in Function Space}
+
+One should contrast the notion of completeness of a a basis this with that of \textbf{orthonormality} of the basis. Orthonormality is the statement that
+\begin{align}
+  \langle i | j \rangle = \delta^j_i \ .
+\end{align}
+Completeness has to do with the `outer product' $|i\rangle \langle i|$ while orthonormality has to do with the `inner product' $\langle i | i\rangle = \langle i, i\rangle$. The function space generalization of orthonormality is\footnote{If you're a purist, you'll note that $\delta_{nm}$ should really be written as $\delta^n_m$ because the dual basis vector has an upper index. While this may be true, I'm making the present notational choice because the object that we would call $\tilde{\vec{e}}^{(n)}$ really does contain $e_{(n)}^*(x)$, the complex conjugate of $e_{(n)}(x)$.}
+\begin{align}
+  \langle e_{(n)} | e_{(m)} \rangle = \int dx \, e_{(n)}^*(x) e_{(m)}(x) = \delta_{nm} \ .
+  \label{eq:function:orthonormality}
+\end{align}
+\begin{exercise}
+Why does \eqref{eq:function:orthonormality} have a Kronecker $\delta$ with discrete indices when \eqref{eq:function:space:completeness} has a Dirac $\delta$? Please make sure you can answer this; it establishes the conceptual foundation of the analogy between finite- and infinite-dimensional vector spaces.
+\end{exercise}
+For the completeness relation, we sum over the same eigenfunction label $n$ for a function and its conjugate evaluated at different continuous positions. For the orthonormality relation, we integrate over the positions of two different eigenfunction indices, $n$ and $m$. 
+
+Do not confuse the eigenfunction label with the index of a vector. If this is confusing, please refer back to Exercise~\ref{ex:completeness:for:non:cartesian:basis}. You may be stuck thinking about basis vectors in the Cartesian basis---this is the analog of thinking about basis functions in the `histogram basis' of Section~\ref{sec:histogramspace}. What we want to do is generalize to more convenient bases, like the eigenfunctions of differential operators (e.g.~the Fourier basis for $-\partial^2$).
+
+\begin{example}
+In the case of a finite interval, say $x\in [0,1]$, the space of functions on this interval is continuous. In fact, we wrote a nice eigenbasis of $-\partial^2$ on this space assuming Dirichlet boundary conditions. The basis consists of a discrete but infinite number of eigenfunctions. The discrete index, $n$, corresponded to the wave number (or momentum). The continuous `index,' $x$, corresponded to a position-space location. This index is continuous because there is a continuum of positions $x$ in the finite interval $[0,1]$. If we extended the interval to the infinite real line, $\mathbbm{R} = [-\infty, \infty]$, then the discrete spectrum of eigenfunctions---that is, the discrete separation of wave numbers---also becomes a continuum. Here the discrete spectrum of `particle in a box' states turns into a continuum of plane waves, $e^{ipx}$. 
+
+A sufficiently large box $[-L,L]$ is approximately the same as an infinite interval. Of course, `large $L$' is a dimensionful statement. What we really want to say is that if we are probing dynamics on a scale much smaller than $L$, then we should expect the discrete spectrum of states to be so close to each other that it is well approximated by the continuum of plane waves. 
+
+You can twist this around in the other direction and wonder if spacetime were not actually continuous but rather composed of discrete points with some spacing on the order of the Planck length. Our continuum formalism of general relativity should be valid as long as we do not ask questions about length scales comparable to the separation between discrete points. 
+\end{example}
+
+\section{Completeness and Green's Functions}
+
+The utility of the completeness relation should be clear. If you happen to have a nice (self-adjoint) linear differential operator $\mathcal O$ with a nice (complete, orthogonal) eigenfunctions $e_{(n)}$ and eigenvalues $\lambda_n$, then we can expand any function $\psi(x)$ with respect to these eigenfunctions. Then it is easy to invert the differential equation $\mathcal O \psi(x) = s(x)$ to determine the response $\psi(x)$ to a source $s(x)$:
+\begin{align}
+  \psi(x) 
+  &= \mathcal O^{-1}
+  \sum_n \langle e_{(n)}|s\rangle e_{(n)}(x)
+  = \sum_n \frac{\langle e_{(n)}|s\rangle}{\lambda_n} e_{(n)}(x) \ ,
+\end{align}
+where we've simply used \eqref{eq:linear:aglebra:inverse:eigenvectors}. The inner product $\langle e_{(n)}|s\rangle$ is an overlap integral between known functions:
+\begin{align}
+  \psi(x) &= 
+   \int dy\, \sum_n \frac{e_{(n)}^*(y) e_{(n)}(x)}{\lambda_n} s(y) \ ,
+   \label{eq:Greens:function:by:completeness}
+\end{align}
+where we have rearranged terms rather suggestively. This is now in the same form as our prototype Green's function example \eqref{eq:electrostatics:greens:func}. 
+
+Referring back to \eqref{eq:def:of:function:space:Greens:function}, 
+we see that our completeness relation---that is, our trick of inserting unity---in \eqref{eq:Greens:function:by:completeness} tells us an explicit form for the Green's function of a differential operator $\mathcal O$ if you know the eigenfunctions and eigenvalues of that operator:
+\begin{align}
+  G(x,y) &= \sum_n \frac{e_{(n)}^*(y) e_{(n)}(x)}{\lambda_n} \ .
+  \label{eq:G:from:completeness}
+\end{align}
+This is formally an infinite sum and so is only practically useful if each term is successively smaller. 
+
+
+\section{Green's Function by Completeness: why is this helpful?}
+\label{sec:Greens:fuctions:by:completeness}
+
+If you look at \eqref{eq:G:from:completeness} and think about our goals for the class, you may say \emph{hooray! We're done.} After all, given the Green's function $G(x,x')$ for a given differential operator\footnote{We've explicitly written the $x$ in $\mathcal O_x$ to indicate that derivatives are with respect to that variable, \emph{not} $x'$.} $\mathcal O_x$, then we know how to \emph{invert} $\mathcal O_x$. So for any source $s(x)$ and differential equation $\mathcal O_x \psi(x) = s(x)$, we can find $\psi(x)$ by
+\begin{align}
+  \psi(x) &= \int dx' \, G(x,x') s(x') \ .
+\end{align}
+The integral is over the domain on which we've defined the function space and subject to functions satisfying the boundary conditions. We interpreted the integral over $x'$ as an integral over the source configuration. Armed with an expression for $G(x,x')$, we can simply perform the overlap integral with $s(x')$---numerically if needed---and that gives us $\psi(x)$. Easy! What are we missing?
+
+First, all of this \emph{assumed} that you know the eigenfunctions of $\mathcal O$. This is actually a fairly safe assumption. There are only so many differential operators that matter in physics, especially since the physically motivated operators are typically self-adjoint and respect many symmetries. In fact, there are so few of these that their eigenfunctions are all famous---so when you're slogging through electrodynamics dealing with spherical harmonics, Bessel functions, and Legendre polynomials---you know that these special functions are `special' because they're eigenfunctions of variations of the Laplacian that show up in physics over and over again. They are so important that ancient graduate students had to use them \emph{before} one could just plug them into \emph{Mathematica}\footnote{Have you ever heard of Gradshteyn and Ryzhik? When I was a student there was a story that most of it was written while the authors were bored in Siberia. In Cornell the theoretical physics journal club used to be called the Gradsteyn seminar because it would ``integrate the knowledge of the graduate student participants.'' (Source: Michael Peskin, private communication.) Anyway, if you've made it this far in the footnote: you should consider running a journal club with your lab/classmates. It may be the best preparation you can give yourself for being a young academic.}. All that is to say for any differential equation that you will probably ever care about in physics, the eigenfunctions are probably known and their properties are well documented\footnote{By the way, if you were expecting this class to be about the properties of Bessel functions and all that, then forget it! I find nothing fun about that. We're going to stick to good old sines and cosines because \emph{all} of the essential intuition is already there. If you deeply understand the orthogonality, completeness, projections onto trigonometric functions, then you can `read' the special functions as generalizations of the trigonometric functions for their respective differential operators. By the way, beware of any young person who seems to know the Bessel function properties \emph{a little too well}... that person has probably been through some shit.}. 
+
+Okay, so if the identification of eigenfunctions is not a problem, why isn't \eqref{eq:G:from:completeness} the end of this course? One reason is that it is an \emph{infinite} series. The differential operator is a `matrix' in  infinite-dimensional space, so there are an infinite number of eigenfunctions that space the space. If you're like me, you really only want to deal with one or two terms---very rarely is it worth it to have to go to many more terms\footnote{One notable local exception is Prof.~Hai-Bo Yu's work on self-interacting dark matter calculations. In the resonant regime, some of these numerical results require sums over hundreds of partial waves.}. This means that the infinite sum is only practical is each successive term is a small correction to the previous terms. While this is not always the case, this may start to sound familiar to you. Let's see it in action with an example.
+
+%% this is a great plce to talk about EFT picture of multipole expansion%% See manohar: electrostatics example from EFT Lec1 from TASI 2022; at aroun 1hr
+%% https://www.youtube.com/watch?v=n_UZXpH_k7w&t=1037s
+% key points: you measure clm al
+% EFT perspective: you can measure ratios of multipoles... expect O(1)
+% consequences of underlying symmetry:
+% e.g. clm = 0 unless m = 0 mod 4. This would be a good exercise. 
+% I think it boils down to the integral relation for clm 
+
+\begin{example}
+The eigenfunctions for the angular part of the Laplacian, $\nabla^2$, in spherical coordinates are the \textbf{spherical harmonics}, $Y_{\ell m}(\theta, \varphi)$. When you tack on the radial piece, the Green's function for the Laplacian in spherical coordinates is
+\begin{align}
+  G(\vec{r},\vec{r}')
+  &=
+  \sum_{\ell=0}^\infty
+  \sum_{m=-\ell}^\ell
+  \frac{1}{2\ell+1}
+  Y_{\ell m}(\theta, \varphi)
+  Y_{\ell m}^*(\theta', \varphi')
+  \frac{r_<^\ell}{r_>^{\ell+1}} \ ,
+  \label{eq:greens:function:spherical:harmonics}
+\end{align}
+where $r_> = \text{max}(\vec{r},\vec{r}')$ and $r_< = \text{min}(\vec{r},\vec{r}')$. To be concrete you can assume that $r > r'$ so that $r_> = r$ and $r_< = r'$. This corresponds to an observer further away from the origin than the source. Remind yourself of where expressions \emph{just like this} show up in electrodynamics---for example, a charged cat curled up into a small lump near the origin of your coordinate system.
+
+Note that \eqref{eq:greens:function:spherical:harmonics} has \emph{two} sums over eigenfunction `labels' $m$ and $\ell$. That's okay---this simply generalizes the case of a single sum. Clearly this expression has the form of a completeness relation with the radial piece tacked on.
+
+The upshot of having his expression is that you can take \emph{any} source $\rho(\vec{r})$, such as that lump of charged cat, and write a closed form expression for the state (e.g.\ the electrostatic potential):
+\begin{align}
+  \Phi(\vec{r})
+  &=
+  \int d^3 \vec{r}'
+  \frac{r_<^\ell}{r_>^{\ell+1}}
+  \left[
+    \sum_{\ell, m}
+    \frac{1}{2\ell+1}
+    Y_{\ell m}(\theta, \varphi)
+    Y_{\ell m}^*(\theta', \varphi')
+  \right]
+  \rho(\vec{r}') \ ,
+\end{align}
+where the expression in the bracket has a special name:
+\begin{align}
+  P_\ell(\hat{\vec{r}}\cdot\hat{\vec{r}}')
+  &=
+  \sum_{\ell, m}
+    \frac{1}{2\ell+1}
+    Y_{\ell m}(\theta, \varphi)
+    Y_{\ell m}^*(\theta', \varphi') \ .
+\end{align}
+The $P_\ell$'s are called Legendre polynomials\footnote{Once when I was teaching a class of undergraduates in electromagnetism I asked them if they knew what these special functions, $P_\ell$ were called. One of them enthusiastically shouted, \emph{ooh! Is that a Pessel function}? That's when I learned to appreciate the joy of serendipity in teaching.} In the limit where $r\gg r'$, the expression takes the following form:
+\begin{align}
+  \Phi(\vec{r})
+  &=
+  \sum_{\ell, m}
+  \frac{1}{2\ell+1}
+  \frac{Y_{\ell m}(\theta, \varphi)}{r^{\ell+1}}
+  \left[\int d^3 \vec{r}'
+      \, r'^{\ell}
+        Y_{\ell m}^*(\theta', \varphi')
+        \rho(\vec{r}')\right] \ ,
+\end{align}
+where now the term in the brackets is purely a property of the source. Do you recognize what it is? This is simply the \textbf{multipole expansion} of the charged, lumpy cat. Observe that each successive term in the sum is suppressed by an additional power of $r'/r$. As long as $r\gg r'$---that is, as long as we are far away from the charged, lumpy cat---we can approximate its electrostatic potential as the sum of a monopole term, dipole term, etc. 
+\end{example}
+What we see from the above example is that in the limit where there is a small parameter, the Green's function series expression \eqref{eq:G:from:completeness} coming from the completeness of eigenfunctions can be seen as a Taylor expansion.
+
+
+section{Patching a Green's function together}
+\label{sec:patching}
+
+There is another clever\footnote{`Clever' is not always a positive word. A mathematical technique that is \emph{clever} may have an aesthetic quality that we can appreciate, but it's not practically useful if you have to be \emph{clever} to know to use it. We would rather prefer something that is general and systematic. By the way, this is the reason that high-energy experimentalists all know how to use version control software for their thousand-person publications while theorists have a hard time working simultaneously on a draft between three people.} way of solving for Green's functions. We'll leave most of this work to your homework, but let's sketch the procedure. 
+
+Recall that Green's functions are the analogs to inverse matrices in a finite dimensional vector space. In other words, 
+\begin{align}
+  A(A^{-1}) = \mat{A}{i}{j}\mat{(A^{-1})}{j}{k} = \mat{\mathbbm{1}}{i}{k} = \delta^i_k \ .
+\end{align}
+The infinite dimensional version of this is
+\begin{align}
+  \mathcal O_x G(x,x') = \delta(x-x') \ .
+  \label{eq:Greens:func:as:inverse}
+\end{align}
+\begin{example}
+Let's do a quick `sanity' check for why $\delta(x-x')$ could plausibly play the role of an identity element, $\delta^i_k$. When $\delta^i_k$ acts on a vector, it acts on each component as (writing the sum explicitly):
+\begin{align}
+  \sum_k \delta^i_k v^k = v^i \ .
+\end{align}
+Recalling that finite-dimensional indices are arguments in function space, the analog for the $\delta(x-x')$ acting on a function $f$ is
+\begin{align}
+  \int dx' \, \delta(x-x') f(x') = f(x) \ .
+\end{align}
+\end{example}
+If we compare \eqref{eq:Greens:func:as:inverse} to the class of equations that we wanted to solve, $\mathcal O \psi(x) = s(x)$, we realize that the Green's function $G(x,x')$ is simply the \emph{state} $\psi$  at position $x$ coming from an idealized $\delta$-function source at position $x'$. Of course, there's no such thing as Dirac $\delta$-function sources in nature, so we emphasize that this interpretation should not be taken literally\footnote{In undergraduate electrodynamics we say that the Coulomb potential is the result of a $\delta$-function point source... but you don't actually believe that electrons are $\delta$ functions in charge do you? If you do, take some time to think about this. By the way, this is related to Exercise~\ref{ex:hydrogen:problem}.}.  Heuristically, the Green's function equation looks like:
+\begin{align}
+\mathcal O_x G(x,x')
+&=
+  \vcenter{
+    \hbox{\includegraphics[width=.3\textwidth]{figures/lec10_.png}
+    }}
+  \ . 
+\end{align}
+Note that the source is \emph{zero} for everywhere. This means that everywhere to the left of $x=x'$ is described by a homogeneous equation,
+\begin{align}
+  \mathcal O_x G_<(x,x') = 0 \ .
+\end{align}
+Further, everything to the right of $x=x'$ is described by \emph{another} homogeneous equation,
+\begin{align}
+  \mathcal O_x G_>(x,x') = 0 \ .
+\end{align}
+These are different equations for \emph{different functions}: $G_<$ and $G_>$ are two different functions that obey homogeneous equations \emph{in their respective domains}. $G_<(x,x')$ is \emph{not} defined for $x>x'$. Usually solving homogeneous equations is easier\footnote{I wouldn't really know, but it seems to take less time on \emph{Mathematica} so there you go.}. 
+
+The strategy then  is to solve for $G_<(x,x')$ and $G_>(x,x')$ as functions of $x$ and \emph{patch them together}: 
+\begin{align}
+  G(x,x') = 
+  \begin{cases}
+  G_<(x,x') & \text{ if } x<x'\\
+  G_>(x,x') & \text{ if } x>x'
+  \end{cases}\ .
+\end{align}
+
+Here $x'$ is just a spectator variable---we're keeping it fixed. For simplicity, you may even want to shift your coordinates so that $x'=0$. When we do this, we usually have a second order differential equation---some variant of the Laplacian because that's 99\% of what we do---so we need to have enough boundary conditions to fix our cofficients. Since we have two functions in a second order differential equation, we need \emph{four} boundary conditions. When we defined the Green's function problem, presumably we are considering functions over some interval $x,x'\in [a,b]$. This gives boundary conditions at $a$ and $b$, which may even be at $a=-\infty$ and $b=\infty$. The two additional boundaries are obtained at $x=x'$. These come from requiring the continuity of the solutions
+\begin{align}
+  G_<(x',x') = G_>(x',x')
+\end{align}
+and a `jump condition' between the first derivatives of the soltuion:
+\begin{align}
+  \lim_{\epsilon\to 0}\int_{x'-\epsilon}^{x'+\epsilon}dx \mathcal O_x G_(x,x') = 1 \ ,
+\end{align}
+where this comes from simply integrating the defining equation $\mathcal O_xG(x,x') = \delta(x-x')$ over a sliver around $x=x'$. Since $\mathcal O_x$ is assumed to be second order, the jump condition reduces to saying that the first derivatives of $G_<$ and $G_>$ are discontinuous at $x=x'$ by a certain amount. Applying these boundary conditions then gives a piece-wise solution for the Green's function.
+
+
+\section{Where we're going}
+\label{sec:ways:to:solve:G}
+
+Our primary goal in this course is to find the Green's function $G(x,x')$ given a differential operator $\mathcal O$. There are three primary ways to do this:
+\begin{enumerate}
+\item \textbf{Eigenfunctions and completeness}, Section~\ref{sec:Greens:fuctions:by:completeness}. Assuming one knows the eigenfunctions of the differential operator, this gives a series solution for the Green's function. It is practically useful only when the series is convergent.
+
+\item \textbf{Patching}, Section~\ref{sec:patching}. This method assume that one can solve the \emph{homogeneous} differential equation $\mathcal O_x G(x,x')=0$ and then produces a piece-wise solution to the \emph{inhomogeneous} differential equation that defines the Green's function, $\mathcal O_x G(x,x')=\delta(x-x')$. This is practically useful in one dimension where the boundary conditions where the pieces are connected are easy to define.
+
+\item \textbf{Fourier transform and its cousins}. This will be the topic of the rest of our course. We convert the differential equation into an \emph{algebraic equation} in momentum space. Aspects of the causal structure of the system that are manifested in complex momentum space. Furthermore, one can use contour integrals to do the `hard work.'
+\end{enumerate}
+
+Recently I filled a hole in my undergraduate education and used a fourth method called the \emph{method of variations} to solve inhomogeneous differential equations. The method is sketched out in Appendix~\ref{app:method:of:variations}. We won't have anything further to say about that here, except that it turns out you can get a faculty job in theoretical particle physics without knowing how to use it.
+
+\begin{example}
+This problem is from Matthews \& Walker Section 9-4. Consider a unit string with frequency $k= \omega/c$ and Dirichlet boundary conditions at $x=0,1$; where we note that we are using units of `length of the string.' The differential operator describing standing waves is
+\begin{align}
+  \mathcal O_x = \frac{d^2}{dx^2} + k^2 \ .
+ \end{align}
+Let's solve this using eigenfunctions. We know the normalized eigenfunctions from Example~\ref{ex:eigenfunction:fourier}:
+\begin{align}
+  f_n(x) &= \sqrt{2} \sin (n\pi x) 
+  &
+  \mathcal O_x f_n(x) 
+  & = \left(-n^2\pi^2 + k^2\right)f_n(x) \equiv \lambda_n f_n(x) \ .
+\end{align}
+By the way, it should  have been \emph{obvious} that these are the eigenfunctions and eigenvalues, even though $\mathcal O_x$ is \emph{not} the same as $d^2/dx^2$. Using our completeness relation, the Green's function is
+\begin{align}
+  G(x,x') &= \sum_n \frac{f^*(x)f(x')}{\lambda_n}
+  =
+  2\sum_n\frac{\sin(n\pi x) \sin (n\pi x')}{k^2 - n^2\pi^2} \ .
+\end{align}
+Thus the solution to the system with some inhomogeneous source $s(x)$
+\begin{align}
+  \left[\frac{d^2}{dx^2} + k^2\right] f(x) &= s(x)
+\end{align}
+is simply
+\begin{align}
+  f(x) &= \int_0^1 dx' \, G(x,x') s(x') \ .
+\end{align}
+\end{example}
+
+\begin{example}\label{ex:patching:eg}
+Let's do the same example with the patching method. In this case we start with the equation (the analog of $A(A^{-1}) =\mathbbm{1}$):
+\begin{align}
+  \left[\frac{d^2}{dx^2} + k^2\right]G(x,x') &= \delta(x-x')
+\end{align}
+We now separate the domain into $x<x'$ and $x>x'$, with \emph{a priori} independent solutions $G_<(x,x')$ and $G_>(x,x')$:
+\begin{center}
+\includegraphics[width=.5\textwidth]{figures/lec11_GgGl.png}
+\end{center}
+Applying the Dirichlet boundary conditions at $x=0,1$ gives
+\begin{align}
+  G(x,x') &=
+  \begin{cases}
+  G_<(x,x') = a\sin(kx) & \text{ for } x < x'\\
+  G_>(x,x') = b\sin\left(k(x-1)\right) & \text{ for } x > x'
+  \end{cases} \ .
+\end{align}
+Make sure you understand why $G_>(x,x')$ has a factor of $(x-1)$ and not $x$; this is simply the boundary condition at $x=1$ without setting $b=0$.
+The two coefficients $a$ and $b$ must be fixed by the matching at $x=x'$. 
+To do this, integrate the second order differential equation over a sliver around $x'$:
+\begin{align}
+  \int_{x'-\varepsilon}^{x'+\varepsilon}
+  dx \, 
+  \left[
+   \frac{d^2}{dx^2} + k^2
+  \right]
+  G(x,x')
+  &=
+  \int_{x'-\varepsilon}^{x'+\varepsilon} dx\, \delta (x-x') \ .
+  \label{eq:eg:jump:condition:integration:eg:1}
+\end{align}
+Note that the $k^2 G$ term in the integrand vanishes since it scales like $\varepsilon$. The integral of the second derivative is simple since it is simply the integral of a derivative, $\int dx\, d/dx(G') = \int d(G') = G'$ so that
+\begin{align}
+  \left.\frac{d}{dx}G\right|_{x'-\varepsilon}^{x'+\varepsilon}
+  &=
+  G'_>(x',x') - G'_<(x',x')
+  =
+   1 \ .
+   \label{eq:eg:patching:jump:condition}
+\end{align}
+This is the jump condition of the first derivative. If we integrate the jump condition once more over a sliver between $x\pm\varepsilon$ gives the continuity condition:
+\begin{align}
+  G_<(x',x') &= G_>(x',x') \ .
+\end{align}
+If you are very attentive to details, you may be concerned about doing another integration since \eqref{eq:eg:patching:jump:condition} is simply an equality between numbers. If you are this attentive, I refer to the next example.
+The jump and continuity conditions give
+\begin{align}
+  ka \cos(kx') + 1 &= kb \cos \left(k(x'-1)\right)
+  \\
+  a\sin(kx') &= b\sin \left(k(x'-1)\right) .
+\end{align}
+One can solve for the coefficients:
+\begin{align}
+  a&= \frac{\sin \left(k(x'-1)\right)}{k\sin k}
+  &
+  b&= \frac{\sin kx'}{k\sin k} \ .
+\end{align}
+Plugging this all in gives 
+\begin{align}
+  G(x,x') &=
+  \frac{1}{k\sin k}
+  \begin{cases}
+  \sin kx \, \sin \left(k(x'-1)\right) &\text{ if }x < x'
+  \\
+  \sin kx' \, \sin \left(k(x-1)\right) &\text{ if }x > x' \ .
+  \end{cases}
+\end{align}
+\end{example}
+Observe that you find two \emph{different} expressions for $G$ by these methods. Please confirm---perhaps numerically---that these indeed represent the same function $G(x,x')$. 
+
+\begin{example}%{ex:patching:second:integration}
+In the previous example, we integrated the Green's function equation `twice' to get two boundary conditions at $x=x'$. You may be concerned that after doing the first definite integral, we just have a relation between numbers. That is to say, we can no longer `integrate a total derivative' $\int dx\; \partial_x f(x) = f(x)$ because the integrand is not a total derivative, it is just a number. 
+
+It may be helpful to think about this as follows. The first definite integral of the Green's function equation gives the jump condition, \eqref{eq:eg:patching:jump:condition}. For the second integral, we may take
+\begin{align}
+  \int_{-\varepsilon'}^{\varepsilon'}
+  dy \,
+  \int_{x'-\varepsilon}^{x'+\varepsilon+y}
+  dx \, 
+  \left[
+   \frac{d^2}{dx^2} + k^2
+  \right]
+  G(x,x')
+  &=
+  \int_{-\varepsilon'}^{\varepsilon'}
+  dy \,
+  \int_{x'-\varepsilon}^{x'+\varepsilon+y}
+  dx \, 
+  \delta (x-x') 
+  \ .
+\end{align}
+One can compare to \eqref{eq:eg:jump:condition:integration:eg:1}. You should be happy that the right-hand side integrates to zero upon $\varepsilon\, , \, \varepsilon' \to 0$; it is two integrations over an infinitesimal slice with only one $\delta$-function to support it. Following through gives:
+\begin{align}
+  \int_{-\varepsilon'}^{\varepsilon'}
+  dy \,
+  \int_{x'-\varepsilon}^{x'+(\varepsilon+y)}
+  dx \, 
+  \frac{d}{dx}
+  \left[
+   \frac{d}{dx}
+   G(x,x')
+  \right]
+  &=
+  \int_{-\varepsilon'}^{\varepsilon'}
+  dy \,
+  \left[
+   G'(x'+y+\varepsilon,x')
+   -
+   G'(x'-\varepsilon, x')
+  \right] \ .
+\end{align}
+$G'(x'-\varepsilon, x')$ is simply a constant. Its integral vanishes when we take the limit $\varepsilon\, ,\, \varepsilon'\to 0$. For the first term, we may strategically take $\varepsilon\to 0$  (or otherwise $\varepsilon < \varepsilon'$) so that we now have
+\begin{align}
+  \int_{-\varepsilon'}^{\varepsilon'}
+  dy \,
+  \frac{d}{dy}
+  \left[
+   G(x'+y+\varepsilon,x')
+   \right] \ .
+\end{align}
+Note the subtle sleight of hand: $G'(\cdots, x')$ means ``take the derivative of $G$ with respect to the first argument.'' The variable in the first argument is $y$, so we have written it out explicitly as $d/dy$ so that the $dy$ integral is over a total derivative. This now straightforwardly gives, 
+\begin{align}
+  G(x'+\varepsilon+\varepsilon', x') 
+  -
+  G(x'+\varepsilon-\varepsilon', x') 
+  = 0 \ ,
+\end{align}
+which is simply the continuity condition \eqref{eq:eg:patching:jump:condition} once we choose $\varepsilon' > \varepsilon$ with both going to zero.
+\end{example}
+
+\begin{exercise}
+This example is from Butkov, chapter 12.1. Consider a taut string of length $L$ under the load of a weirdly-shaped rock:
+\begin{center}
+\includegraphics[width=.5\textwidth]{figures/lec12_eg.png}
+\end{center}
+The force equation for the vertical displacement of the string, $u(x)$, is
+\begin{align}
+  T u''(x) = F(x),
+\end{align}
+where $T$ is the tension and $F(x)$ is the force-per-unit-length. One may write this more simply as $u''(x) = f(x) = F(x)/T$. Show that the Green's function may be written as a piecewise function
+\begin{align}
+  G(x,x') &=
+  \begin{cases}
+  \left(\frac{x'-L}{L}\right)x  & \text{ if } x<x'
+  \\
+  \left(\frac{x-L}{L}\right)x' & \text{ if } x>x' 
+  \end{cases}\ .
+\end{align}
+Suppose you replace the weird rock by a square paper weight of size $x < L$ in the middle of the string. Sketch what the paper weight on the string looks like.
+\end{exercise}
+
+
+
+\part{Complex Analysis}
+
+\chapter{Why complex analysis?}
 
 
 \part*{Appendix}
