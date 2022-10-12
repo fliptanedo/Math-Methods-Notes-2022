@@ -1814,7 +1814,7 @@ For an $N$-dimensional vector space, \eqref{eq:matrix:inverse:indices} represent
 
 \section{Adjoint}
 
-Recall the definition of the transpose/Hermitian conjugate in \eqref{eq:transpose:as:inner:product:preloaded}. The `dagger' operation $\dag$ converts a vector into a covector using the inner product. For real vector spaces this is simply the transpose, for complex vector spaces it is the transpose and complex conjugation. We now define an operation on linear transformations $A$ that borrows the same notation: the adjoint. The adjoint of a linear transformation $A$ is denoted $A^\dag$ and is defined by the inner product relation:
+Recall the definition of the transpose/Hermitian conjugate in \eqref{eq:transpose:as:inner:product:preloaded}. The `dagger' operation $\dag$ converts a vector into a covector using the inner product. For real vector spaces this is simply the transpose, for complex vector spaces it is the transpose and complex conjugation. We now define an operation on linear transformations $A$ that borrows the same notation: the \textbf{adjoint}\index{adjoint}. The adjoint of a linear transformation $A$ is denoted $A^\dag$ and is defined by the inner product relation:
 \begin{align}
   \langle A^\dag \vec{w}, \vec{v} \rangle = \langle \vec{w}, A\vec{v}\rangle \ .
   \label{eq:def:adjoint}
@@ -2065,11 +2065,64 @@ The first time you see this should have brought a deep joy to your life: if you 
 
 
 
-\chapter{Vector fields}
+\chapter{Vector fields on manifolds}
 \label{chap:vector:fields}
 % motivating transformation
 % https://www.youtube.com/watch?v=2MC4xMhscjQ
-\flip{To Be Filled In}
+% \flip{To Be Filled In}
+
+\flip{this section badly needs pictures}
+
+\section{Space(time) as a manifold}
+
+Space (or spacetime if we are relativistic) is not a vector space. For example, space may have more symmetries than a vector space. Translations are one such example: you cannot translate a vector. A vector of unit length pointing in the $\hat{y}$ direction is fully specified: it makes no sense to talk about `` vector of unit length pointing in the $\hat{y}$ direction'' \emph{but translated so that its base is at $(x,y)=(1,0)$}. 
+
+We say that space is a \textbf{manifold}\index{manifold}. This has a formal definition in differential geometry, but we stick to physical intuition here.\footnote{It is dangerous to venture off into the wilderness of science using only physical intuition. Let us not stray very deep into the woods.} Sometimes we also call it the \textbf{base space}\index{base space}.
+
+We typically care about functions on this manifold. These are maps $f: M\to$ numbers. For example, a topographic map is a map from the manifold of longitude and latitude coordinates to numbers. The number assigned to each point is the height above sea level. 
+
+\section{Tangent plane as a vector space}
+
+There are vector spaces associated with a space(time). In fact, there are usually an infinite number of vector spaces for a spacetime. At each point $p\in M$, there is a plane that is tangent to $M$ that `touches' $p$. We call this the \textbf{tangent plane} of $M$ located at $p$, or $T_pM$\index{tangent plane}. This tangent plane is a vector space. A good way to think of the vectors in this space is to think of them as \emph{velocity vectors}.
+
+Suppose you have a curve $\gamma$ in $M$. This is a map that takes a real number, $t$, and outputs $\gamma(t)$, a point in $M$. The dependence on the real number is called the parameterization of the curve. If we are hikers on the manifold, $\gamma(t)$ is our path through the mountains and valleys of the manifold. Suppose that at $t_0$ the curve is at some point $x_0\in M$: $\gamma(t_0) = p$. Then we can determine our velocity at time $t_0$ (and location $p$) by taking the time derivative: $\gamma'(t_0) = \left.d\gamma/dt\right|_{t_0}$. In general, $\gamma'(t_0)$ is a $d$-dimensional vector where $d$ is also the dimensionality of the manifold. 
+
+$\gamma'(t_0)$ does \emph{not} live on the manifold. It lives on the tangent space, $T_{\gamma{t_0}}M$. Take a moment to appreciate this. It is obvious if you draw a picture.
+
+In a spacetime, these tangent planes are geometrically what we mean by locally inertial frames. We can approximate the neighborhood around a single point of a curved spacetime with the tangent plane. The tangent plane is a `flat space' which looks like Minkowski space (special relativity). The deviation from the tangent plane as we move further away from that point is encoded by general relativity. In fact, you can see what goes wrong: if we want to talk about vectors at some other point, $p'$, then formally we are talking about a completely different vector space, $T_{p'}M \neq T_pM$. The mathematical machinery of differential geometry (or general relativity) is focused on making sense of how one transports vectors from one vector space to nearby vector spaces. This is called parallel transport\index{parallel transport}.
+
+The fact that you have as many tangent planes as you have points in $M$ means that our entire construction is actually a collection of the base space and an infinite number of tangent spaces. We call this bundle of tangent spaces... well, that is exactly what we call it: a \textbf{tangent bundle}. The spaces of one-forms (covectors) associated with each vector space in the tangent bundle is called a cotangent bundle. You may want to put other stuff on your base space, for example something encoding the electromagnetic gauge choice at each position. Those are also bundles. In general, some space that is attached at each position of the base space is called a fiber. This whole construction is called a \textbf{fiber bundle}\index{fiber bundle}.
+
+\section{Partial derivatives as vectors}
+
+A basis that is not at all obvious---but turns out to be rather natural---for vectors in the tangent plane are the partial derivatives: $\partial_x = \partial/\partial x$, $\partial_y$, and so forth. 
+\begin{exercise}
+Convince yourself that partial derivatives form a vector space. Start by reminding yourself of the definition and requirements of a vector space.
+\end{exercise}
+Why is this a sensible basis? Let $M$ be the space manifold. We typically care about functions that take points in $M$ and spit out numbers. Consider the topographic map example: it takes in longitude and latitude and outputs the height above sea level. Let $\gamma(t)$ be our path as we are jogging along some trail through the mountains. One thing we may want to know is the rate at which we are increasing our height as we jog. Suppose that at time $t$ we are at position $p = \gamma(t)$. The rate at which our altitude is increasing is 
+\begin{align}
+  \frac{\partial f}{\partial x}
+  \frac{d\gamma_x(t)}{dt}
+  +
+  \frac{\partial f}{\partial y}
+  \frac{d\gamma_y(t)}{dt} 
+  =
+  \dot\gamma(t)\cdot \nabla f
+  \ ,
+\end{align}
+where $\gamma_x$ and $\gamma_y$ are the $x$- and $y$- components of $\gamma$. The coefficients ${d\gamma_{x,y}(t)}{dt}$ are your velocity components. We see that $\partial_{x,y}$ naturally forms a basis. It does not matter what $f$ is, we can plug in whatever $f: M\to \mathbbm{R}$ we happen to care about at th e moment.
+
+
+\section{Differential as a one-form}
+\label{eq:d:as:one:form}
+
+Another surprise in differential geometry---at least the first time we see it---is that the differential of a function, $df$ is a one-form. This simply means that it is a linear function that takes a vector and spits out a number. In the topographic map example, $df(p)[\vec{v}]$ has a precise meaning: it gives the instantaneous change in height ($\Delta f$) in some unit of time when someone is jogging along a trajectory that (1) crosses point $p$ and (2) has velocity vector $\vec{v}$ at the point $p$. In other words:
+\begin{align}
+  \gamma(t_0) &= p & \gamma'(t_0) &= \vec{v} \ .
+\end{align}
+The object $df(p)$ is an element of the cotangent space at $p$. It should be obvious that it is a linear function: if you double the velocity, then you double the instantaneous change in height in some unit of time.\footnote{Assuming, perhaps circularly, the linear approximation.}
+
+Now understand this carefully: $df(p)$ is a one form. It is a linear map from $T_pM \to \mathbbm{R}$. It is fully characterized by some number of constants for each $p$. Those constants are uniquely defined and are independent of the vector $\vec{v}$ that is fed to the one-form. Below we connect this to the concept of analyticity in complex analysis.
 
 \chapter{Function Space}
 
@@ -2168,7 +2221,7 @@ That was so important that I put the whole damn sentence in boldface and set it 
 When one first learns about Fourier series with Dirichlet boundary conditions, one finds that the Fourier expansion \emph{only} contains sines. The solution to the wave equation in such a system is some function that is zero at each endpoint. So the function space relevant to the system is composed only of functions that are zero at each endpoint.
 \end{example}
 %
-For now let’s assume \textbf{Dirichlet boundary conditions}. A convenient way to impose this is to define what happens to all functions outside the domain of the function space:
+For now let us assume \textbf{Dirichlet boundary conditions}.\index{Dirichlet} A convenient way to impose this is to define what happens to all functions outside the domain of the function space:
 \begin{align}
   f^{i > N} = f^{i < 1} = 0 \ .
 \end{align}
@@ -2178,7 +2231,7 @@ This solves the problem of the derivative on the last component:
   = 
   \frac{- f^N}{\Delta x}  \ .
 \end{align}
-Alternatively, we could have also imposed \textbf{periodic boundary conditions}:
+Alternatively, we could have also imposed \textbf{periodic boundary conditions}\index{periodic}:
 \begin{align}
   f^{i} &= f^{i+ kN}
   & k\in \mathbb{Z} \ .
@@ -2257,7 +2310,7 @@ We can see that
   D^3 \vec{f}  &= 
   0 \ .
 \end{align}
-The last line is, of course, the realization that the third-derivative of a quadratic function vanishes. Feel free to attach mathy words to this like \emph{kernel}.
+The last line is, of course, the realization that the third-derivative of a quadratic function vanishes. Feel free to attach mathy words to this like \emph{kernel}.\footnote{Unfortunately `kernel' is also used when discussing probability distributions. To the best of my knowledge the two usages are completely independent.}
 
 There are other bases that we may use for function space. A particularly nice one that we will use over and over is the Fourier basis, which we usually refer to as \emph{momentum space}. The basis vectors are things like sines, cosines, or oscillating exponentials. These do not vanish for any power of $D$.
 
@@ -2350,9 +2403,10 @@ What are the `dual functions' (dual vectors, bras) in function space? These are 
 \end{align}
 
 
+
 \section{Adjoint operators}
 
-What is the adjoint of a differential operator? The definition of the adjoint \eqref{eq:adjoint:definition} and the function space inner product \eqref{eq:L2:inner:product} give us a hint. We define $\mathcal O^\dag$ by the property
+What is the adjoint of a differential operator? The definition of the adjoint \eqref{eq:def:adjoint} and the function space inner product \eqref{eq:L2:inner:product} give us a hint. We define $\mathcal O^\dag$ by the property
 \begin{align}
   % \int dx \, \left[\mathcal O f(x)\right]^* g(x)
   % = 
@@ -2937,6 +2991,8 @@ Suppose you replace the weird rock by a square paper weight of size $x < L$ in t
 
 \chapter{Why complex analysis?}
 
+%% TO COMMENT:
+Recall \eqref{eq:d:as:one:form} regarding differential.
 
 \part*{Appendix}
 \appendix
