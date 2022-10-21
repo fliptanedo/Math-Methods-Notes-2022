@@ -20,6 +20,9 @@
 \newtheorem{exercise}{Exercise}[section]
 \newtheorem{example}{Example}[section]
 
+% Flip's stuff
+\renewcommand{\dbar}{d\mkern-6mu\mathchar'26\hspace{-.1em}}    % for d/2pi
+
 % For matrices
 \newcommand{\aij}[2]{^{#1}_{\phantom{#1}#2}}
 \newcommand{\mat}[3]{#1\aij{#2}{#3}}
@@ -4265,8 +4268,17 @@ so that the final result is
  \begin{align}
   \int_0^\infty dx\, x^{1/3} F(x) \ .
  \end{align}
- We can trivially analytically continue the integrand by replacing $x\to z$. Let us assume that $F(x)$ is a meromorphic function with poles away from the positive real line. Let us further assume further that $F(z)$ is sufficiently suppressed for $|z| = R \gg 1$, that is: $F(z) \sim R^n$ with $n>7/3$.
- 
+ We can trivially analytically continue the integrand by replacing $x\to z$. Let us assume that $F(x)$ is a meromorphic function with poles away from the positive real line. Let us further assume further that $F(z)$ is sufficiently suppressed for $|z| = R \gg 1$. What does `sufficiently suppressed' mean? We will discover that the residue theorem is useful as long as $F(z) \sim R^{-n}$ with $n>4/3$. 
+
+\begin{exercise}
+Through the discussion of this example, please keep two questions in mind:
+\begin{enumerate}
+  \item What happens if $F(x)$ is analytic everywhere, not just meromorphic? More specifically, what happens if $F(x)$ has no simple poles anywhere?
+  \item Why do we need $F\left(Re^{i\theta}\right)$ to decay faster than $R^{-4/3}$ for large $R$?
+\end{enumerate}
+Eventually the answers will be clear. See if you can discover them before we say it explicitly.
+\end{exercise}
+  
   The $x^{1/3} \to z^{1/3}$ factor is tricky. It tells us that there's an \emph{branch cut} in our integrand: if we start at some point and went a full circle around the origin, say $z(\theta) = e^{i\theta}$ for $\theta\in[0,2\pi]$, then $z^{1/3}$ doesn't return to the origin. This means you probably need to extend the complex plane into Riemann sheets. Practically what this means is that we have to pick a branch cut that prevents us from taking contours that are `full circles' around the origin. We have the freedom to pick the orientation of this branch cut, but in this case it is convenient to pick it along the positive real line\footnote{If you want to be careful to make sure that you're not interfering with the original integral, you can put the branch cut just below the real line by some vanishingly small amount and take that amount to zero at the end of the calculation.}. Let's take a peculiar contour that includes the integration region we want, $x\in [0,\infty)$, then circles the entire complex plane, and returns back to zero along $x\in (\infty, 0]$. 
  \begin{center}
  \includegraphics[width=.8\textwidth]{figures/Lec_2017_14_branch.png}
@@ -4360,10 +4372,203 @@ Note the key step where an overall complex phase $e^{\pi i(d-2)}$ is absorbed in
 We won't worry too much about branch cuts in this course. However, they do occasionally show up in physical manifestations, such as in dispersion relations\footnote{See, e.g., \url{https://arxiv.org/abs/1610.06090} for a peek at how it can show up in quantum field theory.}.
 
 
+\chapter{The Harmonic Oscillator}
+
+\section{The most familiar problem in physics}
+% \lecdate{lec~12} 
+
+We return to the problem of solving for Green's functions. Our favorite example---arguably, the \emph{only} example\footnote{Upon generalizing to higher dimensions, curvilinear coordinates... most everything is a harmonic oscillator. Physicists have Harmonic Oscillators in different area codes.}---is the harmonic oscillator. The differential operator is
+\begin{align}
+  \mathcal O = \left(\frac{d}{dt}\right)^2 + \omega_0^2 \ .
+  \label{eq:O:HO}
+\end{align}
+\begin{example}
+The equation of motion for a harmonic oscillator with spring constant $k$ and displacement $f(t)$ from equilibrium is simply the equation $F=m\ddot{f} = -k f(x)$. We have defined $\omega_0^2 = k/m$.
+\end{example}
+\begin{exercise}
+Compare our definition of $\omega_0^2 = k/m$ to what you remember the resonant frequency of an ideal spring to be. What---you do not remember? That is okay, physicists do not have to remember these details: we can re-derive them. What---you do not have time to rederive this? Okay, use dimensional analysis. 
+\end{exercise}
+\begin{exercise}
+One may argue that the harmonic oscillator operator should be defined with an overall minus sign. Life is too short to quibble over signs in these notes. Please confirm that if  $\mathcal O_\text{minus} = -\mathcal O$, then the Green's function is simply $G_\text{minus} = - G$. Relate this to the physical interpretation of the Green's function equation. {Hint:} if you pluck a guitar string in the opposite direction, you still get a `unit' wave.
+\end{exercise}
+The Green's function equation tells us that the Green's function $G(t,t_0)$ is the spring `response' at time $t$ to a `unit displacement' at $t_0$:
+\begin{align}
+  G''(t,t_0) + \omega_0^2 G(t,t_0) = \delta(t-t_0) \ .
+  \label{eq:HO:Greens:eqn}
+\end{align}
+Recall that the arguments $t$ and $t_0$ are analogous to the indices of a finite-dimensional matrix. We are primarily concerned about the $t$-dependence of $G(t,t_0)$.  For notational convenience, we will set $t_0=0$ and not list it explicitly. What this means is that we are choosing a `zero' for how we measure time: $t=0$ corresponds to the moment of the `unit displacement' source. Positive times correspond to times after the unit displacement. Negative times correspond to times before the unit displacement.
+
+\begin{exercise}
+Our system and the laws of physics in this model are time translation invariant. It does not matter where we pick the zero of time. This tells us that we can always make the replacement $t\to t-t_0$ to recover the source time. In other words, as long as the system is invariant along translations of the coordinates $x$, we have $G(x,y) = G(x-y)$. Convince yourself that this is true. Consider what kinds of scenarios would break this relation.
+\end{exercise}
+
+\section{Fourier Transform}
+
+The first thing to do is to write $G(t,t_0)$ as a Fourier transform with respect to $t$. Please refer to Appendix~\ref{app:Fourier} for our set of Fourier transform conventions. We can write $G(t)$ as an integral over Fourier modes with frequency $\omega$ and weight (Fourier transform) $\tilde G(\omega)$:
+\begin{align}
+  G(t) &= \int_{-\infty}^\infty\dbar \omega \, e^{-i\omega t} \tilde G(\omega) 
+  &
+  \dbar = \frac{d}{2\pi}
+  \ .
+  \label{eq:HO:Greens:Fourier}
+\end{align}
+We say that $\tilde G(\omega)$ is the Fourier transform of $G(t)$. The key point is that the $t$-dependence of $G(t)$ has been sequestered into the $e^{-i\omega t}$ plane waves. This is convenient since these plane waves are eigenfunctions of the derivative operator:
+\begin{align}
+  \frac{d}{dt} e^{-i\omega t} &= -i\omega e^{-i\omega t} \ .
+\end{align}
+The left-hand side of the Green's function equation \eqref{eq:HO:Greens:eqn} is
+\begin{align}
+  \mathcal O_t G(t,t_0) 
+  &= 
+  -
+  \int_{-\infty}^\infty \dbar \omega \, 
+  \left(\omega^2-\omega_0^2\right) e^{-i\omega t} \tilde G(\omega,t_0) \ .
+\end{align}
+The right-hand side is simply the Fourier transform of $\delta(t-t_0)$:
+\begin{align}
+  \delta(t-t_0)
+  &=
+  \int_{-\infty}^\infty \dbar \omega \, e^{-i\omega (t-t_0)} \ .
+  \label{eq:delta:fourier}
+\end{align}
+\begin{exercise}
+Use our conventions for the Fourier transform \eqref{eq:HO:Greens:Fourier} (see also Appendix~\ref{app:Fourier}) to confirm the Fourier representation of $\delta(t-t_0)$ in \eqref{eq:delta:fourier}. In our notation, the Fourier coefficients $\tilde f(\omega)$ of a function $f(t)$ is
+\begin{align}
+  \tilde f(\omega) &= 
+  % \frac{1}{2\pi}
+  \int_{-\infty}^\infty d t\, e^{i\omega t} f(t) \ .
+\end{align}
+\end{exercise}
+So the Green's function equation for the 1D harmonic oscillator, \eqref{eq:HO:Greens:eqn}, tells us
+\begin{align}
+  -
+  \int_{-\infty}^\infty \dbar \omega \, 
+  \left(\omega^2-\omega_0^2\right) e^{-i\omega t} \tilde G(\omega)
+  &=
+  \int_{-\infty}^\infty \dbar \omega \, e^{-i\omega t}
+  \ .
+  \label{eq:G:HO:Fourier:equation:integrals}
+\end{align}
+For simplicity we have set $t_0=0$ and don't write it explicitly. There's a rather unscrupulous\footnote{I don't think this is rigorously valid, but the result is true. The ends don't justify the means, but let's take this morally ambiguous shortcut to make the big picture clear. I encourage you to live the rest of your lives with virtue.} way to solve this equation for $\tilde G(\omega)$. Since the two sides of this expression are equal, they have the same Fourier expansion. This implies that the Fourier coefficients are equal. Since both sides are already written as Fourier expansions, we can just match the coefficients of the basis functions, $e^{-i\omega t}$. This gives us:
+\begin{align}
+  \tilde G(\omega) &= \frac{-1}{\omega^2-\omega_0^2}
+  \label{eq:G:HO:Fourier:term}
+\end{align}
+\begin{exercise}
+Prove \eqref{eq:G:HO:Fourier:term} honestly. {Hint}: Start with \eqref{eq:G:HO:Fourier:equation:integrals} and project out the Fourier coefficients. Recall that you do this by taking the inner product with one of the basis functions and then using the orthogonality of the eigenbasis. You may need to be careful with the normalization.
+\end{exercise}
+\begin{exercise}
+In \eqref{eq:G:HO:Fourier:equation:integrals} we had already set $t_0 = 0$. What is the expression for $\tilde G(\omega)$ if we kept $t_0$ explicit?
+\label{eq:ex:Gtilde:with:t0:explicit}
+\end{exercise}
+That was the critical step: we have successfully solved for the Green's function Fourier coefficient. This means that we have a closed form expression for the Green's function by plugging $\tilde G(\omega)$ into \eqref{eq:HO:Greens:Fourier}:
+\begin{align}
+  G(t) &=  \int_{-\infty}^\infty \dbar \omega
+  \, 
+  \frac{-e^{-i\omega t}}{\omega^2-\omega_0^2} \ .
+  \label{eq:G:HO:Fourier:Rep:t0:0}
+\end{align}
+All that's left is for us to actually \emph{do} this integral. Fortunately, this integral should look very similar. It seems to beg for us to solve using the residue theorem. 
+\begin{exercise}
+What are the poles of the integrand in \eqref{eq:G:HO:Fourier:Rep:t0:0}? What are their associated residues? What is the residue if $t_0\neq 0$?
+\end{exercise}
+
+
+
 \part*{Appendix}
 \appendix
 
-\chapter{Conventions}
+% \chapter{Conventions}
+
+
+\chapter{Fourier Conventions}
+\label{app:Fourier}
+% \lecdate{lec~12}
+% 2017 Lec 15
+
+This appendix is inspired by an excellent post on \texttt{physics.stackexchange}\footnote{\url{https://physics.stackexchange.com/a/308248}}. There are many different conventions for Fourier transforms. The danger is that you accidentally use one convention to do the Fourier transform and a different convention for the inverse transform. 
+
+\section{A general Fourier transform}
+
+There are two choices one can make when defining a Fourier transform convention; we parameterize these choices by real numbers $a$ and $b$. The Fourier transform $\tilde f(\omega)$ of a function $f(t)$ is
+\begin{align}
+  \tilde f(\omega)
+  &= 
+  \sqrt{\frac{|b|}{(2\pi)^{1-a}}}
+  \int_{-\infty}^\infty dt\, e^{ib\omega t} f(t) \ .
+\end{align}
+We see that $a$ tells us about the $(2\pi)$ factors and $b$ tells us about the argument of the basis function $e^{ib\omega t}$. With this basis, the inverse Fourier transform is 
+\begin{align}
+  f(t)&=
+  \sqrt{\frac{|b|}{(2\pi)^{1+a}}}
+  \int_{-\infty}^\infty d\omega\, e^{-ib\omega t} f(\omega) \ .
+\end{align}
+
+One may check that the inverse Fourier transform of a Fourier transform gives the original function:
+\begin{align}
+  \tilde{\tilde f} &=
+  \frac{|b|}{2\pi}
+  \int_{-\infty}^\infty d\omega\, e^{-ib\omega t}
+  \int_{-\infty}^{\infty}
+  ds\, e^{ib\omega s} f(s)
+  \\
+  &= 
+  \frac{|b|}{2\pi}
+  \int ds\, f(z) \int d\omega \, e^{ib\omega(s-t)}
+  \\
+  &= \int ds\, \delta(s-t) f(s) \ ,
+\end{align}
+where we have used $\int d\xi \exp(2\pi i x\xi) = \delta(x)$. 
+
+\section{Our Conventions}
+
+The convention that we will choose for the \emph{time}--\emph{frequency} [inverse] Fourier transform is
+\begin{align}
+  f(t) &= \int_{-\infty}^{\infty} \dbar\omega e^{-i\omega t} \tilde f(\omega)
+  &
+  \dbar \omega &\equiv\frac{d\omega}{2\pi} \ .
+\end{align}
+This corresponds to $a=b=1$. The corresponding transform for the frequency-domain function is
+\begin{align}
+  \tilde f(\omega) &= 
+  % \frac{1}{2\pi}
+  \int_{-\infty}^\infty d t\, e^{i\omega t} f(t) \ .
+  \label{eq:inverse:fourier:convention}
+\end{align}
+
+
+\section{Higher Dimensions}
+
+All of this generalizes to higher dimensions: you simply Fourier transform each dimension. In fact, one is free to use a different Fourier transform convention for each direction. We can use this freedom to pick a convention that `automatically' fits our conventions for spacetime. In particular, given a four-vector $x=(t,\vec{x})$ and its conjugate four-momentum $p=(\omega, \vec{k})$, one may choose to Fourier transform as follows: 
+\begin{align}
+  f(x) &= \int \dbar\omega\dbar^3\vec{k} e^{-i(\omega t-\vec{k}\cdot\vec{x})} \tilde f(p)
+  \ .
+\end{align}
+With this convention, the basis function is simply
+\begin{align}
+  e^{-i(\omega t-\vec{k}\cdot\vec{x})} 
+  = e^{-ip\cdot x} \ , 
+\end{align}
+where $p\cdot x$ is the usual Minkowski dot product, $p_\mu x^\mu$. This makes it clear that the basis function is Lorentz invariant. The Fourier transform would still respect the spacetime symmetries even if we had not chosen a convenient notation---it just wouldn't be as simple to see.
+
+\begin{example}
+\textbf{Statistical Mechanics.} One motivation for our Fourier convention is statistical mechanics. One formulation of classical statistical mechanics is to assume that phase space is discrete: a particle has momentum $\vec{p}$ whose components take integer multiples of some unit momentum, $h$. Assuming that the particle has $g$ internal degrees of freedom (e.g.~$g=2$ for a particle that can be spin-up or spin-down), then the density of states is $g/h^{3}$. Quite remarkably in the history of physics, the value of $h$ can be identified with Planck's constant in quantum mechanics. In natural units we take $\hbar = h/(2\pi)\equiv 1$, so the phase space density is $g/(2\pi)^3$. For a particle with a phase space distribution function $f(\vec{x},\vec{p})$, this means that the number density of particles is
+\begin{align}
+  n = g\int \dbar^3p \, f(p) \ .
+\end{align}
+We see that it is convenient to take a convention where every $dp$ comes with a $(2\pi)^{-1}$.
+\end{example}
+
+\begin{exercise}\textbf{Lorentz-Invariant Phase Space.}
+In relativistic systems, the energy and the momenta are related by $E^2 = \vec{p}^2 + m^2$. We are, of course, using natural units where $c=1$. The phase space integral over $\dbar^3p$ is thus also an integral over the energy. In order to enforce the relativistic relation, the full phase space density is usually written as $\dbar^4p\, (2\pi)\delta(E^2-p^2-m^2)$. Show that integrating over the $\delta$-function gives
+\begin{align}
+  \int \dbar^4p\, \delta(E^2-p^2-m^2) &= 
+  \int \frac{\dbar^3\vec{p}}{2E(p)}
+  &
+  E(p) \equiv \sqrt{p^2 + m^2} \ .
+\end{align}
+\end{exercise}
+
 
 % \lipsum 
 \cite{BringhurstEoTS} \cite{segrave2009tipping}
@@ -4382,6 +4587,10 @@ We won't worry too much about branch cuts in this course. However, they do occas
 
 
 \backmatter
+
+
+
+
 
 \setstretch{1}
 \printbibliography
