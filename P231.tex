@@ -4608,7 +4608,7 @@ Taking $t_0=0$ for simplicity, show that the exact result for the acausal Green'
 \end{align}
 Hint: the relevant residues are $\pm e^{\pm i\omega_0t}/2\omega_0$ \ .
 \end{exercise}
-You should \emph{do} the above exercise as practice for the main contour integral of this entire course. If you are tempted to just keep reading these notes\footnote{By now you should know that learning physics requires \emph{doing} physics. Reading/watching someone else do physics is one of the least efficient ways of improving yourself as a physicist.} 
+You should \emph{do} the above exercise as practice for the main contour integral of this entire course. If you are stuck, you can keep reading these notes.\footnote{By now you should know that learning physics requires \emph{doing} physics. Reading/watching someone else do physics is one of the least efficient ways of improving yourself.} 
 
 To help you along, let me even set up the integral for you. We start with $G(t)$ in \eqref{eq:HO:integrand:real:pole}, where we rewrote the integrand in \eqref{eq:G:HO:Fourier:Rep:t0:0} to make the pole structure clear. We then said that we wanted to push the poles off the real line. This \emph{changes} the physical problem, but we'll worry about what that means later. In this case, we move the poles into the upper half-plane so that each pole has a small imaginary part. The poles are then located at $\pm \omega_0 + i \varepsilon$. The resulting integral is:
 \begin{align}
@@ -4658,6 +4658,9 @@ where we use the Heaviside step function
   \end{cases}
   \label{eq:Heaviside:Theta}
 \end{align}
+\begin{exercise}
+Check the overall sign. I keep screwing this up. You are henceforth responsible for the overall sign and I absolve myself of any mistakes due to this sign.
+\end{exercise}
 This is the \textbf{advanced} propagator. Even though `advanced' is often a positive adjective when applied to your progress\footnote{I once read a story about a particle physicist who started a conversation with a stranger on the plane. The stranger explains, ``My son is really quite brilliant. He's studying physics at an Ivy league university.'' The physicist says, ``Oh, how nice. You know, I'm a physicist.''  The stranger then asks what kind of physics, to which the physicist says ``I study elementary particles.'' The stranger responds with, ``Ah yes. Well, my son studies advanced particles.'' I no longer remember where I read this story, but I can attest to meeting people like this.} In this context, however, `advanced' is a \emph{bad} word. It means \emph{acausal}: the cause comes \emph{after} the effect. This does not make any sense, and we reject this as non-sense. 
 
 After an appropriate amount of indignant disdain, we can reflect on how the heck we got here\footnote{If your response is \emph{Christmas! Christmas eve last year}, then I applaud your taste in musical theater.}. We make two observations:
@@ -4729,6 +4732,9 @@ Restore $t_0\neq 0$ in the above equation for the retarded Green's function.
 By the way, we will often use the word \textbf{propagator} in place of Green's function. This is because the Green's function propagates information from the source to the observation point\footnote{This is especially clear when solving linear differential equations for which the Green's function represents an exact solution. For non-linear problems, one typically resorts to a perturbation expansion of linear propagators with order-by-order corrections in non-linearity. %This is what Feynman diagrams are: lines represent propagators, which are Green's functions for the linear part of the dynamical equation. The vertices represent non-linearities which must be treated as a Taylor series about a partition function.
 }. 
 
+\begin{exercise}
+Check the overall sign of the retarded Green's function.  Confirm that the nonzero part of the retarded Green's function ($t>0$) has the opposite sign as the nonzero part of the advanced Green's function ($t<0$). Confirm that this sign difference is due to the orientation of the contour $C_+$ versus $\bar{C}_-$.
+\end{exercise}
 
 \section{Other choices? The Feynman Propagator}
 
