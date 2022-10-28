@@ -5211,6 +5211,32 @@ Thus the wave equation Green's function in (3+1)-dimensions is:
 \end{align}
 This looks almost trivial---you've integrated something with this \emph{exact} integrand before when we did the harmonic oscillator. The only issue is that now the $\dbar\omega$ has been replaced with a much more\footnote{\emph{The more integrals we come across, the more problems we see}, with apologies to the Notorious \acro{BIG}.} ominous $\dbar^4k$. 
 
+\section{Anticipating the Answer}
+
+We very deliberately choose to motivate this problem from the perspective of electromagnetic waves. It is good training---in fact, this may be the \emph{primary} training---to build an intuition for what you expect the Green's function to be. What you already know?
+\begin{enumerate}
+  \item You know that the Green's function to the wave equation is the response to a unit source. This source is localized in both space and time: it is a blip of infinitesimal extend at an instant. 
+  \item You know that the electromagnetic wave propagates at a finite speed, $c$. 
+  \item You know that in the \emph{static} limit, the Green's function is $\Phi(\vec{x}-\vec{x}')= 1/(4\pi |\vec{x}-\vec{x}'|)$. 
+\end{enumerate}
+The last point is the most intriguing one. A static source is almost like the unit blip for the wave equation, except that it keeps ``blipping'' continuously. Rather than a flash of light, it is a lightbulb that is simply on. In other words, if we knew the Green's function for the wave equation, we could integrate it over a source $s(t,\vec{x}) = \delta^{(3)}(\vec{x}) u(t)$ where the function $u(t) =$ constant. This should give us the Green's function in electrostatics,
+\begin{align}
+  \int d^{(4)}x'\; G(t-t',\vec{x}-\vec{x}') s(t', \vec{x})' = \frac{1}{4\pi |\vec{x}-\vec{x}'|} \ . 
+  \label{eq:guessing:wave:Greens:function}
+\end{align}
+We have used the observation that $G(x,x') = G(x-x')$. 
+From this we can \emph{guess} that the wave equation Green's function is
+\begin{align}
+  G(t-t',\vec{x}-\vec{x}') &= 
+  \frac{\delta(|\vec{x}-\vec{x}'|-ct)}{4\pi |\vec{x}-\vec{x}'|} \ ,
+\end{align}
+up to factors of $c$ that I tend to be sloppy about. You can check that plugging this into the electrostatic equation \eqref{eq:guessing:wave:Greens:function} with the static source $s(t,\vec{x})$ indeed recovers the solution to the Poisson equation. 
+
+The interpretation of this Green's function is clear. One feels a $1/r$ potential, but information about this potential only propagates at a finite velocity. That means an observer at $\vec{x}$ and time $t$ feels the potential coming from the origin that was emitted at time $t-c|\vec{x}|$. In hindsight, you could argue that the wave equation Green's function \emph{had} to be this.  
+
+
+ 
+
 
 \section{Sketch of the Fourier integral in (3+1)-dimensions}
 
