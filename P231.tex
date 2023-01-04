@@ -252,7 +252,7 @@ Explain, in words, why the quantity $\sin(3~\text{cm})$ is absolute nonsense in 
 
 \chapter{Dimensional Analysis}
 
-You may be be surprised how far one can go in physics by thinking deeply about dimensional analysis. Here we only get started. To take the next step, you may read more about the Buckingham Pi theorem or applications in physics. I recommend any of the following:
+You may be surprised how far one can go in physics by thinking deeply about dimensional analysis. Here we only get started. To take the next step, you may read more about the Buckingham Pi theorem or applications in physics. I recommend any of the following:
 \begin{itemize}
   \item \fullcite{doi:10.1119/1.1987069}
   \item \fullcite{doi:10.1119/1.4902882}
@@ -264,7 +264,7 @@ You may be be surprised how far one can go in physics by thinking deeply about d
 
 \section{Converting Units}
 
-Imagine that you have three apples. This is a number (three) an a unit (apple). The meaning of the unit depends on what you're using it to measure. For example, if apples are \$1 each, then you could use an apple as a unit of currency. The way to do this is to simply \emph{multiply by one}:
+Imagine that you have three apples. This is a number (three) and a unit (apple). The meaning of the unit depends on what you're using it to measure. For example, if apples are \$1 each, then you could use an apple as a unit of currency. The way to do this is to simply \emph{multiply by one}:
 \begin{align}
   (3\text{ apples}) \times \left(\frac{\text{\$ 1}}{\text{apple}}\right)
   &= \$ 3 \ .
@@ -2301,6 +2301,12 @@ The term in the brackets is the metric for Euclidean three-space in spherical co
 % can talk about horizons
 % talka bout redshift, etc.
 
+\section{A teaser: Geometry, Relativity, and Physics}
+
+One topic that is just beyond this course is the deep connection between geometry and physics. The standard introduction to this topic in physics general relativity, though the applications are much broader. In fact, we have already introduced the key ingredient for this connection: it is linear algebra itself. Spacetime---and indeed, extensions of spacetime based on gauge symmetries---is a manifold. This is some space with a geometry: a metric that defines distances that also gives a notion of curvature.\footnote{This is `obvious' when you recall that the metric defines angles and that the sum of angles of a triangle on a curved space do not necessarily sum to $\pi$.} Trajectories of particles are paths along the manifold, $\gamma(t)$. Each point of a manifold carries a tangent space. The tangent space is where velocity vectors live. In fact, there are other spaces: the dual of the tangent space is called the co-tangent space: this is where functions of vectors live. In fact, this turns out to be where canonical momenta live. The key insight is that these (co-)tangent spaces and their cousins are linear vector spaces and we inherit all of the structure that we have built up thus far. 
+
+For those who want to learn this approach more thoroughly, I cannot recommend enough Vladimir Arnold's text \emph{Mathematical Methods of Classical Mechanics}. It is a challenging text, but one that builds up the mathematics systematically in a subject in which you are already an expert. It will feel like learning to communicate in a new language.
+
 \chapter{Function Space}
 
 \section{Histogram Space}
@@ -2436,7 +2442,9 @@ You may pontificate about the reason why the first derivative does have a symmet
 \section{Why histogram space is dumb}
 \label{sec:histogram:space:is:dumb}
 
-The notion of building up continuous functions $f(x)$ from the histogram basis above turns out to be problematic from the point of view of mathematical rigor. You can read more about the problems in Appel, \emph{Mathematics for Physicists} Chapter 9.1 (Insufficiency of Vector Spaces), or Hassani, \emph{Mathematical Physics}, Chapter 7 (Hilbert Spaces). The problem in an infinite dimensional vector space is that one can take a convergent sequence of vectors whose limiting vector is not part of the vector space. This has to do with the definition of a norm of a vector with an infinite number of terms. An infinite dimensional vector space that \emph{does} contain all of its limits (it is complete) is called a \textbf{Hilbert space}.
+The notion of building up continuous functions $f(x)$ from the histogram basis above turns out to be problematic from the point of view of mathematical rigor. You can read more about the problems in Appel, \emph{Mathematics for Physicists} Chapter 9.1 (Insufficiency of Vector Spaces), or Hassani, \emph{Mathematical Physics}, Chapter 7 (Hilbert Spaces). The problem in an infinite dimensional vector space is that one can take a convergent sequence of vectors whose limiting vector is not part of the vector space. This has to do with the definition of a norm of a vector with an infinite number of terms. Our histogram space is a vector space with a good inner product: this is called a \textbf{pre-Hilbert space}\index{pre-Hilbert space}. An infinite dimensional vector space that \emph{does} contain all of its limits\footnote{Formally this means that any sequence of points that progressively become arbitrarily close to each other (a Cauchy sequence) converges to a point that is also in the space.} (it is complete) is called a \textbf{Hilbert space}\index{Hilbert space}.
+
+\flip{To do: show why the histogram space fails the Cauchy sequence test.}
 
 
 \section{Derivatives in other function space bases}
@@ -3364,14 +3372,14 @@ In that case, we need to collect the partial derivatives. On the one hand, we ma
 \begin{align}
   df = \frac{\partial f}{\partial x} dx + \frac{\partial f}{\partial y} dy \ .
 \end{align}
-Please note that the partial derivatives of $f$ contain both real and imaginary parts. That is to say: $\partial f/\partial x$ generally contains both r real ($\hat x$) and imaginary ($\hat y$) pieces. 
+Please note that the partial derivatives of $f$ contain both real and imaginary parts. That is to say: $\partial f/\partial x$ generally contains both real ($\hat x$) and imaginary ($\hat y$) pieces. 
 
 % From Appel, Ch. 4.1.c
 From the definitions of $z=x+iy$ and $\bar z = x-iy$, we may write $dz = dx+idy$ and $d\bar z = dx-idy$. This lets us rewrite
 \begin{align}
   dx &= \frac{1}{2}(dz+d\bar z)
   &
-  dy & \frac{1}{2i}(dz-d\bar z) \ .
+  dy &= \frac{1}{2i}(dz-d\bar z) \ .
 \end{align}
 Plugging this into our expression for the differential of $f$ gives
 \begin{align}
@@ -5655,7 +5663,7 @@ Recall that
 \begin{align}
   \delta(f(z)) &= \sum_{z_0} \frac{1}{|f'(z_0)|} \delta(z-z_0) \ ,
 \end{align}
-where the sum is over zeros of the function, $f(z_0)=0$. For for case we have $f'(z) = z/\sqrt{x^2+y^2+z^2}$ with zeros at $z_\pm = \pm \sqrt{t^2 - x^2+y^2}$. Using the $\Theta(t)$ to remove an unphysical term, we have
+where the sum is over zeros of the function, $f(z_0)=0$. For our case we have $f'(z) = z/\sqrt{x^2+y^2+z^2}$ with zeros at $z_\pm = \pm \sqrt{t^2 - x^2+y^2}$. Using the $\Theta(t)$ to remove an unphysical term, we have
 \begin{align}
   G_{(2+1)}(t,x,y) &= \frac{\Theta(t)}{2\pi} \frac{1}{\sqrt{t^2-x^2-y^2}} \ .
 \end{align}
