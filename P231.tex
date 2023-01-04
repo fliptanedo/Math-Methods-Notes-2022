@@ -2589,6 +2589,7 @@ What are the `dual functions' (dual vectors, bras) in function space? These are 
 
 
 
+
 \section{Adjoint operators}
 
 What is the adjoint of a differential operator? The definition of the adjoint \eqref{eq:def:adjoint} and the function space inner product \eqref{eq:L2:inner:product} give us a hint. We define $\mathcal O^\dag$ by the property
@@ -2809,6 +2810,28 @@ A sufficiently large box $[-L,L]$ is approximately the same as an infinite inter
 
 You can twist this around in the other direction and wonder if spacetime were not actually continuous but rather composed of discrete points with some spacing on the order of the Planck length. Our continuum formalism of general relativity should be valid as long as we do not ask questions about length scales comparable to the separation between discrete points. 
 \end{example}
+
+\section{Fourier Series}
+
+Recall that the \textbf{Fourier Series} is a basis of sinusoidal functions over a finite domain. One changes variables from position $x$ to momentum or wave-number $p$. For an interval from $x\in [0,1]$, the Fourier series a function $f(x)$ with Dirichlet boundary conditions is:
+\begin{align}
+  f(x) &= \sqrt{\frac{2}{L}} 
+  \sum_{p \in \mathbb{Z}}  
+  \tilde f_p \sin(\pi p x/L) \ .
+\end{align}
+The eigenfunctions $e_p(x)=\sqrt{2/L}\sin(\pi p x/L)$ satisfy the boundary conditions and are normalized so that $\langle e_p,e_p\rangle = 1$. The data of the function $f(x)$ is encoded in an infinite number of coefficients, $\tilde f_p$.
+
+Fourier transforms are a basis of sinusodial functions---conventionally written as complex exponentials---over an \emph{infinite} domain. Our conventions for Fourier transforms are summarized in Appendix~\ref{app:Fourier}. 
+
+In statistics and machine learning, this is related to the idea of a \textbf{kernel}\index{kernel}. Kernels are the `heart' of an integral transformation that takes a function $f(x)$ to a transformed function $\tilde f(p)$ by
+\begin{align}
+  f(x) \to \tilde f(p) \equiv \int dp\, f(x) K(x,p) 
+\end{align}
+with the appropriate limits of integration. Observe that the transformed function $\tilde f$ is formally a function of a different variable. 
+
+\begin{exercise}
+What is the kernel of the Fourier transform using our conventions?
+\end{exercise}
 
 \section{Completeness and Green's Functions}
 
