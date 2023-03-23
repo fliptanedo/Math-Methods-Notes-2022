@@ -2307,6 +2307,10 @@ One topic that is just beyond this course is the deep connection between geometr
 
 For those who want to learn this approach more thoroughly, I cannot recommend enough Vladimir Arnold's text \emph{Mathematical Methods of Classical Mechanics}. It is a challenging text, but one that builds up the mathematics systematically in a subject in which you are already an expert. It will feel like learning to communicate in a new language.
 
+\section{Teaser: Integration}
+
+\flip{There are two images of integration: integrating over a volume and integrating a differential equation. The latter begs a bit more physical intuition: our equations of motion are typically expressions about vector fields. Solving a trajectory (Broadly defined) is means finding integral curves.}
+
 \chapter{Function Space}
 
 \section{Histogram Space}
@@ -5701,7 +5705,16 @@ The key insight is that $\int dz\, G_{(3+1)}$ is precisely the form of the poten
 
 
 
-
+\begin{exercise} Application to biophysics. Derive the position-space two point function in equation (3.17) of \texttt{cond-mat/9601006v2}\footnote{\url{https://arxiv.org/abs/cond-mat/9601006v2}}. One has to perform a two-dimensional (inverse) Fourier transform to show: 
+\begin{align}
+  \int \dbar^2p 
+  \frac{ e^{i \vec{p} \cdot (\vec{x}-\vec{y}) } }{p^4}
+  &=
+  \frac{1}{16\pi} R^2 \ln R^2 \ ,
+\end{align}
+where $\vec{R} = \vec{x}-\vec{y}$ and $R = |\vec{R}|$. The dot product in the exponential gives the cosine of an angle. If we move to polar coordinates in momentum space, we get $p\,dp\,d\theta$. Because the two-dimensional measure is $d\theta$ rather than $d\cos\theta$, this integral is somewhat tricky. Derive the above result by performing the analogous integral in \emph{three} dimensions and then dimensionally reducing to two dimensions. 
+\emph{Thanks to Yankang Liu (P232 Fall 2022) for bringing up this application.}
+\end{exercise}
 
 
 
@@ -5938,6 +5951,9 @@ Minimizing \eqref{eq:Lagrangian:with:lagrange:mult} thus corresponds to Hamilton
   &=
   -\frac{d x}{dt} \ .
 \end{align}
+
+% 1form discussion:  Schutz 4.2-3 on dust is pretty good for images'
+
 
 % https://scholar.harvard.edu/files/schwartz/files/8-freeenergy.pdf
 
