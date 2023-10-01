@@ -252,6 +252,8 @@ Explain, in words, why the quantity $\sin(3~\text{cm})$ is absolute nonsense in 
 
 \chapter{Dimensional Analysis}
 
+% FLIP: add this : https://youtu.be/kkfIXUjkYqE
+
 You may be surprised how far one can go in physics by thinking deeply about dimensional analysis. Here we only get started. To take the next step, you may read more about the Buckingham Pi theorem or applications in physics. I recommend any of the following:
 \begin{itemize}
   \item \fullcite{doi:10.1119/1.1987069}
@@ -556,7 +558,7 @@ The identification boils down to the following:
   &=
   \infty\text{-dimensional matrix} \ .
 \end{align}
-This is a poetic equal sign; for example, not every infinite dimensional matrix is a differential operator.\footnote{But by causality and locality these are the ones we care about in physics.} You may know matrices as a block of numbers that act on columns of numbers---\emph{vectors}---to produce another vector.
+This is a poetic equal sign; for example, not every infinite dimensional matrix is a differential operator.\footnote{At least not one with a finite number of terms.} You may know matrices as a block of numbers that act on columns of numbers---\emph{vectors}---to produce another vector.
 If differential operators are matrices, are vectors on which they act? These matrices act on a space of functions, which turns out to be a vector space:
 \begin{align}
   \text{function space} &= \infty\text{-dimensional vector space} \ .
@@ -571,7 +573,7 @@ Weird things can happen when we extend our intuition from finite things to infin
 
 \section{What is Linear?}
 
-A function\index{function}, $f(x)$, takes some kind of input $x$ and produces some kind of output. When the inputs and outputs are real numbers, $x,f(x)\in \mathbbm{R}$, then we can plot this relation between inputs and outputs on the $\mathbbm{R}^2$ by the mapping $(x,f(x))$. The curve $f(x)$ is the set of all points $(x,y) \in \mathbbm{R}^2$ such that $y=f(x)$. Said in yet another way, $y=f(x)$ is a constraint on $\mathbbm{R}^2$ that slices it into a one-dimensional subspace. To emphasize that $f$ takes in real numbers and spits out real numbers, we can write $f: \mathbbm{R}\to\mathbbm{R}$.
+A function\index{function}, $f(x)$, takes some kind of input $x$ and produces some output. When the inputs and outputs are real numbers, $x,f(x)\in \mathbbm{R}$, then we can plot this relation between inputs and outputs on the $\mathbbm{R}^2$ by the mapping $(x,f(x))$. The curve $f(x)$ is the set of all points $(x,y) \in \mathbbm{R}^2$ such that $y=f(x)$. Said in yet another way, $y=f(x)$ is a one dimensional slice of $\mathbbm{R}^2$. To emphasize that $f$ takes in real numbers and spits out real numbers, we can write $f: \mathbbm{R}\to\mathbbm{R}$.
 
 Before we end up getting too pedantic about what a curve is, recall that even children can tell you that the equation $f(x) = mx+b$ defines a line in the two dimensional plane. In this relation, $m$ is the slope and $b$ is the intercept of the line with the $y$-axis. We must be more restrictive: we set $b=0$ and impose that a linear relation between two numbers $x$ and $f(x)$ takes the form $f(x)=mx$. 
 
@@ -586,7 +588,7 @@ Confirm that $f(x)=mx$ is a linear function between real numbers for any value o
 \end{exercise}
 We can state this all more formally. Suppose there is some collection of objects that we call $V$. Let $x$ and $y$ be two such objects: $x,y\in V$. Further, let $\alpha$ and $\beta$ be two numbers: $\alpha,\beta\in\mathbbm{R}$. Then a function $f:V\to W$ is \textbf{linear}\index{linear} if and only if\footnote{One can also write ``$\Leftrightarrow$'' to mean `if and only if.'}
 \begin{align}
-  f(\alpha x + \beta y) = \alpha f(x)+\beta f(y)
+  f(\alpha x + \beta y) = \alpha f(x)+\beta f(y) \ .
   \label{eq:def:linear}
 \end{align}
 Let us dissect this a bit. We stated that $x$ and $y$ have to be the same type of object, members of the class $V$. This echoes our discussion of dimensional analysis: if $x$ are apples and $y$ are Pokemon, then $2.5x+7y$ is nonsensical and so any function of such an object is nonsensical. We defined $\alpha$ and $\beta$ to be numbers\footnote{More generally, these are elements of a \textbf{field}: sets of objects with addition and multiplication defined.}: these just count how many objects in $V$ are being fed into our function. For now we assume that these are real numbers, but we will soon generalize to complex numbers. 
@@ -594,19 +596,23 @@ Let us dissect this a bit. We stated that $x$ and $y$ have to be the same type o
 We wrote $f:V\to W$, which means that the output of the function $f(x)$ is an object of class $W$. In our toy example $f(x)=mx$, $V=W=\mathbbm{R}$. In general, $W$ and $V$ could be two totally different classes of objects. $W$ could be real numbers, something with units, a mathematical object with more structure, or any other class of objects. No matter what $V$ and $W$ are, the relation \eqref{eq:def:linear} tells us when a function is linear. 
 
 \begin{example}
-Let $f$ be a function that maps angles $\theta$ to rotation matrices,
+Let $R$ be a function that maps angles $\theta$ to rotation matrices,
 \begin{align}
   R(\theta) = 
   \begin{pmatrix}
     \phantom{+}\cos\theta & \phantom{+}\sin\theta \\
     -\sin\theta & \phantom{+}\cos\theta
   \end{pmatrix} \ .
+  \label{eq:vectors:R:theta}
 \end{align}
 This map is not linear because
 \begin{align}
   R(\theta_1 + \theta_2) \neq R(\theta_1) + R(\theta_2) \ ,
 \end{align}
 as you can check for the trivial case of $\theta_1 = \theta_2 = 0$.
+\end{example}
+\begin{example}
+The rotation matrix $R(\theta)$ in \eqref{eq:vectors:R:theta} is a linear map from two component vectors to two component vectors. Thus, $R(\theta): \mathbbm{R}^2 \to \mathbbm{R}^2$ is a linear function. But the map $R:\mathbbm{R} \to \mathbbm{R}^{2\times 2}$ that takes an angle $\theta$ and returns a $2\times 2$ matrix is \emph{not} a linear function.
 \end{example}
 \begin{exercise}
 Let $f$ be a function that maps driving speed to the probability of being pulled over by the police or highway patrol. Explain why $f$ cannot be linear.
@@ -616,11 +622,11 @@ We can diagnose the linearity of a function, even when that function inputs and 
 
 \section{Vectors and Vector Spaces}
 
-For our purposes in this course, we consider functions of \textbf{vectors}. Not all objects of interest are vectors, for example, coordinates are decidedly not vectors. The term \emph{position vector} is thus a faux pas.\footnote{Mathematicians chuckle at freshman physics textbooks.} On the contrary, infinitesimal differences of coordinates are vectors called \textbf{tangent vectors}. So what are vectors and vector spaces?
+For our purposes in this course, we consider functions of \textbf{vectors}. Not all objects of interest are vectors, for example, coordinates are decidedly not vectors. The term \emph{position vector} is thus a faux pas.\footnote{Mathematicians chuckle at freshman physics textbooks. The notion of a `position vector' implies identifying some special point, the origin.} On the contrary, infinitesimal differences of coordinates are vectors called \textbf{tangent vectors}. So what are vectors and vector spaces?
 
 We focus on an imprecise, but physically intuitive working definition. For those who prefer a more mathematical discussion that is still tied to physical intuition, see \emph{Geometry, Topology, and Physics} by Nakahara.\sidecite{Nakahara:206619} A \textbf{vector}\index{vector} is an element of a vector space. That is, a \textbf{vector space}\index{vector space} is the `complete' collection of a given type of vector. 
 
-We have already assumed that you can add vectors and rescale them by numbers; that is, we can take \textbf{linear combinations}\index{linear combination} of vectors. The assumption is implicit in our definition of linearity, \eqref{eq:def:linear}. Let $\vec{v}$ and $\vec{w}$ be any two vectors in the vector space $V$; we write this as $\vec{v},\vec{w}\in V$. Further, let $\alpha, \beta$ be numbers. We have the following rules:
+We have already assumed that you can add vectors and rescale them by numbers; that is, we can take \textbf{linear combinations}\index{linear combination} of vectors. That one can do this is implicit in our definition of linearity, \eqref{eq:def:linear}. Let $\vec{v}$ and $\vec{w}$ be any two vectors in the vector space $V$; we write this as $\vec{v},\vec{w}\in V$. Further, let $\alpha, \beta$ be numbers. We have the following rules:
 \begin{itemize}
   \item The sum $\alpha\vec v + \beta\vec w$ is a vector in $V$. 
   \item The zero vector $\vec 0$ is a vector in $V$ such that $\vec 0 + \vec v = \vec v$. 
@@ -630,7 +636,9 @@ Formally there are other rules, but you probably already assumed them.\footnote{
 The existence of a meaningful zero vector is one example why `position space' or coordinate space is not a vector space. The zero vector $\vec 0$ is the one that leaves other vectors unchanged upon addition: $\vec 0 + \vec x = \vec x$. Clearly this depends on the coordinate system and violates our intuition that physics should be independent of the choice of coordinates. Further, the notion of `adding positions' is physically nonsensical. On the contrary, differences of positions $\Delta{x} = \vec{x}_1-\vec{x}_2$ \emph{are} meaningful. For example, the force between two non-relativistic point particles depends the vector that is the difference between the particle positions.
 \end{example}
 
-\begin{exercise}\label{ex:color:space} \textbf{Color Space}. Colors for digital media have many representations. One popular representation is \acro{RGB} where the intensity of red, green, and blue components are specified. For example, $(25,174,40)$ is a pleasant shade of green. This triplet of numbers certainly looks like a vector: it is an ordered collection of numbers. Is the space of \acro{RGB} colors a vector space? \emph{Answer: no. Make a list of reasons why.} Like all meaningful questions, this rabbit hole runs deep; for example, see articles on the geometry of colors~\sidecite{weinberg1976geometry} or the overlapping sciences of physics and neurological perception of color~\sidecite{Logvinenko:2022}.
+% https://twitter.com/FlipTanedo/status/1690107498039230464
+
+\begin{exercise}\label{ex:color:space} \textbf{Color Space}. Colors for digital media have many representations. One popular representation is \acro{RGB} where the intensity of red, green, and blue components are specified. For example, $(25,174,40)$ is a pleasant shade of green. This triplet of numbers certainly looks like a vector: it is an ordered collection of numbers. Is the space of \acro{RGB} colors a vector space? \emph{Answer: ``kind  of.'' Make a list of reasons why and why not.} Like all meaningful questions, this rabbit hole runs deep; for example, see articles on the geometry of colors~\sidecite{weinberg1976geometry} or the overlapping sciences of physics and neurological perception of color~\sidecite{Logvinenko:2022}. To get you started: the reason why we have three primary colors is that we have three types of cone cells that detect color. Our neurological color response is an integral of an electromagnetic spectrum with the sensitivity of each of these cone types. In this way, each cone type defines a basis for the space of color responses. 
 \end{exercise}
 
 \section{Notation for Vectors}
@@ -638,54 +646,78 @@ The existence of a meaningful zero vector is one example why `position space' or
 
 Physicists use a few different notations for vectors depending on the context. In these notes we also use whichever notation is most convenient for the task and we are not ashamed to change notation as needed. Students should be nimble to be able to make use of different notations.\footnote{As a student I was once very because a textbook introduced the notation $\overleftrightarrow{\partial}$. Only much later would I come to appreciate the perspicacity of that symbol.} It is absolutely critical that even though we can refer to a mathematical object with different notation, the underlying idea is the same. This insight is the key to never getting lost in the forest of special functions (Bessel, Legendre, spherical harmonics, etc.) that appear in physics.
 
-\subsection{Bold/over-arrow notation} Thus far we refer to vectors with a boldfaced and italicized symbol,\footnote{See \acro{ISO 80000-2:2019} from the International Organization for Standardization.} $\vec{v}$. For the author this is a comfortable and familiar notation from school. On the board in a classroom, we sometimes write the vector with an underline $\underline{v}$ since boldfaced can be difficult to write freehand. A related notation uses arrows, $\overrightarrow{v}$. %Tensor $\tensor{T}$. ISO 80000-2:2019
+\subsection{Bold/over-arrow notation} Thus far we refer to vectors with a boldfaced and italicized symbol,\footnote{See \acro{ISO 80000-2:2019} from the International Organization for Standardization.} $\vec{v}$. For the author this is a comfortable and familiar notation from school. On a board, we sometimes write the vector with an underline $\underline{v}$ since boldfaced can be difficult to write freehand. Another notation is to use arrows over the symbol, $\overrightarrow{\mathbf{v}}$. %Tensor $\tensor{T}$. ISO 80000-2:2019
 
-\subsection{Ket notation} Another popular notation in physics is the bra--ket notation. Vectors are kets, $\ket{v}$. We we review below, there are also `row vectors' that we call bras, $\bra{w}$. This is all a tongue-in-cheek joke because you can combine a bra and a ket to form a \emph{braket}, $\langle w \,|\, v\rangle$, which we identify as the inner product (dot product) of two vectors $\langle w, v\rangle = \vec{w}\cdot\vec{v}$. 
+\subsection{Ket notation} Bra--ket notation is particularly useful in physics and are familiar from quantum mechanics. Vectors are \emph{kets}, $\ket{v}$. As we review below, `row vectors' are \emph{bras}, $\bra{w}$. This is all a tongue-in-cheek joke because you can combine a bra and a ket to form a \emph{braket}, $\langle w \,|\, v\rangle$, which we identify as the inner product (dot product) of two vectors $\langle w, v\rangle = \vec{w}\cdot\vec{v}$. 
 
-\subsection{Index notation} A common metaphorical extension\footnote{\url{https://en.wikipedia.org/wiki/Metaphorical_extension}} in physics is the notation $v^i$. Technically, $v^i$ refers to the $i^\text{th}$ component of the vector $\vec{v}$.\footnote{$i^\text{th}$ component with respect to what? See the following section on basis vectors.} However, since physicists often write their equations component-wise, we often slip into the shorthand of using $v^i$ to mean either a given component or the entire vector. The appropriate meaning is usually clear from context. 
+\subsection{Index notation} A common metaphorical extension\footnote{\url{https://en.wikipedia.org/wiki/Metaphorical_extension}} in physics is the notation $v^i$. Technically, $v^i$ refers to the $i^\text{th}$ component of the vector $\vec{v}$. However, since physicists often write their equations component-wise, we often slip into the shorthand of using $v^i$ to mean either a given component or the entire vector. The appropriate meaning is usually clear from context. One may formalize this shorthand in so-called abstract index notation or `slot-naming' index notation.\footnote{\url{https://en.wikipedia.org/wiki/Abstract_index_notation}}
 
-\subsection{Unadorned notation} We identify functions as vectors in an infinite dimensional space. In this case, it is often sufficient to avoid any additional adornment, so we write a function as $f$. The analog of a component of a vector, $v^i$, is the function at a point, $f(x)$.
+\subsection{Index-free notation}
+Mathematicians prefer an index-free notation where vectors and tensors are understood as linear maps. As physicists, we usually \emph{like} indices because they often indicate how an object transforms with respect to a physical symmetry transformation. We occasionally write tensorial (objects with indices) objects without indices when it is clear that the indices are implicit.
+% 
+% We identify functions as vectors in an infinite dimensional space. In this case, it is often sufficient to avoid any additional adornment, so we write a function as $f$. The analog of a component of a vector, $v^i$, is the function at a point, $f(x)$. 
 
 
 \section{Basis Vectors}
 
 
 
-The number of vectors in a vector space is formally infinite. If $\vec v$ is a vector, then so is $2v$ and $3v$, not to mention $0.999\vec{v}$, ad nauseum. Fortunately we can pick a standard set of reference vectors and define any other vector with respect to those reference vectors. We call those reference vectors \textbf{basis vectors} $\hat{\vec{e}}_{(i)}$ and the entire set a \textbf{basis}\index{basis} for the vector space.\footnote{Please humor the unusual notation with a lower index in parenthesis. We explain this unusual choice in Section~\ref{sec:indices}.} We may express any vector $\vec v$ in the vector space as a linear combination of basis vectors:
+The number of vectors in a vector space is formally infinite. If $\vec v$ is a vector, then so is $2v$ and $3v$, not to mention $0.999\vec{v}$, ad nauseum. For finite-dimensional vector sapces, we can pick a finite number reference vectors and define any other vector with respect to those reference vectors. We call those reference vectors \textbf{basis vectors} 
+% $\hat{\vec{e}}_{i}$ 
+$\basis{i}$
+and the entire set a \textbf{basis}\index{basis} for the vector space. We may express any vector $\vec v$ in the vector space as a linear combination of basis vectors:
 \begin{align}
-  \vec{v} = \sum_i v^i\hat{\vec{e}}_{(i)} \ .
+  \vec{v} = \sum_i v^i
+  % \hat{\vec{e}}_{(i)} 
+  \basis{i}
+  \ .
 \end{align}
 \begin{example}
 In two dimensional Euclidean space, $\mathbbm{R}^2$ we have a canonical basis
 \begin{align}
- \hat{\vec{e}}_{(1)} \equiv 
+ % \hat{\vec{e}}_{(1)} 
+ \basis{1}
+ \equiv 
   \begin{pmatrix}
     1\\0
   \end{pmatrix}
   &&
- \hat{\vec{e}}_{(2)} \equiv 
+ % \hat{\vec{e}}_{(2)} 
+ \basis{2}
+ \equiv 
   \begin{pmatrix}
     0\\1
   \end{pmatrix} \ .
 \end{align}
-\emph{Canonical} is just a fancy way to say \emph{the obvious choice}. The first basis vector points in the $x$ direction, the cond points in the $y$ direction. We can thus represent a vector $\vec{v}$ as a linear combination,
+\emph{Canonical} is just a fancy way to say `\emph{the obvious choice}.' The first basis vector points in the $x$ direction, the cond points in the $y$ direction. We can thus represent a vector $\vec{v}$ as a linear combination,
 \begin{align}
   \vec{v} = 
   \begin{pmatrix}
     v^1 \\ v^2
   \end{pmatrix}
   =
-  v^1\hat{\vec{e}}_{(1)} + v^2\hat{\vec{e}}_{(2)} \ .
+  v^1
+  % \hat{\vec{e}}_{(1)} 
+  \basis{1}
+  + 
+  v^2
+  % \hat{\vec{e}}_{(2)} 
+  \basis{2}
+  \ .
 \end{align}
 We could have defined a different basis, for example
 \begin{align}
- \hat{\vec{e}}_{(1)}' \equiv 
+ % \hat{\vec{e}}_{(1)}' 
+ \basis{1}'
+ \equiv 
   \frac{1}{\sqrt{2}}
   \begin{pmatrix}
     1\\1
   \end{pmatrix}
   &&
- \hat{\vec{e}}_{(2)}' \equiv 
+ % \hat{\vec{e}}_{(2)}' 
+ \basis{2}'
+ \equiv 
   \frac{1}{\sqrt{2}}
   \begin{pmatrix}
     \phantom{+}1\\-1
@@ -693,7 +725,13 @@ We could have defined a different basis, for example
 \end{align}
 In this primed basis the vector $\vec{v}$ would have different components,
 \begin{align}
-  \vec{v} = v'^1\hat{\vec{e}}_{(1)}' + v'^2\hat{\vec{e}}_{(2)}' \ ,
+  \vec{v} = v'^1
+  % \hat{\vec{e}}_{(1)}' 
+  \basis{1}'
+  + 
+  % v'^2\hat{\vec{e}}_{(2)}' 
+  \basis{2}'
+  \ ,
 \end{align}
 where clearly $v'^i \neq v^i$.
 \end{example}
